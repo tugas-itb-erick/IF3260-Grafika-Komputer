@@ -1,11 +1,15 @@
 # Repositori Tugas Grafika Komputer
+
 IF3260 Grafika Komputer
+
 ### Setup
-Clone atau download zip dari repositori ini lalu ketik perintah ```make all``` dibawah untuk melakukan kompilasi seluruh kode program. 
+
+Clone atau download zip dari repositori ini lalu ketik perintah ```make all``` untuk melakukan kompilasi seluruh kode program. 
 
 Untuk melakukan kompilasi salah satu program saja, ketik ```make x``` dengan x adalah nomor program yang ingin dikompilasi. 
 
 Untuk mengeksekusi program, ketik ```./bin/x``` dengan x adalah nomor program yang akan dieksekusi.
+
 ### Anggota Kelompok:
 
 13515021 - Dewita Sonya Tarabunga
@@ -20,8 +24,4 @@ Untuk mengeksekusi program, ketik ```./bin/x``` dengan x adalah nomor program ya
 
 13515111 - Catherine Almira
 
-<<<<<<< HEAD
 13515144 - William
-=======
-13515144 - William
->>>>>>> 966a604e11c1876a55c45d6ffcf41d8e5d0187ca
