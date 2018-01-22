@@ -1,8 +1,9 @@
-Tugas Grafika Komputer
+### Tugas Grafika Komputer
 
 *Membuat teks yang bergerak keatas dengan memanfaatkan framebuffer*
 
-Anggota Kelompok:
+
+### Anggota Kelompok:
 
 13515021 - Dewita Sonya Tarabunga
 
