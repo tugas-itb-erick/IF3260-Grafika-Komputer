@@ -20,4 +20,8 @@ Untuk mengeksekusi program, ketik ```./bin/x``` dengan x adalah nomor program ya
 
 13515111 - Catherine Almira
 
+<<<<<<< HEAD
 13515144 - William
+=======
+13515144 - William
+>>>>>>> 966a604e11c1876a55c45d6ffcf41d8e5d0187ca
