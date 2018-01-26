@@ -30,6 +30,9 @@ http://cep.xor.aps.anl.gov/software/qt4-x11-4.2.2/qtopiacore-testingframebuffer.
 #include <iostream> // std::cin, std::cout, std::endl
 #include <algorithm> // std::min, std::max
 #include <thread> //std::thread
+#include "Point.h"
+#include "Line.h"
+#include "Color.h"
 using namespace std;
 
 //----- CONSTANTS -----//
@@ -42,8 +45,16 @@ char *fbp = 0;
 
 //----- FUNCTION DECLARATIONS -----//
 double gradient(int x1, int y1, int x2, int y2);
-void drawDot(int x, int y, int thickness = 1, int red = 255, int green = 255, int blue = 255, int a = 0);
+// Calculate gradient from a Line
+// TODO: ganti x1 y1 jadi Line L, atau const Line& L
+
+void drawPoint(int x, int y, int thickness = 1, int red = 255, int green = 255, int blue = 255, int a = 0);
+// Draw a single Point on the screen
+// TODO: ganti x y jadi Point P, buang red green blue a
+
 void drawLine(int x1, int y1, int x2, int y2, int thickness = 1, int red = 255, int green = 255, int blue = 255, int a = 0);
+// Draw a single line from start point to end point (direction matters)
+// TODO: ganti x1 dll jdi Line, buang red green blue a
 
 //----- FUNCTION IMPLEMENTATIONS -----//
 double gradient(int x1, int y1, int x2, int y2) {
@@ -52,7 +63,7 @@ double gradient(int x1, int y1, int x2, int y2) {
     return (double) (y1-y2) / (x1-x2);
 }
 
-void drawDot(int x, int y, int thickness, int red, int green, int blue, int a) {
+void drawPoint(int x, int y, int thickness, int red, int green, int blue, int a) {
     long int location = 0;
     for (int i=x; i<x+thickness; i++) {
         for (int j=y; j<y+thickness; j++) {
@@ -70,6 +81,7 @@ void drawLine(int x1, int y1, int x2, int y2, int thickness, int red, int green,
     int sign = (m < 0) ? -1 : 1;
     cout << "gradient = " << m << endl;
 
+    // Versi ga gitu nguli, tapi gagal :(
     // if (m >= -1 && m <= 1) {
     //     int small2Big = (x1 <= x2) ? 1 : -1;
     //     int small2BigY = (y1 <= y2) ? 1 : -1;
@@ -105,7 +117,7 @@ void drawLine(int x1, int y1, int x2, int y2, int thickness, int red, int green,
             dx = x2 - x1;
             dy = y2 - y1;
             for (int x = x1; x <= x2; x++) {
-                drawDot(x, y, thickness, red, green, blue, a); usleep(2000);
+                drawPoint(x, y, thickness, red, green, blue, a); usleep(2000);
                 e += dy;
                 if ((e << 1) >= dx) {
                     y++;
@@ -116,7 +128,7 @@ void drawLine(int x1, int y1, int x2, int y2, int thickness, int red, int green,
             dx = x1 - x2;
             dy = y1 - y2;
             for (int x = x1; x >= x2; x--) {
-                drawDot(x, y, thickness, red, green, blue, a); usleep(2000);
+                drawPoint(x, y, thickness, red, green, blue, a); usleep(2000);
                 e -= dy;
                 if ((e << 1) < dx) {
                     y--;
@@ -133,7 +145,7 @@ void drawLine(int x1, int y1, int x2, int y2, int thickness, int red, int green,
             dx = x2 - x1;
             dy = y2 - y1;
             for (int x = x1; x <= x2; x++) {
-                drawDot(x, y, thickness, red, green, blue, a); usleep(2000);
+                drawPoint(x, y, thickness, red, green, blue, a); usleep(2000);
                 e -= dy;
                 if ((e << 1) >= dx) {
                     y--;
@@ -144,7 +156,7 @@ void drawLine(int x1, int y1, int x2, int y2, int thickness, int red, int green,
             dx = x1 - x2;
             dy = y1 - y2;
             for (int x = x1; x >= x2; x--) {
-                drawDot(x, y, thickness, red, green, blue, a); usleep(2000);
+                drawPoint(x, y, thickness, red, green, blue, a); usleep(2000);
                 e += dy;
                 if ((e << 1) < dx) {
                     y++;
@@ -152,20 +164,18 @@ void drawLine(int x1, int y1, int x2, int y2, int thickness, int red, int green,
                 }
             }
         }
+    } else if (m > 1) {
+        int dx, dy;
+        int x = x1;
+        int e = 0;
+        //
+    } else { // if (m < -1)
+        int dx, dy;
+        int x = x1;
+        int e = 0;
+        //
     }
 
-    // } else if (m < 1) {
-
-    // } else {
-    //     int xstart = min(x1, x2);
-    //     int xend = x1 + x2 - xstart;
-    //     int x = xstart; int y = y1;
-    //     while (x <= xend) {
-    //         drawDot(x, y, thickness, red, green, blue, a);
-    //         x++;
-    //         y += sign;
-    //     }
-    // }
 }
 
 //----- MAIN PROGRAM -----//
