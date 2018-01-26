@@ -28,15 +28,60 @@ http://cep.xor.aps.anl.gov/software/qt4-x11-4.2.2/qtopiacore-testingframebuffer.
 #include <sys/ioctl.h>
 #include <time.h>
 
+//----- CONSTANTS -----//
+#define UNDEF 99999.99 // Large Positive Number
+
+//----- GLOBAL VARIABLES -----//
+struct fb_var_screeninfo vinfo;
+struct fb_fix_screeninfo finfo;
+char *fbp = 0;
+long int location = 0;
+
+//----- FUNCTION DECLARATIONS -----//
+double gradient(int x1, int y1, int x2, int y2);
+void drawDot(int x, int y, int thickness);
+void drawLine(int x1, int y1, int x2, int y2, int thickness = 1);
+
+//----- FUNCTION IMPLEMENTATIONS -----//
+double gradient(int x1, int y1, int x2, int y2) {
+    if (x1 - x2 == 0)
+        return UNDEF;
+    return (double) (y1-y2) / (x1-x2);
+}
+
+void drawDot(int x, int y, int thickness) {
+    // pake yg kmarin
+}
+
+void drawLine(int x1, int y1, int x2, int y2, int thickness) {
+    // https://www.youtube.com/watch?v=345dAMp4RsI
+    // https://www.youtube.com/watch?v=m2enpQNSYEY
+    // m < 1, find y, x+=1
+    // m > 1, find x, y+=1
+    // m = 1, x+=1, y+=1
+    double m = gradient(x1, y1, x2, y2);
+    bool negative = m < 0;
+    if (negative) {
+        m = -m;
+    }
+    int initPk = 2*(y2-y1) - (x2-x1);
+
+    if (m == UNDEF) {
+
+    } else if (m > 1) {
+
+    } else if (m < 1) {
+
+    } else {
+
+    }
+}
+
+//----- MAIN PROGRAM -----//
 int main()
 {
     int fbfd = 0;
-    struct fb_var_screeninfo vinfo;
-    struct fb_fix_screeninfo finfo;
     long int screensize = 0;
-    char *fbp = 0;
-    int x = 0, y = 0;
-    long int location = 0;
 
     // Open the file for reading and writing
     fbfd = open("/dev/fb0", O_RDWR);
@@ -71,31 +116,7 @@ int main()
     }
     printf("The framebuffer device was mapped to memory successfully.\n");
 
-    x = 100; y = 100;       // Where we are going to put the pixel
-
-    // Figure out where in memory to put the pixel
-    for (y = 100; y < 300; y++) {
-        for (x = 100; x < 300; x++) {
-
-            location = (x+vinfo.xoffset) * (vinfo.bits_per_pixel/8) +
-                       (y+vinfo.yoffset) * finfo.line_length;
-
-            if (vinfo.bits_per_pixel == 32) {
-                *(fbp + location) = 100;        // Some blue
-                *(fbp + location + 1) = 15+(x-100)/2;     // A little green
-                *(fbp + location + 2) = 200-(y-100)/5;    // A lot of red
-                *(fbp + location + 3) = 0;      // No transparency
-        //location += 4;
-            } else  { //assume 16bpp
-                int b = 10;
-                int g = (x-100)/6;     // A little green
-                int r = 31-(y-100)/16;    // A lot of red
-                unsigned short int t = r<<11 | g << 5 | b;
-                *((unsigned short int*)(fbp + location)) = t;
-            }
-
-        }
-    }
+    
     
     munmap(fbp, screensize);
     close(fbfd);

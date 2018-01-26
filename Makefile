@@ -12,7 +12,7 @@ all: src/1-titik/titik.c src/2-garis/garis.cpp
 	g++ src/2-garis/garis.cpp -o bin/2
 
 run:
-	./bin/garis
+	./bin/2
 
 clean:
 	rm -rf bin/*
