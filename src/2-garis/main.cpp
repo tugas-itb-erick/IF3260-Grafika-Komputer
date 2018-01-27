@@ -83,14 +83,15 @@ void drawLine(int x1, int y1, int x2, int y2, int thickness, int red, int green,
     double m = gradient(x1, y1, x2, y2);
     int sign = (m < 0) ? -1 : 1;
     cout << "gradient = " << m << endl;
-    if (x1 > x2) {
-        swap(x1, x2);
-        swap(y1, y2);
-    }
 
     int dx = x2 - x1, dy = y2 - y1, e = 0;
 
     if (m >= -1 && m <= 1) {
+        cout << "atas" << endl;
+        if (x1 > x2) {
+            swap(x1, x2);
+            swap(y1, y2);
+        }
         int y = y1;
 
         for (int x = x1; x <= x2; x++) {
@@ -102,9 +103,14 @@ void drawLine(int x1, int y1, int x2, int y2, int thickness, int red, int green,
             }
         }
     } else {
+        cout << "bawah" << endl;
+        if (y1 > y2) {
+            swap(x1, x2);
+            swap(y1, y2);
+        }
         int x = x1;
 
-        for (int y = y1; y <= y2; ++y) {
+        for (int y = y1; y <= y2; y += sign) {
             drawPoint(x, y, thickness, red, green, blue, a);
             e += dx*sign;
             if (2*e >= dy) {
@@ -154,10 +160,19 @@ int main()
     }
     printf("The framebuffer device was mapped to memory successfully.\n");
 
-    drawLine(100, 100, 600, 400, 1);
+    //for ()
+
+    /*drawLine(100, 100, 600, 400, 1);
     drawLine(600, 400, 100, 100, 1, 255, 0, 0);
     drawLine(100, 400, 600, 100, 1);
     drawLine(600, 100, 100, 400, 1, 255, 0, 0);
+
+    drawLine(100, 100, 400, 600, 1);
+    drawLine(400, 600, 100, 100, 1, 255, 0, 0);*/
+
+    drawLine(100, 100, 300, 700, 3, 255, 0, 0);
+    drawLine(500, 100, 300, 700, 3, 255, 0, 0); 
+    //drawLine(200, 400, 400, 400, 3, 255, 0, 0); 
 
     munmap(fbp, screensize);
     close(fbfd);
