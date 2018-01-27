@@ -63,9 +63,7 @@ void delay(int number_of_seconds)
 }
 
 char name[] = "# AUDRY NYONATA#CATHERINE ALMIRA# DEWITA SONYA T.#  ERICK WIJAYA# KEZIA SUHENDRA# VEREN ILIANA K.#    WILLIAM####   THANK YOU...";
-OU...";
-//char name[] = "AUDRY NYONATA";
-vector<pair<pair<int,int>,pair<int,int> > > line[30];
+vector<pair<pair<int,int>,pair<int,int> > > line[30], pesawat;
 
 //----- FUNCTION DECLARATIONS -----//
 double gradient(int x1, int y1, int x2, int y2); // No longer need, bs pake Line.gradient()
@@ -160,6 +158,18 @@ void printChar(char c, int hurufKe, int baris, int red, int green, int blue, int
     }
 }
 
+void printPesawat(int time, int red, int green, int blue) {
+	int scale = 5,thickness = 2,top = 100,left = 0;
+	int x1, x2, y1, y2;
+	for (int i=0;i<(int)pesawat.size();++i) {
+		x1 = left + scale*pesawat[i].first.first + time;
+		y1 = top + scale*pesawat[i].first.second;
+		x2 = left + scale*pesawat[i].second.first + time;
+		y2 = top + scale*pesawat[i].second.second;
+		drawLine(x1, y1, x2, y2, thickness, red, green, blue);
+	}
+}
+
 //----- MAIN PROGRAM -----//
 int main()
 {
@@ -219,6 +229,19 @@ int main()
             fclose(fp);
         }
     }
+    
+    /** Baca pesawat **/
+    fp = fopen("pesawat.txt", "r");
+	if (fp != NULL) {
+		int x1, x2, y1, y2;
+		while (fscanf(fp, "%d", &x1) == 1) {
+			fscanf(fp, "%d", &y1);
+			fscanf(fp, "%d", &x2);
+			fscanf(fp, "%d", &y2);
+			pesawat.push_back({{x1,y1},{x2, y2}});
+		}
+		fclose(fp);
+	}
 
     int r, g, b, trans;
     int time;
@@ -239,7 +262,7 @@ int main()
             for (x = 0; x < vinfo.xres; x++) {
                 location = (x+vinfo.xoffset) * (vinfo.bits_per_pixel/8) +
                            (y+vinfo.yoffset) * finfo.line_length;
-            //array RGB + transparency. 255 255 255 0 = putih
+            //array RGB + transparenlinecy. 255 255 255 0 = putih
             if (vinfo.bits_per_pixel == 32) {
                     *(fbp + location) = 0;        // Some blue
                     *(fbp + location + 1) = 0;    // A little green
@@ -272,7 +295,10 @@ int main()
             }
             counter++;
         }
+        printPesawat(time);
         delay(5);
+        
+        
     }
 
     munmap(fbp, screensize);
