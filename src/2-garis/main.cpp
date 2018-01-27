@@ -30,6 +30,7 @@ http://cep.xor.aps.anl.gov/software/qt4-x11-4.2.2/qtopiacore-testingframebuffer.
 #include <iostream> // std::cin, std::cout, std::endl
 #include <algorithm> // std::min, std::max
 #include <thread> //std::thread
+#include <vector>
 #include "models/Point.h"
 #include "models/Line.h"
 #include "models/Color.h"
@@ -45,6 +46,9 @@ struct fb_var_screeninfo vinfo;
 struct fb_fix_screeninfo finfo;
 char *fbp = 0;
 CharDrawable chars[N_ALPHABETS];
+
+char name[] = "# AUDRY NYONATA#CATHERINE ALMIRA# DEWITA SONYA T.#  ERICK WIJAYA# KEZIA SUHENDRA# VEREN ILIANA K.#    WILLIAM#####   THANK YOU...";
+vector<pair<pair<int,int>,pair<int,int> > > line[30];
 
 //----- FUNCTION DECLARATIONS -----//
 double gradient(int x1, int y1, int x2, int y2); // No longer need, bs pake Line.gradient()
@@ -121,6 +125,12 @@ void drawLine(int x1, int y1, int x2, int y2, int thickness, int red, int green,
     }
 }
 
+void printChar(char c) {
+    for (int i = 0; i < (int)line[c - 'A'].size(); ++i) {
+        drawLine(line[c-'A'][i].first.first, line[c-'A'][i].first.second, line[c-'A'][i].second.first, line[c-'A'][i].second.second);
+    }
+}
+
 //----- MAIN PROGRAM -----//
 int main()
 {
@@ -160,9 +170,31 @@ int main()
     }
     printf("The framebuffer device was mapped to memory successfully.\n");
 
-    drawLine(100, 100, 300, 700, 3, 255, 0, 0);
-    drawLine(500, 100, 300, 700, 3, 255, 0, 0); 
-    drawLine(200, 400, 400, 400, 3, 255, 0, 0); 
+    /** BACA A s..d. Z **/
+    FILE *fp;
+    char c;
+
+    for (c = 'A'; c <= 'Z'; c++) {
+        char filename1[] = "chars/x.txt";
+        filename1[6] = c;
+        
+        fp = fopen(filename1, "r");
+        if (fp != NULL) {
+            int x1, x2, y1, y2;
+            while (fscanf(fp, "%d %d %d %d", &x1, &y1, &x2, &y2)) {
+                line[c - 'A'].push_back({{x1,y1},{x2, y2}});
+            }
+            fclose(fp);
+        }
+    }
+
+    drawLine(100, 100, 300, 700, 20);
+    drawLine(500, 100, 300, 700, 20);
+    drawLine(200, 400, 400, 400, 20);
+
+    drawLine(100, 100, 300, 700, 5, 100);
+    drawLine(500, 100, 300, 700, 5, 100);
+    drawLine(200, 400, 400, 400, 5, 100);    
 
     munmap(fbp, screensize);
     close(fbfd);
