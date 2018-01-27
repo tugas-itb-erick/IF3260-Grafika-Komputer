@@ -19,6 +19,9 @@ Testing the Linux Framebuffer for Qtopia Core (qt4-x11-4.2.2)
 http://cep.xor.aps.anl.gov/software/qt4-x11-4.2.2/qtopiacore-testingframebuffer.html
 */
 
+#include <string.h>
+#include <sys/select.h>
+#include <termios.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -174,6 +177,39 @@ void printPesawat(int time, int red, int green, int blue) {
 	}
 }
 
+
+//----- UNTUK KEY INTTERUPT -------//
+
+struct termios orig_termios;
+
+void reset_terminal_mode()
+{
+    tcsetattr(0, TCSANOW, &orig_termios);
+}
+
+void set_conio_terminal_mode()
+{
+    struct termios new_termios;
+
+    /* take two copies - one for now, one for later */
+    tcgetattr(0, &orig_termios);
+    memcpy(&new_termios, &orig_termios, sizeof(new_termios));
+
+    /* register cleanup handler, and set the new terminal mode */
+    atexit(reset_terminal_mode);
+    cfmakeraw(&new_termios);
+    tcsetattr(0, TCSANOW, &new_termios);
+}
+
+int kbhit()
+{
+    struct timeval tv = { 0L, 0L };
+    fd_set fds;
+    FD_ZERO(&fds);
+    FD_SET(0, &fds);
+    return select(1, &fds, NULL, NULL, &tv);
+}
+
 //----- MAIN PROGRAM -----//
 int main()
 {
@@ -247,64 +283,98 @@ int main()
 		fclose(fp);
 	}
 
+    
     int r, g, b, trans;
     int time;
     trans = 0;
-    
-    
+	
     int x,y,location;
-
+	int garis1 = 0; int garis2 = 0; int garis3 = 0;
+	int countpeluru = 0;
+	int durasipeluru = 50;
+	
+	//KEY INTTERUPT
+	set_conio_terminal_mode();
+	
     for (time = 0; time < 1500; time++) {
-        int counter = 0;
-        int baris = 1;
-        int hurufKe = 1;
-        int startX;
-        
-        
-        /** background fullscreeeeeennnn **/
-        for (y = 0; y < vinfo.yres-10; y++) {
-            for (x = 0; x < vinfo.xres; x++) {
-                location = (x+vinfo.xoffset) * (vinfo.bits_per_pixel/8) +
-                           (y+vinfo.yoffset) * finfo.line_length;
-            //array RGB + transparenlinecy. 255 255 255 0 = putih
-            if (vinfo.bits_per_pixel == 32) {
-                    *(fbp + location) = 0;        // Some blue
-                    *(fbp + location + 1) = 0;    // A little green
-                    *(fbp + location + 2) = 0;    // A lot of red
-                    *(fbp + location + 3) = 100;    // No transparency
-                }
-            }
-        }
-
-        // Cetak nama
-        while (name[counter] != '\0') {
-            if (name[counter]=='#') {
-                hurufKe = 1;
-                switch (baris) {
-                    case 1 : r=255; g=0; b=0; break;
-                    case 2 : r=255; g=127; b=0; break;
-                    case 3 : r=255; g=255; b=0; break;
-                    case 4 : r=0; g=255; b=0; break;
-                    case 5 : r=0; g=0; b=255; break;
-                    case 6 : r=127; g=0; b=255; break;
-                    case 7 : r=255; g=0; b=127; break;
-                    default : r=255; g=0; b=0; break;
-                }
-                baris++;
-            } else {
-                if (name[counter] != ' ') { 
-					printChar(name[counter],hurufKe,baris,r,g,b,time);
+			/* do some work */
+			int counter = 0;
+			int baris = 1;
+			int hurufKe = 1;
+			int startX;        
+			
+			/** background fullscreeeeeennnn **/
+			for (y = 0; y < vinfo.yres-10; y++) {
+				for (x = 0; x < vinfo.xres; x++) {
+					location = (x+vinfo.xoffset) * (vinfo.bits_per_pixel/8) +
+							   (y+vinfo.yoffset) * finfo.line_length;
+				//array RGB + transparenlinecy. 255 255 255 0 = putih
+				if (vinfo.bits_per_pixel == 32) {
+						*(fbp + location) = 0;        // Some blue
+						*(fbp + location + 1) = 0;    // A little green
+						*(fbp + location + 2) = 0;    // A lot of red
+						*(fbp + location + 3) = 100;    // No transparency
+					}
 				}
-                hurufKe++;
-            }
-            counter++;
-        }
-        printPesawat(5+time, 255, 0, 0);
-        delay(5);
-        
-        
-    }
+			}
 
+			// Cetak nama
+			while (name[counter] != '\0') {
+				if (name[counter]=='#') {
+					hurufKe = 1;
+					switch (baris) {
+						case 1 : r=255; g=0; b=0; break;
+						case 2 : r=255; g=127; b=0; break;
+						case 3 : r=255; g=255; b=0; break;
+						case 4 : r=0; g=255; b=0; break;
+						case 5 : r=0; g=0; b=255; break;
+						case 6 : r=127; g=0; b=255; break;
+						case 7 : r=255; g=0; b=127; break;
+						default : r=255; g=0; b=0; break;
+					}
+					baris++;
+				} else {
+					if (name[counter] != ' ') { 
+						printChar(name[counter],hurufKe,baris,r,g,b,time);
+					}
+					hurufKe++;
+				}
+				counter++;
+			}
+			printPesawat(5+time, 255, 255, 255);
+			if (garis1 > 0) {
+				drawLine(700, 700, 0, 0, 5);
+				garis1--;
+			}
+			if (garis2 > 0) {
+				drawLine(700,700,700,0,5);
+				garis2--;
+			}
+			if (garis3 > 0) {
+				drawLine(700,700,1366,0,5);
+				garis3--;
+			}
+			delay(5);
+
+		if (kbhit()){
+			countpeluru++;
+			int r;
+			unsigned char c;
+			if (r = read(0, &c, sizeof(c)) < 0) { //ngecek apakah tombol 0 s.d. 9 dipencet
+				//do nothing
+			} else { //selain 0 s.d. 9
+				if (c == ' ') {
+					if (countpeluru%3 == 1) {
+						garis1=durasipeluru;
+					} else if (countpeluru%3 == 2) {
+						garis2=durasipeluru;
+					} else {
+						garis3=durasipeluru;
+					}
+				}
+			}
+		}				
+    }
     munmap(fbp, screensize);
     close(fbfd);
     return 0;
