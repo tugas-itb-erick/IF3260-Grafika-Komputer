@@ -30,21 +30,24 @@ http://cep.xor.aps.anl.gov/software/qt4-x11-4.2.2/qtopiacore-testingframebuffer.
 #include <iostream> // std::cin, std::cout, std::endl
 #include <algorithm> // std::min, std::max
 #include <thread> //std::thread
-#include "Point.h"
-#include "Line.h"
-#include "Color.h"
+#include "models/Point.h"
+#include "models/Line.h"
+#include "models/Color.h"
+#include "models/CharDrawable.h"
 using namespace std;
 
 //----- CONSTANTS -----//
-#define UNDEF 99999.99 // Large Positive Number
+#define UNDEF 99999.99 // No longer need, bs pake Line::UNDEF
+#define N_ALPHABETS 26
 
 //----- GLOBAL VARIABLES -----//
 struct fb_var_screeninfo vinfo;
 struct fb_fix_screeninfo finfo;
 char *fbp = 0;
+CharDrawable chars[N_ALPHABETS];
 
 //----- FUNCTION DECLARATIONS -----//
-double gradient(int x1, int y1, int x2, int y2);
+double gradient(int x1, int y1, int x2, int y2); // No longer need, bs pake Line.gradient()
 // Calculate gradient from a Line
 // TODO: ganti x1 y1 jadi Line L, atau const Line& L
 

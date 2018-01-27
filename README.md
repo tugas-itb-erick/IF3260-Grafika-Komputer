@@ -4,7 +4,7 @@ IF3260 Grafika Komputer
 
 ### Setup
 
-Clone atau download zip dari repositori ini lalu ketik perintah ```make all``` untuk melakukan kompilasi seluruh kode program. 
+Clone atau download zip dari repositori ini lalu ketik perintah ```make``` untuk melakukan kompilasi seluruh kode program. 
 
 Untuk melakukan kompilasi salah satu program saja, ketik ```make x``` dengan x adalah nomor program yang ingin dikompilasi. 
 
