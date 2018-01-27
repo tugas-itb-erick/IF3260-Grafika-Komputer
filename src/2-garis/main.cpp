@@ -179,22 +179,16 @@ int main()
         filename1[6] = c;
         
         fp = fopen(filename1, "r");
+        cout << c << ' ' << filename1 << endl;
         if (fp != NULL) {
+            cout << "ada" << endl;
             int x1, x2, y1, y2;
-            while (fscanf(fp, "%d %d %d %d", &x1, &y1, &x2, &y2)) {
+            while (fscanf(fp, "%d %d %d %d", &x1, &y1, &x2, &y2) == 1) {
                 line[c - 'A'].push_back({{x1,y1},{x2, y2}});
             }
             fclose(fp);
         }
     }
-
-    drawLine(100, 100, 300, 700, 20);
-    drawLine(500, 100, 300, 700, 20);
-    drawLine(200, 400, 400, 400, 20);
-
-    drawLine(100, 100, 300, 700, 5, 100);
-    drawLine(500, 100, 300, 700, 5, 100);
-    drawLine(200, 400, 400, 400, 5, 100);    
 
     munmap(fbp, screensize);
     close(fbfd);
