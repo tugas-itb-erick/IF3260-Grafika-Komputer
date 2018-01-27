@@ -354,13 +354,17 @@ int main()
 			if (hit == 0) {
 				printPesawat(5+time, 255, 255, 255);
 			} else if (hit == 1) {
-				drawLine(tail,height-0,head,height-25,50,255,255,0,0);
-				drawLine(tail,height-50,head,height-75,50,255,127,0,0);
-				drawLine(tail,height-75,head,height-100,25,255,0,0,0);
-				delay(5);
+				//meletup
+				drawLine(tail,height,head,height-75,35,255,0,0,0);
+				drawLine(tail,height-75,head,height,35,255,0,0,0);
+				delay(100);
+				drawLine(tail,height,head,height-75,25,255,127,0,0);
+				drawLine(tail,height-75,head,height,25,255,127,0,0);
+				delay(100);
+				drawLine(tail,height,head,height-75,15,255,255,0,0);
+				drawLine(tail,height-75,head,height,15,255,255,0,0);
+				delay(100);
 				printPesawat(5+time, 255, 225, 0);
-				printPesawat(5+time, 255, 127, 0);
-				printPesawat(5+time, 255, 0, 0);
 			}
 
 			//peluruu
