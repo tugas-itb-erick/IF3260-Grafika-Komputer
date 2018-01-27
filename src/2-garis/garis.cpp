@@ -80,102 +80,36 @@ void drawLine(int x1, int y1, int x2, int y2, int thickness, int red, int green,
     double m = gradient(x1, y1, x2, y2);
     int sign = (m < 0) ? -1 : 1;
     cout << "gradient = " << m << endl;
+    if (x1 > x2) {
+        swap(x1, x2);
+        swap(y1, y2);
+    }
 
-    // Versi ga gitu nguli, tapi gagal :(
-    // if (m >= -1 && m <= 1) {
-    //     int small2Big = (x1 <= x2) ? 1 : -1;
-    //     int small2BigY = (y1 <= y2) ? 1 : -1;
-    //     int dx = (x2 - x1) * small2Big;
-    //     int dy = (y2 - y1) * small2Big;
-    //     int y = y1;
-    //     int e = 0;
-
-    //     for (int x = x1; x != x2; x += small2Big) {
-    //         drawDot(x, y, thickness, red, green, blue, a); usleep(2000);
-    //         e += dy * small2BigY;
-    //         if (small2Big == 1) {
-    //             if ((e << 1) >= dx) {
-    //                 y += small2BigY;
-    //                 e -= small2Big;
-    //             }
-    //         } else {
-    //             if ((e << 1) < dx) {
-    //                 y += small2BigY;
-    //                 e -= small2Big;
-    //             }
-    //         }
-    //     }
-
-    // } else
+    int dx = x2 - x1, dy = y2 - y1, e = 0;
 
     if (m >= 0 && m <= 1) {
-        int dx, dy;
         int y = y1;
-        int e = 0;
 
-        if (min(x1, x2) == x1) {
-            dx = x2 - x1;
-            dy = y2 - y1;
-            for (int x = x1; x <= x2; x++) {
-                drawPoint(x, y, thickness, red, green, blue, a); usleep(2000);
-                e += dy;
-                if ((e << 1) >= dx) {
-                    y++;
-                    e -= dx;
-                }
-            }
-        } else {
-            dx = x1 - x2;
-            dy = y1 - y2;
-            for (int x = x1; x >= x2; x--) {
-                drawPoint(x, y, thickness, red, green, blue, a); usleep(2000);
-                e -= dy;
-                if ((e << 1) < dx) {
-                    y--;
-                    e += dx;
-                }
-            }
-        }
-    } else if (m < 0 && m >= -1) {
-        int dx, dy;
-        int y = y1;
-        int e = 0;
-
-        if (min(x1, x2) == x1) {
-            dx = x2 - x1;
-            dy = y2 - y1;
-            for (int x = x1; x <= x2; x++) {
-                drawPoint(x, y, thickness, red, green, blue, a); usleep(2000);
-                e -= dy;
-                if ((e << 1) >= dx) {
-                    y--;
-                    e -= dx;
-                }
-            }
-        } else {
-            dx = x1 - x2;
-            dy = y1 - y2;
-            for (int x = x1; x >= x2; x--) {
-                drawPoint(x, y, thickness, red, green, blue, a); usleep(2000);
-                e += dy;
-                if ((e << 1) < dx) {
-                    y++;
-                    e += dx;
-                }
+        for (int x = x1; x <= x2; x++) {
+            drawPoint(x, y, thickness, red, green, blue, a); usleep(2000);
+            e += dy*sign;
+            if (2*e >= dx) {
+                y += sign;
+                e -= dx;
             }
         }
     } else if (m > 1) {
-        int dx, dy;
         int x = x1;
-        int e = 0;
-        //
-    } else { // if (m < -1)
-        int dx, dy;
-        int x = x1;
-        int e = 0;
-        //
-    }
 
+        for (int y = y1; y <= y2; ++y) {
+            drawPoint(x, y, thickness, red, green, blue, a); usleep(2000);
+            e += dx*sign;
+            if (2*e >= dy) {
+                x += sign;
+                e -= dy;
+            }
+        }
+    }
 }
 
 //----- MAIN PROGRAM -----//
