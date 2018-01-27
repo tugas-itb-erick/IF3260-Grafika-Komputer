@@ -110,7 +110,7 @@ void drawLine(int x1, int y1, int x2, int y2, int thickness, int red, int green,
         }
         int x = x1;
 
-        for (int y = y1; y <= y2; y += sign) {
+        for (int y = y1; y <= y2; ++y) {
             drawPoint(x, y, thickness, red, green, blue, a);
             e += dx*sign;
             if (2*e >= dy) {
@@ -160,19 +160,9 @@ int main()
     }
     printf("The framebuffer device was mapped to memory successfully.\n");
 
-    //for ()
-
-    /*drawLine(100, 100, 600, 400, 1);
-    drawLine(600, 400, 100, 100, 1, 255, 0, 0);
-    drawLine(100, 400, 600, 100, 1);
-    drawLine(600, 100, 100, 400, 1, 255, 0, 0);
-
-    drawLine(100, 100, 400, 600, 1);
-    drawLine(400, 600, 100, 100, 1, 255, 0, 0);*/
-
     drawLine(100, 100, 300, 700, 3, 255, 0, 0);
     drawLine(500, 100, 300, 700, 3, 255, 0, 0); 
-    //drawLine(200, 400, 400, 400, 3, 255, 0, 0); 
+    drawLine(200, 400, 400, 400, 3, 255, 0, 0); 
 
     munmap(fbp, screensize);
     close(fbfd);
