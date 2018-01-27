@@ -236,7 +236,7 @@ int main()
         exit(3);
     }
 
-    //printf("%dx%d, %dbpp\n", vinfo.xres, vinfo.yres, vinfo.bits_per_pixel);
+    printf("%dx%d, %dbpp\n", vinfo.xres, vinfo.yres, vinfo.bits_per_pixel);
 
     // Figure out the size of the screen in bytes
     screensize = vinfo.xres * vinfo.yres * vinfo.bits_per_pixel / 8;
@@ -283,15 +283,17 @@ int main()
 		fclose(fp);
 	}
 
-    
+/** LOCAL VARIABEL **/   
     int r, g, b, trans;
     int time;
     trans = 0;
 	
     int x,y,location;
-	int garis1 = 0; int garis2 = 0; int garis3 = 0;
+	int garis1 = 0; int inc1 = 0;
+	int garis2 = 0; int inc2 = 0;
+	int garis3 = 0; int inc3 = 0;
 	int countpeluru = 0;
-	int durasipeluru = 50;
+	int durasipeluru = 200;
 	
 	//KEY INTTERUPT
 	set_conio_terminal_mode();
@@ -343,16 +345,46 @@ int main()
 			}
 			printPesawat(5+time, 255, 255, 255);
 			if (garis1 > 0) {
-				drawLine(700, 700, 0, 0, 5);
+				int x1 = 700-inc1;
+				int y1 = 750-inc1; 
+				int x2 = 650-inc1;
+				int y2 = 700-inc1;
+				if (x1>15 && x1<vinfo.xres-25 & x2>15 && x2<vinfo.xres-25 && y1>15 && y1<vinfo.yres-25 && y2>15 && y2<vinfo.yres-25){
+					drawLine(x1,y1,x2,y2,2,255,255,255);
+					drawLine(x1-15,y1-15,x2+15,y2+15,2,0,0,0,100);
+				}
 				garis1--;
+				inc1+=5;
+			} else {
+				inc1 = 0;
 			}
 			if (garis2 > 0) {
-				drawLine(700,700,700,0,5);
+				int x1 = 700;
+				int y1 = 750-inc2;
+				int x2 = 700;
+				int y2 = 700-inc2;
+				if (x1>15 && x1<vinfo.xres-25 & x2>15 && x2<vinfo.xres-25 && y1>15 && y1<vinfo.yres-25 && y2>15 && y2<vinfo.yres-25){
+					drawLine(x1,y1,x2,y2,2,255,255,255);
+					drawLine(x1,y1-15,x2,y2+15,2,0,0,0,100);
+				}
 				garis2--;
+				inc2+=5;
+			} else {
+				inc2 = 0;
 			}
 			if (garis3 > 0) {
-				drawLine(700,700,1366,0,5);
+				int x1 = 700+inc3;
+				int y1 = 750-inc3; 
+				int x2 = 750+inc3;
+				int y2 = 700-inc3;
+				if (x1>15 && x1<vinfo.xres-25 & x2>15 && x2<vinfo.xres-25 && y1>15 && y1<vinfo.yres-25 && y2>15 && y2<vinfo.yres-25){
+					drawLine(x1,y1,x2,y2,2,255,255,255);
+					drawLine(x1+15,y1-15,x2-15,y2+15,2,0,0,0,100);
+				}
 				garis3--;
+				inc3+=5;
+			} else {
+				inc3 = 0;
 			}
 			delay(5);
 
@@ -365,11 +397,29 @@ int main()
 			} else { //selain 0 s.d. 9
 				if (c == ' ') {
 					if (countpeluru%3 == 1) {
-						garis1=durasipeluru;
+						if (garis1>0){
+							//do nothing
+							//ga boleh muncul peluru lagi, tunggu sampe peluru ilang
+						} else {
+							garis1=durasipeluru;
+							inc1 = 0;
+						}
 					} else if (countpeluru%3 == 2) {
-						garis2=durasipeluru;
-					} else {
-						garis3=durasipeluru;
+						if (garis2>0){
+							//do nothing
+							//ga boleh muncul peluru lagi, tunggu sampe peluru ilang
+						} else {
+							garis2=durasipeluru;
+							inc2 = 0;
+						}
+					} else if (countpeluru%3 == 0) {
+						if (garis3>0){
+							//do nothing
+							//ga boleh muncul peluru lagi, tunggu sampe peluru ilang
+						} else {
+							garis3=durasipeluru;
+							inc3 = 0;
+						}
 					}
 				}
 			}
