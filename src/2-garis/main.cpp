@@ -25,6 +25,7 @@ http://cep.xor.aps.anl.gov/software/qt4-x11-4.2.2/qtopiacore-testingframebuffer.
 #include <fcntl.h>
 #include <linux/fb.h>
 #include <sys/mman.h>
+#include <algorithm>
 #include <sys/ioctl.h>
 #include <time.h>
 #include <iostream> // std::cin, std::cout, std::endl
@@ -47,8 +48,23 @@ struct fb_fix_screeninfo finfo;
 char *fbp = 0;
 CharDrawable chars[N_ALPHABETS];
 
-//char name[] = "#AUDRY NYONATA#CATHERINE ALMIRA#DEWITA SONYA T.#ERICK WIJAYA#KEZIA SUHENDRA#VEREN ILIANA K.#WILLIAM####THANK YOU...";
-char name[] = "AUDRY NYONATA";
+void delay(int number_of_seconds)
+{
+    // Converting time into milli_seconds
+    int milli_seconds = 1000 * number_of_seconds;
+ 
+    // Stroing start time
+    clock_t start_time = clock();
+ 
+    // looping till required time is not acheived
+    while (clock() < start_time + milli_seconds) {
+        
+	}
+}
+
+char name[] = "# AUDRY NYONATA#CATHERINE ALMIRA# DEWITA SONYA T.#  ERICK WIJAYA# KEZIA SUHENDRA# VEREN ILIANA K.#    WILLIAM####   THANK YOU...";
+OU...";
+//char name[] = "AUDRY NYONATA";
 vector<pair<pair<int,int>,pair<int,int> > > line[30];
 
 //----- FUNCTION DECLARATIONS -----//
@@ -128,15 +144,19 @@ void drawLine(int x1, int y1, int x2, int y2, int thickness, int red, int green,
     }
 }
 
-void printChar(char c, int x, int y, int red, int green, int blue, int time) {
-    int scale = 12, thickness = 4;
+void printChar(char c, int hurufKe, int baris, int red, int green, int blue, int time) {
+    int scale = 8, thickness = 4, top = 600, left = 300;
     int x1, y1, x2, y2;
-    x1 = scale*line[c-'A'][i].first.first + (scale+1)*5*(hurufKe-1);
-    y1 = scale*line[c-'A'][i].first.second;
-    x2 = scale*line[c-'A'][i].second.first + (scale+1)*5*(hurufKe-1);
-    y2 = scale*line[c-'A'][i].second.second;
     for (int i = 0; i < (int)line[c - 'A'].size(); ++i) {
-        drawLine(x1, y1, x2, y, thickness, red, green, blue);
+		x1 = left + scale*line[c-'A'][i].first.first + (scale+1)*5*(hurufKe-1);
+		y1 = top + scale*line[c-'A'][i].first.second + (scale+1)*7*(baris-1) - time;
+		x2 = left + scale*line[c-'A'][i].second.first + (scale+1)*5*(hurufKe-1);
+		y2 = top + scale*line[c-'A'][i].second.second + (scale+1)*7*(baris-1) - time;
+		x1 = max(x1, 0); x1 = min(x1, (int)vinfo.xres);
+		x2 = max(x2, 0); x2 = min(x2, (int)vinfo.xres);
+		y1 = max(y1, 0); y1 = min(y1, (int)vinfo.yres - 16);
+		y2 = max(y2, 0); y2 = min(y2, (int)vinfo.yres - 16);
+		if (!(y1==0 && y2==0) && !(y1>vinfo.yres-20 && y2>vinfo.yres-20)) drawLine(x1, y1, x2, y2, thickness, red, green, blue);
     }
 }
 
@@ -203,6 +223,9 @@ int main()
     int r, g, b, trans;
     int time;
     trans = 0;
+    
+    
+    int x,y,location;
 
     for (time = 0; time < 1500; time++) {
         int counter = 0;
@@ -210,8 +233,9 @@ int main()
         int hurufKe = 1;
         int startX;
         
+        
         /** background fullscreeeeeennnn **/
-        for (y = 0; y < vinfo.yres-15; y++) {
+        for (y = 0; y < vinfo.yres-10; y++) {
             for (x = 0; x < vinfo.xres; x++) {
                 location = (x+vinfo.xoffset) * (vinfo.bits_per_pixel/8) +
                            (y+vinfo.yoffset) * finfo.line_length;
@@ -241,7 +265,9 @@ int main()
                 }
                 baris++;
             } else {
-                printChar(name[counter],hurufKe,baris,r,g,b,time);
+                if (name[counter] != ' ') { 
+					printChar(name[counter],hurufKe,baris,r,g,b,time);
+				}
                 hurufKe++;
             }
             counter++;
