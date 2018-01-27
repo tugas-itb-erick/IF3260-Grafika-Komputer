@@ -86,16 +86,17 @@ void drawPoint(int x, int y, int thickness, int red, int green, int blue, int a)
 void drawLine(int x1, int y1, int x2, int y2, int thickness, int red, int green, int blue, int a) {
     double m = gradient(x1, y1, x2, y2);
     int sign = (m < 0) ? -1 : 1;
-    cout << "gradient = " << m << endl;
+    //cout << "gradient = " << m << endl;
 
-    int dx = x2 - x1, dy = y2 - y1, e = 0;
+    int dx, dy, e = 0;
 
-    if (m >= -1 && m <= 1) {
-        cout << "atas" << endl;
+	if (m >= -1 && m <= 1) {
         if (x1 > x2) {
             swap(x1, x2);
             swap(y1, y2);
         }
+        dx = x2 - x1;
+        dy = y2 - y1;
         int y = y1;
 
         for (int x = x1; x <= x2; x++) {
@@ -107,11 +108,12 @@ void drawLine(int x1, int y1, int x2, int y2, int thickness, int red, int green,
             }
         }
     } else {
-        cout << "bawah" << endl;
         if (y1 > y2) {
             swap(x1, x2);
             swap(y1, y2);
         }
+        dx = x2 - x1;
+        dy = y2 - y1;
         int x = x1;
 
         for (int y = y1; y <= y2; ++y) {
@@ -127,7 +129,7 @@ void drawLine(int x1, int y1, int x2, int y2, int thickness, int red, int green,
 
 void printChar(char c) {
     for (int i = 0; i < (int)line[c - 'A'].size(); ++i) {
-        drawLine(line[c-'A'][i].first.first, line[c-'A'][i].first.second, line[c-'A'][i].second.first, line[c-'A'][i].second.second);
+        drawLine(100*line[c-'A'][i].first.first, 100*line[c-'A'][i].first.second, 100*line[c-'A'][i].second.first, 100*line[c-'A'][i].second.second, 1);
     }
 }
 
@@ -135,7 +137,7 @@ void printChar(char c) {
 int main()
 {
     int fbfd = 0;
-    long int screensize = 0;
+    long int screensize = 0; 
 
     // Open the file for reading and writing
     fbfd = open("/dev/fb0", O_RDWR);
@@ -157,7 +159,7 @@ int main()
         exit(3);
     }
 
-    printf("%dx%d, %dbpp\n", vinfo.xres, vinfo.yres, vinfo.bits_per_pixel);
+    //printf("%dx%d, %dbpp\n", vinfo.xres, vinfo.yres, vinfo.bits_per_pixel);
 
     // Figure out the size of the screen in bytes
     screensize = vinfo.xres * vinfo.yres * vinfo.bits_per_pixel / 8;
@@ -179,17 +181,29 @@ int main()
         filename1[6] = c;
         
         fp = fopen(filename1, "r");
-        cout << c << ' ' << filename1 << endl;
         if (fp != NULL) {
-            cout << "ada" << endl;
             int x1, x2, y1, y2;
-            while (fscanf(fp, "%d %d %d %d", &x1, &y1, &x2, &y2) == 1) {
+            while (fscanf(fp, "%d", &x1) == 1) {
+				fscanf(fp, "%d", &y1);
+				fscanf(fp, "%d", &x2);
+				fscanf(fp, "%d", &y2);
                 line[c - 'A'].push_back({{x1,y1},{x2, y2}});
             }
             fclose(fp);
         }
     }
 
+	char d;
+	cin >> d;
+    printChar(d);
+
+	
+
+
+
+
+
+	
     munmap(fbp, screensize);
     close(fbfd);
     return 0;
