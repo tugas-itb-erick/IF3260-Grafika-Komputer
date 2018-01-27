@@ -10,4 +10,7 @@ public:
 
   Point();
   Point(int, int);
+  Point(int, int, const Color&);
+  Point(const Point&);
+  Point& operator=(const Point&);
 };
