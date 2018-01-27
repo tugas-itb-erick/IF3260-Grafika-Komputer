@@ -159,14 +159,18 @@ void printChar(char c, int hurufKe, int baris, int red, int green, int blue, int
 }
 
 void printPesawat(int time, int red, int green, int blue) {
-	int scale = 5,thickness = 2,top = 100,left = 0;
+	int scale = 5,thickness = 2,top = 0,left = 0;
 	int x1, x2, y1, y2;
 	for (int i=0;i<(int)pesawat.size();++i) {
 		x1 = left + scale*pesawat[i].first.first + time;
 		y1 = top + scale*pesawat[i].first.second;
 		x2 = left + scale*pesawat[i].second.first + time;
 		y2 = top + scale*pesawat[i].second.second;
-		drawLine(x1, y1, x2, y2, thickness, red, green, blue);
+		x1 = max(x1, 0); x1 = min(x1, (int)vinfo.xres);
+		x2 = max(x2, 0); x2 = min(x2, (int)vinfo.xres);
+		y1 = max(y1, 0); y1 = min(y1, (int)vinfo.yres - 16);
+		y2 = max(y2, 0); y2 = min(y2, (int)vinfo.yres - 16);
+		if (!(x1==0 && x2==0) && !(x1>vinfo.xres && x2>vinfo.xres)) drawLine(x1, y1, x2, y2, thickness, red, green, blue);
 	}
 }
 
@@ -231,7 +235,7 @@ int main()
     }
     
     /** Baca pesawat **/
-    fp = fopen("pesawat.txt", "r");
+    fp = fopen("chars/pesawat.txt", "r");
 	if (fp != NULL) {
 		int x1, x2, y1, y2;
 		while (fscanf(fp, "%d", &x1) == 1) {
@@ -295,7 +299,7 @@ int main()
             }
             counter++;
         }
-        printPesawat(time);
+        printPesawat(5+time, 255, 0, 0);
         delay(5);
         
         
