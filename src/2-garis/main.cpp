@@ -353,11 +353,13 @@ int main()
 			}
 			if (hit == 0) {
 				printPesawat(5+time, 255, 255, 255);
-			} else if (hit%3 == 1){
+			} else if (hit == 1) {
+				drawLine(tail,height-0,head,height-25,50,255,255,0,0);
+				drawLine(tail,height-50,head,height-75,50,255,127,0,0);
+				drawLine(tail,height-75,head,height-100,25,255,0,0,0);
+				delay(5);
 				printPesawat(5+time, 255, 225, 0);
-			} else if (hit%3 == 2){
 				printPesawat(5+time, 255, 127, 0);
-			} else {
 				printPesawat(5+time, 255, 0, 0);
 			}
 
@@ -369,15 +371,14 @@ int main()
 				int y2 = 700-inc1;
 				if (x1>15 && x1<vinfo.xres-25 & x2>15 && x2<vinfo.xres-25 && y1>15 && y1<vinfo.yres-25 && y2>15 && y2<vinfo.yres-25){
 					if ((x1>=tail && x1 <= head) && (y1<height || y2<height)) {
-						drawLine(x1,y1,x2,y2,75,255,255,0);
 						hit++;
 					} else {
-						drawLine(x1,y1,x2,y2,2,255,255,255);
-						drawLine(x1-15,y1-15,x2+15,y2+15,2,0,0,0,100);
+						drawLine(x1,y1,x2,y2,3,255,255,255);
+						drawLine(x1-15,y1-15,x2+15,y2+15,3,0,0,0,100);
 					}
 				}
 				garis1--;
-				inc1+=7;
+				inc1+=5;
 			} else {
 				inc1 = 0;
 			}
@@ -388,15 +389,14 @@ int main()
 				int y2 = 700-inc2;
 				if (x1>15 && x1<vinfo.xres-25 & x2>15 && x2<vinfo.xres-25 && y1>15 && y1<vinfo.yres-25 && y2>15 && y2<vinfo.yres-25){
 					if ((x1>=tail && x1 <= head) && (y1<height || y2<height)) {
-						drawLine(x1,y1,x2,y2,75,255,255,0);
 						hit++;
 					} else {
-						drawLine(x1,y1,x2,y2,2,255,255,255);
-						drawLine(x1,y1-15,x2,y2+15,2,0,0,0,100);
+						drawLine(x1,y1,x2,y2,3,255,255,255);
+						drawLine(x1,y1-15,x2,y2+15,3,0,0,0,100);
 					}
 				}
 				garis2--;
-				inc2+=7;
+				inc2+=5;
 			} else {
 				inc2 = 0;
 			}
@@ -407,15 +407,14 @@ int main()
 				int y2 = 700-inc3;
 				if (x1>15 && x1<vinfo.xres-25 & x2>15 && x2<vinfo.xres-25 && y1>15 && y1<vinfo.yres-25 && y2>15 && y2<vinfo.yres-25){
 					if ((x1>=tail && x1 <= head) && (y1<height || y2<height)) {
-						drawLine(x1,y1,x2,y2,75,255,255,0);
 						hit++;
 					} else {
-						drawLine(x1,y1,x2,y2,2,255,255,255);
-						drawLine(x1+15,y1-15,x2-15,y2+15,2,0,0,0,100);
+						drawLine(x1,y1,x2,y2,3,255,255,255);
+						drawLine(x1+15,y1-15,x2-15,y2+15,3,0,0,0,100);
 					}
 				}
 				garis3--;
-				inc3+=7;
+				inc3+=5;
 			} else {
 				inc3 = 0;
 			}
