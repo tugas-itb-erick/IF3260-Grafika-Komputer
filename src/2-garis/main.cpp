@@ -90,22 +90,22 @@ void drawLine(int x1, int y1, int x2, int y2, int thickness, int red, int green,
 
     int dx = x2 - x1, dy = y2 - y1, e = 0;
 
-    if (m >= 0 && m <= 1) {
+    if (m >= -1 && m <= 1) {
         int y = y1;
 
         for (int x = x1; x <= x2; x++) {
-            drawPoint(x, y, thickness, red, green, blue, a); usleep(2000);
+            drawPoint(x, y, thickness, red, green, blue, a);
             e += dy*sign;
             if (2*e >= dx) {
                 y += sign;
                 e -= dx;
             }
         }
-    } else if (m > 1) {
+    } else {
         int x = x1;
 
         for (int y = y1; y <= y2; ++y) {
-            drawPoint(x, y, thickness, red, green, blue, a); usleep(2000);
+            drawPoint(x, y, thickness, red, green, blue, a);
             e += dx*sign;
             if (2*e >= dy) {
                 x += sign;
