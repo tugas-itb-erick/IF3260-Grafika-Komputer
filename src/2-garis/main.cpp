@@ -47,7 +47,8 @@ struct fb_fix_screeninfo finfo;
 char *fbp = 0;
 CharDrawable chars[N_ALPHABETS];
 
-char name[] = "# AUDRY NYONATA#CATHERINE ALMIRA# DEWITA SONYA T.#  ERICK WIJAYA# KEZIA SUHENDRA# VEREN ILIANA K.#    WILLIAM#####   THANK YOU...";
+//char name[] = "#AUDRY NYONATA#CATHERINE ALMIRA#DEWITA SONYA T.#ERICK WIJAYA#KEZIA SUHENDRA#VEREN ILIANA K.#WILLIAM####THANK YOU...";
+char name[] = "AUDRY NYONATA";
 vector<pair<pair<int,int>,pair<int,int> > > line[30];
 
 //----- FUNCTION DECLARATIONS -----//
@@ -127,9 +128,15 @@ void drawLine(int x1, int y1, int x2, int y2, int thickness, int red, int green,
     }
 }
 
-void printChar(char c) {
+void printChar(char c, int x, int y, int red, int green, int blue, int time) {
+    int scale = 12, thickness = 4;
+    int x1, y1, x2, y2;
+    x1 = scale*line[c-'A'][i].first.first + (scale+1)*5*(hurufKe-1);
+    y1 = scale*line[c-'A'][i].first.second;
+    x2 = scale*line[c-'A'][i].second.first + (scale+1)*5*(hurufKe-1);
+    y2 = scale*line[c-'A'][i].second.second;
     for (int i = 0; i < (int)line[c - 'A'].size(); ++i) {
-        drawLine(100*line[c-'A'][i].first.first, 100*line[c-'A'][i].first.second, 100*line[c-'A'][i].second.first, 100*line[c-'A'][i].second.second, 1);
+        drawLine(x1, y1, x2, y, thickness, red, green, blue);
     }
 }
 
@@ -193,17 +200,55 @@ int main()
         }
     }
 
-	char d;
-	cin >> d;
-    printChar(d);
+    int r, g, b, trans;
+    int time;
+    trans = 0;
 
-	
+    for (time = 0; time < 1500; time++) {
+        int counter = 0;
+        int baris = 1;
+        int hurufKe = 1;
+        int startX;
+        
+        /** background fullscreeeeeennnn **/
+        for (y = 0; y < vinfo.yres-15; y++) {
+            for (x = 0; x < vinfo.xres; x++) {
+                location = (x+vinfo.xoffset) * (vinfo.bits_per_pixel/8) +
+                           (y+vinfo.yoffset) * finfo.line_length;
+            //array RGB + transparency. 255 255 255 0 = putih
+            if (vinfo.bits_per_pixel == 32) {
+                    *(fbp + location) = 0;        // Some blue
+                    *(fbp + location + 1) = 0;    // A little green
+                    *(fbp + location + 2) = 0;    // A lot of red
+                    *(fbp + location + 3) = 100;    // No transparency
+                }
+            }
+        }
 
+        // Cetak nama
+        while (name[counter] != '\0') {
+            if (name[counter]=='#') {
+                hurufKe = 1;
+                switch (baris) {
+                    case 1 : r=255; g=0; b=0; break;
+                    case 2 : r=255; g=127; b=0; break;
+                    case 3 : r=255; g=255; b=0; break;
+                    case 4 : r=0; g=255; b=0; break;
+                    case 5 : r=0; g=0; b=255; break;
+                    case 6 : r=127; g=0; b=255; break;
+                    case 7 : r=255; g=0; b=127; break;
+                    default : r=255; g=0; b=0; break;
+                }
+                baris++;
+            } else {
+                printChar(name[counter],hurufKe,baris,r,g,b,time);
+                hurufKe++;
+            }
+            counter++;
+        }
+        delay(5);
+    }
 
-
-
-
-	
     munmap(fbp, screensize);
     close(fbfd);
     return 0;
