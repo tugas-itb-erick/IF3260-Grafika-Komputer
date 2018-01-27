@@ -67,6 +67,7 @@ void delay(int number_of_seconds)
 
 char name[] = "# AUDRY NYONATA#CATHERINE ALMIRA# DEWITA SONYA T.#  ERICK WIJAYA# KEZIA SUHENDRA# VEREN ILIANA K.#    WILLIAM####   THANK YOU...";
 vector<pair<pair<int,int>,pair<int,int> > > line[30], pesawat;
+int head, tail, height;
 
 //----- FUNCTION DECLARATIONS -----//
 double gradient(int x1, int y1, int x2, int y2); // No longer need, bs pake Line.gradient()
@@ -162,8 +163,11 @@ void printChar(char c, int hurufKe, int baris, int red, int green, int blue, int
 }
 
 void printPesawat(int time, int red, int green, int blue) {
-	int scale = 5,thickness = 2,top = 0,left = 0;
+	int scale = 5,thickness = 2,top = 100,left = 0;
 	int x1, x2, y1, y2;
+	tail = left + scale*pesawat[0].first.first + time;
+	head = left + scale*pesawat[8].first.first + time;
+	height = top + scale*19;
 	for (int i=0;i<(int)pesawat.size();++i) {
 		x1 = left + scale*pesawat[i].first.first + time;
 		y1 = top + scale*pesawat[i].first.second;
@@ -173,7 +177,11 @@ void printPesawat(int time, int red, int green, int blue) {
 		x2 = max(x2, 0); x2 = min(x2, (int)vinfo.xres);
 		y1 = max(y1, 0); y1 = min(y1, (int)vinfo.yres - 16);
 		y2 = max(y2, 0); y2 = min(y2, (int)vinfo.yres - 16);
-		if (!(x1==0 && x2==0) && !(x1>vinfo.xres && x2>vinfo.xres)) drawLine(x1, y1, x2, y2, thickness, red, green, blue);
+		tail = min(tail,x1);
+		head = max(head,x2);		
+		if (!(x1==0 && x2==0) && !(x1>vinfo.xres && x2>vinfo.xres)) {
+			drawLine(x1, y1, x2, y2, thickness, red, green, blue);
+		}
 	}
 }
 
@@ -344,14 +352,20 @@ int main()
 				counter++;
 			}
 			printPesawat(5+time, 255, 255, 255);
+
+			//peluruu
 			if (garis1 > 0) {
 				int x1 = 700-inc1;
 				int y1 = 750-inc1; 
 				int x2 = 650-inc1;
 				int y2 = 700-inc1;
 				if (x1>15 && x1<vinfo.xres-25 & x2>15 && x2<vinfo.xres-25 && y1>15 && y1<vinfo.yres-25 && y2>15 && y2<vinfo.yres-25){
-					drawLine(x1,y1,x2,y2,2,255,255,255);
-					drawLine(x1-15,y1-15,x2+15,y2+15,2,0,0,0,100);
+					if ((x1>=tail && x1 <= head) && (y1<=height || y2<=height)) {
+						drawLine(x1,y1,x2,y2,100,255,255,0);
+					} else {
+						drawLine(x1,y1,x2,y2,2,255,255,255);
+						drawLine(x1-15,y1-15,x2+15,y2+15,2,0,0,0,100);
+					}
 				}
 				garis1--;
 				inc1+=5;
@@ -364,8 +378,12 @@ int main()
 				int x2 = 700;
 				int y2 = 700-inc2;
 				if (x1>15 && x1<vinfo.xres-25 & x2>15 && x2<vinfo.xres-25 && y1>15 && y1<vinfo.yres-25 && y2>15 && y2<vinfo.yres-25){
-					drawLine(x1,y1,x2,y2,2,255,255,255);
-					drawLine(x1,y1-15,x2,y2+15,2,0,0,0,100);
+					if ((x1>=tail && x1 <= head) && (y1<=height || y2<=height)) {
+						drawLine(x1,y1,x2,y2,100,255,255,0);
+					} else {
+						drawLine(x1,y1,x2,y2,2,255,255,255);
+						drawLine(x1,y1-15,x2,y2+15,2,0,0,0,100);
+					}
 				}
 				garis2--;
 				inc2+=5;
@@ -378,8 +396,12 @@ int main()
 				int x2 = 750+inc3;
 				int y2 = 700-inc3;
 				if (x1>15 && x1<vinfo.xres-25 & x2>15 && x2<vinfo.xres-25 && y1>15 && y1<vinfo.yres-25 && y2>15 && y2<vinfo.yres-25){
-					drawLine(x1,y1,x2,y2,2,255,255,255);
-					drawLine(x1+15,y1-15,x2-15,y2+15,2,0,0,0,100);
+					if ((x1>=tail && x1 <= head) && (y1<=height || y2<=height)) {
+						drawLine(x1,y1,x2,y2,100,255,255,0);
+					} else {
+						drawLine(x1,y1,x2,y2,2,255,255,255);
+						drawLine(x1+15,y1-15,x2-15,y2+15,2,0,0,0,100);
+					}
 				}
 				garis3--;
 				inc3+=5;
@@ -387,7 +409,7 @@ int main()
 				inc3 = 0;
 			}
 			delay(5);
-
+//peluru22
 		if (kbhit()){
 			countpeluru++;
 			int r;
