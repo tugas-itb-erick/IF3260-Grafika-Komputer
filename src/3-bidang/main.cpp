@@ -35,10 +35,10 @@ http://cep.xor.aps.anl.gov/software/qt4-x11-4.2.2/qtopiacore-testingframebuffer.
 #include <thread>
 #include <vector>
 #include <queue>
-#include <unordered_map>
+#include "models/Color.h"
 #include "models/Point.h"
 #include "models/Line.h"
-#include "models/Color.h"
+#include "models/Triangle.h"
 #include "models/CharDrawable.h"
 using namespace std;
 
@@ -48,24 +48,48 @@ using namespace std;
 #define BACKSPACE 127
 
 //----- GLOBAL VARIABLES -----//
-struct termios orig_termios;
+struct termios origTermios;
 struct fb_var_screeninfo vinfo;
 struct fb_fix_screeninfo finfo;
 char *fbp = 0;
 vector<CharDrawable> chars;
 
+
 //----- FUNCTION DECLARATIONS -----//
-void drawPoint(Point P, int thickness = 1, Color cl = Color::WHITE);
-void drawLine(Line L, int thickness = 1, Color cl = Color::WHITE);
+void initChars();
+void drawPoint(Point P, Color cl = Color::WHITE, int thickness = 1);
+void drawLine(Line L, Color cl = Color::WHITE, int thickness = 1);
+void drawChar(char c, int x, int y, Color cl = Color::WHITE); // vector<CharDrawable> chars must be initialized
+void drawChar(CharDrawable c, int x, int y, Color cl = Color::WHITE);
 void floodFill(Triangle T, Color cl = Color::WHITE);
-void delay(int number_of_seconds);
-void reset_terminal_mode();
-void set_conio_terminal_mode();
+void delay(int numOfSeconds);
+void resetTerminalMode();
+void setConioTerminalMode();
 int kbhit();
 
 
 //----- FUNCTION IMPLEMENTATIONS -----//
-void drawPoint(Point P, int thickness, Color cl) {
+void initChars() {
+    FILE *fp;
+    char c;
+
+    for (c = 'A'; c <= 'Z'; c++) {
+        char filename[] = "chars/x.txt";
+        filename[6] = c;
+        
+        fp = fopen(filename, "r");
+        if (fp != NULL) {
+            // Buat CharDrawable, lalu push ke vector chars
+            fclose(fp);
+        }
+    }
+
+    // Baca file utk karakter selain A-Z bila ada
+
+
+}
+
+void drawPoint(Point P, Color cl, int thickness) {
     long int location = 0;
     for (int i=P.x; i<P.x+thickness; i++) {
         for (int j=P.y; j<P.y+thickness; j++) {
@@ -78,7 +102,7 @@ void drawPoint(Point P, int thickness, Color cl) {
     }
 }
 
-void drawLine(Line L, int thickness, Color cl) {
+void drawLine(Line L, Color cl, int thickness) {
     int x1 = L.first.x,
         x2 = L.second.x,
         y1 = L.first.y,
@@ -98,7 +122,7 @@ void drawLine(Line L, int thickness, Color cl) {
         int y = y1;
 
         for (int x = x1; x <= x2; x++) {
-            drawPoint(Point(x, y), thickness, cl);
+            drawPoint(Point(x, y), cl, thickness);
             e += dy*sign;
             if (2*e >= dx) {
                 y += sign;
@@ -115,7 +139,7 @@ void drawLine(Line L, int thickness, Color cl) {
         int x = x1;
 
         for (int y = y1; y <= y2; ++y) {
-            drawPoint(Point(x, y), thickness, cl);
+            drawPoint(Point(x, y), cl, thickness);
             e += dx*sign;
             if (2*e >= dy) {
                 x += sign;
@@ -125,13 +149,38 @@ void drawLine(Line L, int thickness, Color cl) {
     }
 }
 
+void drawChar(char c, int x, int y, Color cl) {
+    bool found = false;
+    for(int i=0; i<chars.size(); i++) {
+        if (c == chars[i].letter) {
+            found = true;
+            drawChar(chars[i], x, y, cl);
+        }
+    }
+    if (!found) {
+        cout << "The character \'" << c << "\' has not been initialized in vector chars!" << endl;
+    }
+}
+
+void drawChar(CharDrawable c, int x, int y, Color cl) {
+    for(int i=0; i<c.triangles.size(); i++) {
+        c.triangles[i].first.x += x;
+        c.triangles[i].second.x += x;
+        c.triangles[i].third.x += x;
+        c.triangles[i].first.y += y;
+        c.triangles[i].second.y += y;
+        c.triangles[i].third.y += y;
+        floodFill(c.triangles[i], cl);
+    }
+}
+
 void floodFill(Triangle T, Color cl) {
     Point center = T.centroid();
     queue<Point> q;
     q.push(center);
 
     // MASIH BOROS MEMORY
-    bool visited[2000][1000];
+    bool visited[2000][1000]; // PERLU DIGANTI JD UKURAN [maxX-minX+1][maxY-minY+1]
     for (int i=0; i<2000; i++) {
         for (int j=0; j<1000; j++) {
             visited[i][j] = false;
@@ -142,11 +191,13 @@ void floodFill(Triangle T, Color cl) {
         Point c = q.front();
         q.pop();
 
+        // if (c.x-minX < 0 || c.y-minY < 0 || c.x-minX >= maxX-minX+1 || 
+        // c.y-minY >= maxY-minY+1 || visited[c.x][c.y] || !T.hasPoint(c)) {
         if (c.x < 0 || c.y < 0 || visited[c.x][c.y] || !T.hasPoint(c)) {
             // Do Nothing
         } else {
-            visited[c.x][c.y] = true;
-            drawPoint(c, 1, cl);
+            visited[c.x][c.y] = true; // visited[c.x-minX][c.y-minY] = true;
+            drawPoint(c, cl);
 
             q.push(Point(c.x, c.y-1));
             q.push(Point(c.x-1, c.y));
@@ -156,34 +207,34 @@ void floodFill(Triangle T, Color cl) {
     }
 }
 
-void delay(int number_of_seconds) {
+void delay(int numOfSeconds) {
     // Converting time into milli_seconds
-    int milli_seconds = 1000 * number_of_seconds;
+    int milliSeconds = 1000 * numOfSeconds;
  
     // Stroing start time
-    clock_t start_time = clock();
+    clock_t startTime = clock();
  
     // looping till required time is not acheived
-    while (clock() < start_time + milli_seconds) {
+    while (clock() < startTime + milliSeconds) {
         
 	}
 }
 
-void reset_terminal_mode() {
-    tcsetattr(0, TCSANOW, &orig_termios);
+void resetTerminalMode() {
+    tcsetattr(0, TCSANOW, &origTermios);
 }
 
-void set_conio_terminal_mode() {
-    struct termios new_termios;
+void setConioTerminalMode() {
+    struct termios newTermios;
 
     /* take two copies - one for now, one for later */
-    tcgetattr(0, &orig_termios);
-    memcpy(&new_termios, &orig_termios, sizeof(new_termios));
+    tcgetattr(0, &origTermios);
+    memcpy(&newTermios, &origTermios, sizeof(newTermios));
 
     /* register cleanup handler, and set the new terminal mode */
-    atexit(reset_terminal_mode);
-    cfmakeraw(&new_termios);
-    tcsetattr(0, TCSANOW, &new_termios);
+    atexit(resetTerminalMode);
+    cfmakeraw(&newTermios);
+    tcsetattr(0, TCSANOW, &newTermios);
 }
 
 int kbhit() {
@@ -194,12 +245,11 @@ int kbhit() {
     return select(1, &fds, NULL, NULL, &tv);
 }
 
+
 //----- MAIN PROGRAM -----//
 int main() {
     int fbfd = 0;
     long int screensize = 0;
-    int x = 0, y = 0;
-    long int location = 0;
 
     // Open the file for reading and writing
     fbfd = open("/dev/fb0", O_RDWR);
@@ -234,27 +284,31 @@ int main() {
     }
     printf("The framebuffer device was mapped to memory successfully.\n");
 
-    set_conio_terminal_mode();
+    //--------------------------------------------------------------------------------------//
+    //--------------------------------------------------------------------------------------//
 
-    // Contoh Instance CharDrawable
+    setConioTerminalMode();
+
+    initChars(); // Baca File Eksternal, belum diimplementasi
+
+    // Contoh Instance CharDrawable huruf L
     char karakterL = 'L';
     vector<Point> titikL;
-    titikL.push_back(Point(100,100));
-    titikL.push_back(Point(300,100));
-    titikL.push_back(Point(100,500));
-    titikL.push_back(Point(300,300));
-    titikL.push_back(Point(500,300));
-    titikL.push_back(Point(500,500));
+    titikL.push_back(Point(0,0));
+    titikL.push_back(Point(200,0));
+    titikL.push_back(Point(0,400));
+    titikL.push_back(Point(200,200));
+    titikL.push_back(Point(400,200));
+    titikL.push_back(Point(400,400));
     vector<Triangle> segitigaL;
     segitigaL.push_back(Triangle(titikL[3], titikL[4], titikL[5]));
     segitigaL.push_back(Triangle(titikL[2], titikL[3], titikL[5]));
     segitigaL.push_back(Triangle(titikL[0], titikL[2], titikL[3]));
     segitigaL.push_back(Triangle(titikL[0], titikL[1], titikL[3]));
 
-    CharDrawable hurufL(karakterL, titikL, segitigaL);
-    for(int i=0; i<hurufL.triangles.size(); i++) {
-        floodFill(hurufL.triangles[i], Color::BLUE);
-    }
+    chars.push_back(CharDrawable(karakterL, titikL, segitigaL));
+    drawChar('L', 100, 100, Color::BLUE); // FLOODFILLNYA MASI BOROS MEMORY KRN KOTAKNYA MASI 2000x1000
+    drawChar('A', 200, 200, Color::PURPLE);
 
     munmap(fbp, screensize);
     close(fbfd);
