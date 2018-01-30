@@ -1,4 +1,5 @@
 #include "Triangle.h"
+#include <stdlib.h>
 
 Triangle::Triangle() {
   first = Point();
@@ -51,7 +52,14 @@ Triangle& Triangle::operator=(const Triangle& T) {
   return *this;
 }
 
-
 Point Triangle::centroid() {
   return Point((first.x + second.x + third.x)/3, (first.y + second.y + third.y)/3);
+}
+
+double Triangle::area() {
+  return abs((double) (first.x*(second.y-third.y) + second.x*(third.y-first.y)+ third.x*(first.y-second.y))/2.0);
+}
+
+bool Triangle::hasPoint(Point P) {
+  return abs(area() - Triangle(P, second, third).area() - Triangle(P, first, third).area() - Triangle(P, first, second).area()) < 0.0001;
 }

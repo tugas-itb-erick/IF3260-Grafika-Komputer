@@ -19,4 +19,6 @@ public:
   Triangle& operator=(const Triangle&);
 
   Point centroid();
+  double area();
+  bool hasPoint(Point); // check whether point is inside triangle
 };

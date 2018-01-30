@@ -1,21 +1,21 @@
 #pragma once
 
 #include <vector>
-#include "Line.h"
+#include "Point.h"
 #include "Triangle.h"
 using namespace std;
 
 class CharDrawable {
 public:
   char letter;
-  vector<Line> lines;
+  vector<Point> points;
   vector<Triangle> triangles;
 
   CharDrawable();
-  CharDrawable(char, Line*, Triangle*);
-  CharDrawable(char, vector<Line>, vector<Triangle>);
+  CharDrawable(char, Point*, Triangle*);
+  CharDrawable(char, vector<Point>, vector<Triangle>);
   CharDrawable(const CharDrawable&);
   CharDrawable& operator=(const CharDrawable&);
 
-  void useColor(const Color&);
+  void useColor(Color);
 };
