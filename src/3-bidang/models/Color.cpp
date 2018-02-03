@@ -1,7 +1,7 @@
 #include "Color.h"
 
 const Color Color::WHITE  = Color();
-const Color Color::BLACK  = Color(0, 0, 0);
+const Color Color::BLACK  = Color(0, 0, 0, 100);
 const Color Color::RED    = Color(255, 0, 0);
 const Color Color::ORANGE = Color(255, 69, 0);
 const Color Color::YELLOW = Color(255, 255, 0);
@@ -42,5 +42,9 @@ Color& Color::operator=(const Color& c) {
   b = c.b;
   a = c.a;
   return *this;
+}
+
+bool Color::operator==(const Color& c) {
+  return (r == c.r && g == c.g && b == c.b && a == c.a);
 }
 

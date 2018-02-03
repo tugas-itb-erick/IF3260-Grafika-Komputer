@@ -12,6 +12,7 @@ public:
   Color(int, int, int, int);
   Color(const Color&);
   Color& operator=(const Color&);
+  bool operator==(const Color&);
 
   static const Color WHITE;
   static const Color BLACK;

@@ -13,4 +13,5 @@ public:
   Point(int, int, Color);
   Point(const Point&);
   Point& operator=(const Point&);
+  Point operator+(const Point&);
 };

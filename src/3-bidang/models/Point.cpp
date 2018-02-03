@@ -30,3 +30,10 @@ Point& Point::operator=(const Point& p) {
   c = p.c;
   return *this;
 }
+
+Point Point::operator+(const Point& p) {
+  Point res;
+  res.x = this->x + p.x;
+  res.y = this->y + p.y;
+  return res;
+}
