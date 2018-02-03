@@ -262,8 +262,8 @@ int main()
     char c;
 
     for (c = 'A'; c <= 'Z'; c++) {
-        char filename1[] = "chars/x.txt";
-        filename1[6] = c;
+        char filename1[] = "chars/2/x.txt";
+        filename1[8] = c;
         
         fp = fopen(filename1, "r");
         if (fp != NULL) {
@@ -279,7 +279,7 @@ int main()
     }
     
     /** Baca pesawat **/
-    fp = fopen("chars/pesawat.txt", "r");
+    fp = fopen("chars/2/pesawat.txt", "r");
 	if (fp != NULL) {
 		int x1, x2, y1, y2;
 		while (fscanf(fp, "%d", &x1) == 1) {

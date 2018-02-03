@@ -46,6 +46,8 @@ using namespace std;
 #define N_ALPHABETS 26
 #define DELETE 8
 #define BACKSPACE 127
+#define ESC 27
+#define SPACE 32
 
 //----- GLOBAL VARIABLES -----//
 struct termios origTermios;
@@ -53,6 +55,10 @@ struct fb_var_screeninfo vinfo;
 struct fb_fix_screeninfo finfo;
 char *fbp = 0;
 vector<CharDrawable> chars;
+const CharDrawable UNDEF_CHAR('~', 
+    vector<Point>({Point(0,0), Point(0,500), Point(500,0), Point(500,500)}), 
+    vector<Triangle>({Triangle(Point(0,0), Point(0,500), Point(500,0)), 
+        Triangle(Point(0,500), Point(500,0), Point(500,500))})); // kotak 500x500
 
 
 //----- FUNCTION DECLARATIONS -----//
@@ -74,13 +80,39 @@ void initChars() {
     char c;
 
     for (c = 'A'; c <= 'Z'; c++) {
-        char filename[] = "chars/x.txt";
-        filename[6] = c;
+        char filename[] = "chars/3/x.txt";
+        filename[8] = c;
         
         fp = fopen(filename, "r");
         if (fp != NULL) {
-            // Buat CharDrawable, lalu push ke vector chars
+            int nPoint, nTriangle;
+            vector<Point> vp;
+            vector<Triangle> vt;
+
+            // Read points
+            fscanf(fp, "%d", &nPoint);
+            for (int i=0; i<nPoint; i++) {
+                int x, y;
+                fscanf(fp, "%d", &x);
+                fscanf(fp, "%d", &y);
+                vp.push_back(Point(x, y));
+            }
+
+            // Read triangles
+            fscanf(fp, "%d", &nTriangle);
+            for (int i=0; i<nTriangle; i++) {
+                int a, b, c;
+                fscanf(fp, "%d", &a);
+                fscanf(fp, "%d", &b);
+                fscanf(fp, "%d", &c);
+                vt.push_back(Triangle(vp[a], vp[b], vp[c]));
+            }
+
+            chars.push_back(CharDrawable(c, vp, vt));
             fclose(fp);
+        } else {
+            // If file not found, character will become a square
+            chars.push_back(CharDrawable(c, UNDEF_CHAR.points, UNDEF_CHAR.triangles));
         }
     }
 
@@ -159,6 +191,7 @@ void drawChar(char c, int x, int y, Color cl) {
     }
     if (!found) {
         cout << "The character \'" << c << "\' has not been initialized in vector chars!" << endl;
+        drawChar(UNDEF_CHAR, x, y, cl);
     }
 }
 
@@ -193,6 +226,8 @@ void floodFill(Triangle T, Color cl) {
 
         // if (c.x-minX < 0 || c.y-minY < 0 || c.x-minX >= maxX-minX+1 || 
         // c.y-minY >= maxY-minY+1 || visited[c.x][c.y] || !T.hasPoint(c)) {
+        // mgkin bs dioptimize dgn cara jgn pake !T.hasPoint(c), tpi tandain lnsg array visitednya
+        // pake bresenham line kmrn
         if (c.x < 0 || c.y < 0 || visited[c.x][c.y] || !T.hasPoint(c)) {
             // Do Nothing
         } else {
@@ -291,24 +326,36 @@ int main() {
 
     initChars(); // Baca File Eksternal, belum diimplementasi
 
-    // Contoh Instance CharDrawable huruf L
-    char karakterL = 'L';
-    vector<Point> titikL;
-    titikL.push_back(Point(0,0));
-    titikL.push_back(Point(200,0));
-    titikL.push_back(Point(0,400));
-    titikL.push_back(Point(200,200));
-    titikL.push_back(Point(400,200));
-    titikL.push_back(Point(400,400));
-    vector<Triangle> segitigaL;
-    segitigaL.push_back(Triangle(titikL[3], titikL[4], titikL[5]));
-    segitigaL.push_back(Triangle(titikL[2], titikL[3], titikL[5]));
-    segitigaL.push_back(Triangle(titikL[0], titikL[2], titikL[3]));
-    segitigaL.push_back(Triangle(titikL[0], titikL[1], titikL[3]));
-
-    chars.push_back(CharDrawable(karakterL, titikL, segitigaL));
     drawChar('L', 100, 100, Color::BLUE); // FLOODFILLNYA MASI BOROS MEMORY KRN KOTAKNYA MASI 2000x1000
-    drawChar('A', 200, 200, Color::PURPLE);
+    drawChar('A', 700, 100, Color::PURPLE); // Kalo gambarnya kotak, bearti filenya blm ada
+
+    // // iseng pgen nyobain wkwkwk
+    // char test[2] = {'~','~'};
+    // int currentIdx = 0;
+    // int maxIdx = currentIdx;
+    // char pressed;
+    // while (true) {
+    //     if (kbhit()) {
+    //         read(0, &pressed, sizeof(pressed));
+    //         if (pressed == ESC) {
+    //             break;
+    //         } else if (pressed == SPACE) {
+                
+    //         } else if (pressed == BACKSPACE || pressed == DELETE) {
+                
+    //         } else {
+    //             // tulis
+    //             test[ currentIdx ] = pressed;
+    //             if (test[ currentIdx ] != '~') {
+    //                 int startX = (currentIdx == 0) ? 100 : 700;
+    //                 drawChar(UNDEF_CHAR, startX, 100, Color::BLACK);
+    //                 drawChar(pressed, startX, 100, Color::GREEN);
+    //             }
+    //             currentIdx = (currentIdx + 1) % 2;
+    //             maxIdx = max(maxIdx, currentIdx);
+    //         }
+    //     }
+    // }
 
     munmap(fbp, screensize);
     close(fbfd);

@@ -151,8 +151,8 @@ int main()
 	char c;
 
     for (c = 'A'; c <= 'Z'; c++) {
-        char filename1[] = "chars/x.txt";
-        filename1[6] = c;
+        char filename1[] = "chars/1/x.txt";
+        filename1[8] = c;
         
         fp = fopen(filename1, "r");
         if (fp != NULL) {
@@ -169,7 +169,7 @@ int main()
     }
     
     /** BACA SPACE & DOT **/
-	char filename2[] = "chars/space.txt";
+	char filename2[] = "chars/1/space.txt";
 	fp = fopen(filename2, "r");
 	if (fp != NULL) {
 		for (i=0; i<HEIGHT_CHAR; i++){
@@ -183,7 +183,7 @@ int main()
 		fclose(fp);
 	}
 
-	char filename3[] = "chars/dot.txt";
+	char filename3[] = "chars/1/dot.txt";
 	fp = fopen(filename3, "r");
 	if (fp != NULL) {
 		for (i=0; i<HEIGHT_CHAR; i++){
