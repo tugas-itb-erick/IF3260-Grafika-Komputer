@@ -54,6 +54,8 @@ struct termios origTermios;
 struct fb_var_screeninfo vinfo;
 struct fb_fix_screeninfo finfo;
 char *fbp = 0;
+vector<vector<Color> > buffer;
+Point dp[] = {Point(0, 1), Point(-1, 0), Point(0, -1), Point(1, 0)};
 vector<CharDrawable> chars;
 const CharDrawable UNDEF_CHAR('~', 
     vector<Point>({Point(0,0), Point(0,500), Point(500,0), Point(500,500)}), 
@@ -63,6 +65,9 @@ const CharDrawable UNDEF_CHAR('~',
 
 //----- FUNCTION DECLARATIONS -----//
 void initChars();
+void resetBuffer();
+void initBuffer(int row, int col);
+void printBuffer();
 void drawPoint(Point P, Color cl = Color::WHITE, int thickness = 1);
 void drawLine(Line L, Color cl = Color::WHITE, int thickness = 1);
 void drawChar(char c, int x, int y, Color cl = Color::WHITE); // vector<CharDrawable> chars must be initialized
@@ -121,15 +126,44 @@ void initChars() {
 
 }
 
+void resetBuffer() {
+    for (auto& x : buffer) {
+        for (auto& y : x) {
+            y = Color::BLACK;
+        }
+    }
+}
+
+void initBuffer(int row, int col) {
+    buffer.resize(row);
+    for (int i = 0; i < row; ++i) {
+        buffer[i].resize(col);
+    }
+    resetBuffer();
+}
+
+void printBuffer() { ////////// MASI SEGFAULT
+    int x, y, location = 0;
+    for (y = 0; y < vinfo.yres-10; y++) {
+        for (x = 0; x < vinfo.xres; x++) {
+            location = (x+vinfo.xoffset) * (vinfo.bits_per_pixel/8) +
+                       (y+vinfo.yoffset) * finfo.line_length;
+        
+        if (vinfo.bits_per_pixel == 32) {
+                *(fbp + location) = buffer[x][y].b;
+                *(fbp + location + 1) = buffer[x][y].g;
+                *(fbp + location + 2) = buffer[x][y].r;
+                *(fbp + location + 3) = buffer[x][y].a;
+            }
+        }
+    }
+}
+
 void drawPoint(Point P, Color cl, int thickness) {
     long int location = 0;
     for (int i=P.x; i<P.x+thickness; i++) {
         for (int j=P.y; j<P.y+thickness; j++) {
-            location = (i+vinfo.xoffset) * (vinfo.bits_per_pixel/8) + (j+vinfo.yoffset) * finfo.line_length;
-            *(fbp + location) = cl.b;     // blue
-	 		*(fbp + location + 1) = cl.g; // green
-	 		*(fbp + location + 2) = cl.r; // red
-	 		*(fbp + location + 3) = cl.a; // transparency
+            buffer[i][j] = cl;
         }
     }
 }
@@ -181,28 +215,19 @@ void drawLine(Line L, Color cl, int thickness) {
     }
 }
 
+void drawTriangle(Triangle t, Color cl) {
+    drawLine(Line(t.first, t.second), cl);
+    drawLine(Line(t.first, t.third), cl);
+    drawLine(Line(t.third, t.second), cl);
+}
+
 void drawChar(char c, int x, int y, Color cl) {
-    bool found = false;
-    for(int i=0; i<chars.size(); i++) {
-        if (c == chars[i].letter) {
-            found = true;
-            drawChar(chars[i], x, y, cl);
-        }
-    }
-    if (!found) {
-        cout << "The character \'" << c << "\' has not been initialized in vector chars!" << endl;
-        drawChar(UNDEF_CHAR, x, y, cl);
-    }
+    drawChar(chars[c - 'A'], x, y, cl);
 }
 
 void drawChar(CharDrawable c, int x, int y, Color cl) {
     for(int i=0; i<c.triangles.size(); i++) {
-        c.triangles[i].first.x += x;
-        c.triangles[i].second.x += x;
-        c.triangles[i].third.x += x;
-        c.triangles[i].first.y += y;
-        c.triangles[i].second.y += y;
-        c.triangles[i].third.y += y;
+        drawTriangle(c.triangles[i] + Point(x, y), cl);
         floodFill(c.triangles[i], cl);
     }
 }
@@ -212,32 +237,17 @@ void floodFill(Triangle T, Color cl) {
     queue<Point> q;
     q.push(center);
 
-    // MASIH BOROS MEMORY
-    bool visited[2000][1000]; // PERLU DIGANTI JD UKURAN [maxX-minX+1][maxY-minY+1]
-    for (int i=0; i<2000; i++) {
-        for (int j=0; j<1000; j++) {
-            visited[i][j] = false;
-        }
-    }
-
     while (!q.empty()) {
         Point c = q.front();
         q.pop();
 
-        // if (c.x-minX < 0 || c.y-minY < 0 || c.x-minX >= maxX-minX+1 || 
-        // c.y-minY >= maxY-minY+1 || visited[c.x][c.y] || !T.hasPoint(c)) {
-        // mgkin bs dioptimize dgn cara jgn pake !T.hasPoint(c), tpi tandain lnsg array visitednya
-        // pake bresenham line kmrn
-        if (c.x < 0 || c.y < 0 || visited[c.x][c.y] || !T.hasPoint(c)) {
-            // Do Nothing
-        } else {
-            visited[c.x][c.y] = true; // visited[c.x-minX][c.y-minY] = true;
-            drawPoint(c, cl);
+        drawPoint(c, cl);
 
-            q.push(Point(c.x, c.y-1));
-            q.push(Point(c.x-1, c.y));
-            q.push(Point(c.x+1, c.y));
-            q.push(Point(c.x, c.y+1));
+        for (int i = 0; i < 4; ++i) {
+            Point next = c + dp[i];
+            if (buffer[next.x][next.y] == Color::BLACK) {
+                q.push(next);
+            }
         }
     }
 }
@@ -325,9 +335,11 @@ int main() {
     setConioTerminalMode();
 
     initChars(); // Baca File Eksternal, belum diimplementasi
+    initBuffer(vinfo.xres + 5, vinfo.yres + 5);
 
     drawChar('L', 100, 100, Color::BLUE); // FLOODFILLNYA MASI BOROS MEMORY KRN KOTAKNYA MASI 2000x1000
-    drawChar('A', 700, 100, Color::PURPLE); // Kalo gambarnya kotak, bearti filenya blm ada
+
+    printBuffer();
 
     // // iseng pgen nyobain wkwkwk
     // char test[2] = {'~','~'};

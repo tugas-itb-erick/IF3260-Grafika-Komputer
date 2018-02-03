@@ -17,6 +17,7 @@ public:
   Triangle(int, int, int, int, int, int, Color);
   Triangle(const Triangle&);
   Triangle& operator=(const Triangle&);
+  Triangle operator+(const Point&);
 
   Point centroid();
   double area();

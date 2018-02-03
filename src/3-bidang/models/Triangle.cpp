@@ -52,6 +52,15 @@ Triangle& Triangle::operator=(const Triangle& T) {
   return *this;
 }
 
+Triangle Triangle::operator+(const Point& P) {
+  Triangle res;
+  res.first = first + P;
+  res.second = second + P;
+  res.third = third + P;
+  res.c = c;
+  return res;
+}
+
 Point Triangle::centroid() {
   return Point((first.x + second.x + third.x)/3, (first.y + second.y + third.y)/3);
 }
