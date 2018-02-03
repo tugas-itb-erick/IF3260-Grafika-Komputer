@@ -57,9 +57,13 @@ Point Triangle::centroid() {
 }
 
 double Triangle::area() {
-  return abs((double) (first.x*(second.y-third.y) + second.x*(third.y-first.y)+ third.x*(first.y-second.y))/2.0);
+  double temp = (double) (first.x*(second.y-third.y) + second.x*(third.y-first.y)+ third.x*(first.y-second.y))/2.0;
+  if (temp < 0) temp = -temp;
+  return temp;
 }
 
 bool Triangle::hasPoint(Point P) {
-  return abs(area() - Triangle(P, second, third).area() - Triangle(P, first, third).area() - Triangle(P, first, second).area()) < 0.0001;
+  double temp = area() - Triangle(P, second, third).area() - Triangle(P, first, third).area() - Triangle(P, first, second).area();
+  if (temp < 0) temp = -temp;
+  return temp < 0.0001;
 }
