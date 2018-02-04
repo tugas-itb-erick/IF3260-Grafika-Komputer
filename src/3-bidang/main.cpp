@@ -144,10 +144,10 @@ void initBuffer(int row, int col) {
     resetBuffer();
 }
 
-void printBuffer(int row, int col) { ////////// MASI SEGFAULT
+void printBuffer(int row, int col) {
     int x, y, location = 0;
-    for (y = 0; y < row; y++) {
-        for (x = 0; x < col; x++) {
+    for (x = 0; x < row; x++) {
+        for (y = 0; y < col; y++) {
         location = (x+vinfo.xoffset) * (vinfo.bits_per_pixel/8) +
                        (y+vinfo.yoffset) * finfo.line_length;
         
@@ -166,6 +166,7 @@ void drawPoint(Point P, Color cl, int thickness) {
     for (int i=P.x; i<P.x+thickness; i++) {
         for (int j=P.y; j<P.y+thickness; j++) {
             buffer[i][j] = cl;
+            
         }
     }
 }
@@ -346,7 +347,7 @@ int main() {
 
     drawChar('L', 100, 100, Color::BLUE);
 
-    printBuffer(vinfo.xres, vinfo.yres - 10);
+    printBuffer(vinfo.xres, vinfo.yres - 16);
 
     // // iseng pgen nyobain wkwkwk
     // char test[2] = {'~','~'};
