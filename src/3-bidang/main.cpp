@@ -71,15 +71,13 @@ void initBuffer(int row, int col);
 void printBuffer(int row, int col);
 void drawPoint(Point P, Color cl = Color::WHITE, int thickness = 1);
 void drawLine(Line L, Color cl = Color::WHITE, int thickness = 1);
+bool canDraw(Triangle t);
+void drawTriangle(Triangle t, Color cl);
 void drawChar(char c, int x, int y, Color cl = Color::WHITE); // vector<CharDrawable> chars must be initialized
 void drawChar(CharDrawable c, int x, int y, Color cl = Color::WHITE);
 void floodFill(Triangle T, Color cl = Color::WHITE);
 void delay(int numOfSeconds);
 void printChar(char c, int hurufKe, int baris, Color cl, int time);
-void resetTerminalMode();
-void setConioTerminalMode();
-int kbhit();
-
 
 //----- FUNCTION IMPLEMENTATIONS -----//
 void initChars() {
@@ -230,18 +228,18 @@ void drawChar(char c, int x, int y, Color cl) {
 }
 
 bool canDraw(Triangle t) {
-	if (t.first.y < 5 || t.first.y > vinfo.yres - 16) return false;
-	if (t.second.y < 5 || t.second.y > vinfo.yres - 16) return false;
-	if (t.third.y < 5 || t.third.y > vinfo.yres - 16) return false;
-	return true;
+    if (t.first.y < 5 || t.first.y > vinfo.yres - 10) return false;
+    if (t.second.y < 5 || t.second.y > vinfo.yres - 10) return false;
+    if (t.third.y < 5 || t.third.y > vinfo.yres - 10) return false;
+    return true;
 }
 
 void drawChar(CharDrawable c, int x, int y, Color cl) {
     for(int i=0; i<c.triangles.size(); i++) {
-		if (canDraw(c.triangles[i] + Point(x,y))) {
-			drawTriangle(c.triangles[i] + Point(x, y), cl);
-			floodFill(c.triangles[i] + Point(x, y), cl);
-		}
+        if (canDraw(c.triangles[i] + Point(x, y))) {
+    		drawTriangle(c.triangles[i] + Point(x, y), cl);
+    		floodFill(c.triangles[i] + Point(x, y), cl);
+        }
     }
 }
 
@@ -270,45 +268,6 @@ void printChar(char c, int hurufKe, int baris, Color cl, int time) {
 	int top = 500, left = 100;
 	drawChar(c, left + 70*(hurufKe - 1), top - 4*time + 80*(baris - 1), cl);
 }
-
-void delay(int numOfSeconds) {
-    // Converting time into milli_seconds
-    int milliSeconds = numOfSeconds;
- 
-    // Stroing start time
-    clock_t startTime = clock();
- 
-    // looping till required time is not acheived
-    while (clock() < startTime + milliSeconds) {
-        
-	}
-}
-
-void resetTerminalMode() {
-    tcsetattr(0, TCSANOW, &origTermios);
-}
-
-void setConioTerminalMode() {
-    struct termios newTermios;
-
-    /* take two copies - one for now, one for later */
-    tcgetattr(0, &origTermios);
-    memcpy(&newTermios, &origTermios, sizeof(newTermios));
-
-    /* register cleanup handler, and set the new terminal mode */
-    atexit(resetTerminalMode);
-    cfmakeraw(&newTermios);
-    tcsetattr(0, TCSANOW, &newTermios);
-}
-
-int kbhit() {
-    struct timeval tv = { 0L, 0L };
-    fd_set fds;
-    FD_ZERO(&fds);
-    FD_SET(0, &fds);
-    return select(1, &fds, NULL, NULL, &tv);
-}
-
 
 //----- MAIN PROGRAM -----//
 int main() {
@@ -351,15 +310,10 @@ int main() {
     //--------------------------------------------------------------------------------------//
     //--------------------------------------------------------------------------------------//
 
-    setConioTerminalMode();
-
     initChars(); // Baca File Eksternal, belum diimplementasi
     initBuffer(vinfo.xres, vinfo.yres);
 
-    char c;
-    cin >> c;
-
-    for (int time = 0; time < 100; time++) {
+    for (int time = 0; time < 300; time++) {
             int counter = 0;
             int baris = 1;
             int hurufKe = 1;
@@ -386,7 +340,7 @@ int main() {
                     baris++;
                 } else {
                     if (name[counter] >= 'A' && name[counter] <= 'Z') { 
-                        printChar(c,hurufKe,baris,cl,time);
+                        printChar(name[counter],hurufKe,baris,cl,time);
                     }
                     hurufKe++;
                 }
