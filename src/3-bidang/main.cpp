@@ -54,6 +54,7 @@ struct termios origTermios;
 struct fb_var_screeninfo vinfo;
 struct fb_fix_screeninfo finfo;
 char *fbp = 0;
+char name[] = "# AUDRY NYONATA#CATHERINE ALMIRA# DEWITA SONYA T.#  ERICK WIJAYA# KEZIA SUHENDRA# VEREN ILIANA K.#    WILLIAM####   THANK YOU...";
 vector<vector<Color> > buffer;
 Point dp[] = {Point(0, 1), Point(-1, 0), Point(0, -1), Point(1, 0)};
 vector<CharDrawable> chars;
@@ -74,6 +75,7 @@ void drawChar(char c, int x, int y, Color cl = Color::WHITE); // vector<CharDraw
 void drawChar(CharDrawable c, int x, int y, Color cl = Color::WHITE);
 void floodFill(Triangle T, Color cl = Color::WHITE);
 void delay(int numOfSeconds);
+void printChar(char c, int hurufKe, int baris, Color cl, int time);
 void resetTerminalMode();
 void setConioTerminalMode();
 int kbhit();
@@ -253,6 +255,10 @@ void floodFill(Triangle T, Color cl) {
     }
 }
 
+void printChar(char c, int hurufKe, int baris, Color cl, int time) {
+
+}
+
 void delay(int numOfSeconds) {
     // Converting time into milli_seconds
     int milliSeconds = 1000 * numOfSeconds;
@@ -369,6 +375,42 @@ int main() {
     //         }
     //     }
     // }
+
+    for (int time = 0; time < 1500; time++) {
+            /* do some work */
+            int counter = 0;
+            int baris = 1;
+            int hurufKe = 1;
+            int startX;
+
+            Color cl;
+
+            resetBuffer();
+
+            // Cetak nama
+            while (name[counter] != '\0') {
+                if (name[counter]=='#') {
+                    hurufKe = 1;
+                    switch (baris) {
+                        case 1 : cl = Color::RED; break;
+                        case 2 : cl = Color::ORANGE; break;
+                        case 3 : cl = Color::YELLOW; break;
+                        case 4 : cl = Color::GREEN; break;
+                        case 5 : cl = Color::BLUE; break;
+                        case 6 : cl = Color::PURPLE; break;
+                        case 7 : cl = Color::PINK; break;
+                        default : cl = Color::RED; break;
+                    }
+                    baris++;
+                } else {
+                    if (name[counter] != ' ') { 
+                        printChar(name[counter],hurufKe,baris,cl,time);
+                    }
+                    hurufKe++;
+                }
+                counter++;
+            }
+    }
 
     munmap(fbp, screensize);
     close(fbfd);
