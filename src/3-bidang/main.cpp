@@ -167,6 +167,7 @@ void drawPoint(Point P, Color cl, int thickness) {
         for (int j=P.y; j<P.y+thickness; j++) {
 			if (i && j && i < vinfo.xres && j < vinfo.yres - 16) {
 				buffer[i][j] = cl;
+//				printBuffer(vinfo.xres,vinfo.yres-16);
 			}
         }
     }
