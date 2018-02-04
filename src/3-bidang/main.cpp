@@ -67,7 +67,7 @@ const CharDrawable UNDEF_CHAR('~',
 void initChars();
 void resetBuffer();
 void initBuffer(int row, int col);
-void printBuffer();
+void printBuffer(int row, int col);
 void drawPoint(Point P, Color cl = Color::WHITE, int thickness = 1);
 void drawLine(Line L, Color cl = Color::WHITE, int thickness = 1);
 void drawChar(char c, int x, int y, Color cl = Color::WHITE); // vector<CharDrawable> chars must be initialized
@@ -142,11 +142,11 @@ void initBuffer(int row, int col) {
     resetBuffer();
 }
 
-void printBuffer() { ////////// MASI SEGFAULT
+void printBuffer(int row, int col) { ////////// MASI SEGFAULT
     int x, y, location = 0;
-    for (y = 0; y < vinfo.yres-10; y++) {
-        for (x = 0; x < vinfo.xres; x++) {
-            location = (x+vinfo.xoffset) * (vinfo.bits_per_pixel/8) +
+    for (y = 0; y < row; y++) {
+        for (x = 0; x < col; x++) {
+        location = (x+vinfo.xoffset) * (vinfo.bits_per_pixel/8) +
                        (y+vinfo.yoffset) * finfo.line_length;
         
         if (vinfo.bits_per_pixel == 32) {
@@ -228,7 +228,7 @@ void drawChar(char c, int x, int y, Color cl) {
 void drawChar(CharDrawable c, int x, int y, Color cl) {
     for(int i=0; i<c.triangles.size(); i++) {
         drawTriangle(c.triangles[i] + Point(x, y), cl);
-        floodFill(c.triangles[i], cl);
+        floodFill(c.triangles[i] + Point(x, y), cl);
     }
 }
 
@@ -237,15 +237,16 @@ void floodFill(Triangle T, Color cl) {
     queue<Point> q;
     q.push(center);
 
+    drawPoint(center, cl);
+
     while (!q.empty()) {
         Point c = q.front();
         q.pop();
 
-        drawPoint(c, cl);
-
         for (int i = 0; i < 4; ++i) {
             Point next = c + dp[i];
             if (buffer[next.x][next.y] == Color::BLACK) {
+                drawPoint(next, cl);
                 q.push(next);
             }
         }
@@ -337,9 +338,9 @@ int main() {
     initChars(); // Baca File Eksternal, belum diimplementasi
     initBuffer(vinfo.xres + 5, vinfo.yres + 5);
 
-    drawChar('L', 100, 100, Color::BLUE); // FLOODFILLNYA MASI BOROS MEMORY KRN KOTAKNYA MASI 2000x1000
+    drawChar('L', 100, 100, Color::BLUE);
 
-    printBuffer();
+    printBuffer(vinfo.xres, vinfo.yres - 10);
 
     // // iseng pgen nyobain wkwkwk
     // char test[2] = {'~','~'};
