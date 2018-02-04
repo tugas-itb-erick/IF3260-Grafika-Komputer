@@ -359,7 +359,7 @@ int main() {
     char c;
     cin >> c;
 
-    for (int time = 0; time < 50; time++) {
+    for (int time = 0; time < 100; time++) {
             int counter = 0;
             int baris = 1;
             int hurufKe = 1;
@@ -385,14 +385,14 @@ int main() {
                     }
                     baris++;
                 } else {
-                    if (name[counter] != ' ') { 
+                    if (name[counter] >= 'A' && name[counter] <= 'Z') { 
                         printChar(c,hurufKe,baris,cl,time);
                     }
                     hurufKe++;
                 }
                 counter++;
             }
-            printBuffer(vinfo.xres - 10, vinfo.yres - 30);
+            printBuffer(vinfo.xres, vinfo.yres - 25);
     }
     
     munmap(fbp, screensize);
