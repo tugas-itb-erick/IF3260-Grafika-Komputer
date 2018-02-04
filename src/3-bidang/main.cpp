@@ -165,9 +165,8 @@ void drawPoint(Point P, Color cl, int thickness) {
     long int location = 0;
     for (int i=P.x; i<P.x+thickness; i++) {
         for (int j=P.y; j<P.y+thickness; j++) {
-			if (i && j && i < vinfo.xres && j < vinfo.yres - 16) {
+			if (i && j && i < buffer.size() && j < buffer[i].size()) {
 				buffer[i][j] = cl;
-//				printBuffer(vinfo.xres,vinfo.yres-16);
 			}
         }
     }
@@ -355,37 +354,12 @@ int main() {
     setConioTerminalMode();
 
     initChars(); // Baca File Eksternal, belum diimplementasi
-    initBuffer(vinfo.xres + 5, vinfo.yres + 5);
-    
-    // // iseng pgen nyobain wkwkwk
-    // char test[2] = {'~','~'};
-    // int currentIdx = 0;
-    // int maxIdx = currentIdx;
-    // char pressed;
-    // while (true) {
-    //     if (kbhit()) {
-    //         read(0, &pressed, sizeof(pressed));
-    //         if (pressed == ESC) {
-    //             break;
-    //         } else if (pressed == SPACE) {
-                
-    //         } else if (pressed == BACKSPACE || pressed == DELETE) {
-                
-    //         } else {
-    //             // tulis
-    //             test[ currentIdx ] = pressed;
-    //             if (test[ currentIdx ] != '~') {
-    //                 int startX = (currentIdx == 0) ? 100 : 700;
-    //                 drawChar(UNDEF_CHAR, startX, 100, Color::BLACK);
-    //                 drawChar(pressed, startX, 100, Color::GREEN);
-    //             }
-    //             currentIdx = (currentIdx + 1) % 2;
-    //             maxIdx = max(maxIdx, currentIdx);
-    //         }
-    //     }
-    // }
+    initBuffer(vinfo.xres, vinfo.yres);
 
-    for (int time = 0; time < 250; time++) {
+    char c;
+    cin >> c;
+
+    for (int time = 0; time < 50; time++) {
             int counter = 0;
             int baris = 1;
             int hurufKe = 1;
@@ -412,13 +386,13 @@ int main() {
                     baris++;
                 } else {
                     if (name[counter] != ' ') { 
-                        printChar('L',hurufKe,baris,cl,time);
+                        printChar(c,hurufKe,baris,cl,time);
                     }
                     hurufKe++;
                 }
                 counter++;
             }
-            printBuffer(vinfo.xres, vinfo.yres - 16);
+            printBuffer(vinfo.xres - 10, vinfo.yres - 30);
     }
     
     munmap(fbp, screensize);
