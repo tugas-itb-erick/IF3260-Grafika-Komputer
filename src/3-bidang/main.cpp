@@ -54,7 +54,7 @@ struct termios origTermios;
 struct fb_var_screeninfo vinfo;
 struct fb_fix_screeninfo finfo;
 char *fbp = 0;
-char name[] = "# AUDRY NYONATA#CATHERINE ALMIRA# DEWITA SONYA T.#  ERICK WIJAYA# KEZIA SUHENDRA# VEREN ILIANA K.#    WILLIAM####   THANK YOU...";
+char name[] = "# AUDRY NYONATA#CATHERINE ALMIRA# DEWITA SONYA T.#  ERICK WIJAYA# KEZIA SUHENDRA# VEREN ILIANA K.#    WILLIAM";
 vector<vector<Color> > buffer;
 Point dp[] = {Point(0, 1), Point(-1, 0), Point(0, -1), Point(1, 0)};
 vector<CharDrawable> chars;
@@ -165,8 +165,9 @@ void drawPoint(Point P, Color cl, int thickness) {
     long int location = 0;
     for (int i=P.x; i<P.x+thickness; i++) {
         for (int j=P.y; j<P.y+thickness; j++) {
-            buffer[i][j] = cl;
-            
+			if (i && j && i < vinfo.xres && j < vinfo.yres - 16) {
+				buffer[i][j] = cl;
+			}
         }
     }
 }
@@ -228,10 +229,19 @@ void drawChar(char c, int x, int y, Color cl) {
     drawChar(chars[c - 'A'], x, y, cl);
 }
 
+bool canDraw(Triangle t) {
+	if (t.first.y < 5 || t.first.y > vinfo.yres - 16) return false;
+	if (t.second.y < 5 || t.second.y > vinfo.yres - 16) return false;
+	if (t.third.y < 5 || t.third.y > vinfo.yres - 16) return false;
+	return true;
+}
+
 void drawChar(CharDrawable c, int x, int y, Color cl) {
     for(int i=0; i<c.triangles.size(); i++) {
-        drawTriangle(c.triangles[i] + Point(x, y), cl);
-        floodFill(c.triangles[i] + Point(x, y), cl);
+		if (canDraw(c.triangles[i] + Point(x,y))) {
+			drawTriangle(c.triangles[i] + Point(x, y), cl);
+			floodFill(c.triangles[i] + Point(x, y), cl);
+		}
     }
 }
 
@@ -257,12 +267,13 @@ void floodFill(Triangle T, Color cl) {
 }
 
 void printChar(char c, int hurufKe, int baris, Color cl, int time) {
-
+	int top = 500, left = 100;
+	drawChar(c, left + 70*(hurufKe - 1), top - 4*time + 60*(baris - 1), cl);
 }
 
 void delay(int numOfSeconds) {
     // Converting time into milli_seconds
-    int milliSeconds = 1000 * numOfSeconds;
+    int milliSeconds = numOfSeconds;
  
     // Stroing start time
     clock_t startTime = clock();
@@ -344,11 +355,7 @@ int main() {
 
     initChars(); // Baca File Eksternal, belum diimplementasi
     initBuffer(vinfo.xres + 5, vinfo.yres + 5);
-
-    drawChar('L', 100, 100, Color::BLUE);
-
-    printBuffer(vinfo.xres, vinfo.yres - 16);
-
+    
     // // iseng pgen nyobain wkwkwk
     // char test[2] = {'~','~'};
     // int currentIdx = 0;
@@ -377,8 +384,7 @@ int main() {
     //     }
     // }
 
-    for (int time = 0; time < 1500; time++) {
-            /* do some work */
+    for (int time = 0; time < 250; time++) {
             int counter = 0;
             int baris = 1;
             int hurufKe = 1;
@@ -405,14 +411,15 @@ int main() {
                     baris++;
                 } else {
                     if (name[counter] != ' ') { 
-                        printChar(name[counter],hurufKe,baris,cl,time);
+                        printChar('L',hurufKe,baris,cl,time);
                     }
                     hurufKe++;
                 }
                 counter++;
             }
+            printBuffer(vinfo.xres, vinfo.yres - 16);
     }
-
+    
     munmap(fbp, screensize);
     close(fbfd);
     return 0;
