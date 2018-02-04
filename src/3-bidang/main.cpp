@@ -268,7 +268,7 @@ void floodFill(Triangle T, Color cl) {
 
 void printChar(char c, int hurufKe, int baris, Color cl, int time) {
 	int top = 500, left = 100;
-	drawChar(c, left + 70*(hurufKe - 1), top - 4*time + 60*(baris - 1), cl);
+	drawChar(c, left + 70*(hurufKe - 1), top - 4*time + 80*(baris - 1), cl);
 }
 
 void delay(int numOfSeconds) {
