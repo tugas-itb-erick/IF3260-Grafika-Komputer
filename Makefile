@@ -16,9 +16,13 @@ all: src/1-titik/main.c src/2-garis/main.cpp src/2-garis/models/Color.cpp src/2-
 	[ -d bin ] || mkdir -p bin
 	g++ src/3-bidang/main.cpp src/3-bidang/models/Color.cpp src/3-bidang/models/Point.cpp src/3-bidang/models/Line.cpp src/3-bidang/models/Triangle.cpp src/3-bidang/models/CharDrawable.cpp -o bin/3 -std=c++11
 
+4: src/4-pesawat/main.cpp src/4-pesawat/models/Color.cpp src/4-pesawat/models/Buffer.cpp
+	[ -d bin ] || mkdir -p bin
+	g++ src/4-pesawat/main.cpp src/4-pesawat/models/Color.cpp src/4-pesawat/models/Buffer.cpp -o bin/4 -std=c++11
+
 run:
 	clear
-	./bin/3
+	./bin/4
 
 clean:
 	rm -rf bin/*
