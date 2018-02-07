@@ -19,7 +19,7 @@ public:
   Triangle& operator=(const Triangle&);
   Triangle operator+(const Point&);
 
-  Point centroid();
-  double area();
-  bool hasPoint(Point); // check whether point is inside triangle
+  Point centroid() const;
+  double area() const;
+  bool hasPoint(Point) const; // check whether point is inside triangle
 };

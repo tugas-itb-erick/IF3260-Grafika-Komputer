@@ -17,4 +17,8 @@ public:
   Drawable& operator=(const Drawable&);
   void useColor(Color);
   Point centroid();
+
+  void translate(int tx, int ty, int a = 0, int b = 0);
+  void dilate(double kx, double ky, int a = 0, int b = 0);
+  void rotate(double theta, int a = 0, int b = 0);
 };

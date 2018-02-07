@@ -61,17 +61,17 @@ Triangle Triangle::operator+(const Point& P) {
   return res;
 }
 
-Point Triangle::centroid() {
+Point Triangle::centroid() const {
   return Point((first.x + second.x + third.x)/3, (first.y + second.y + third.y)/3);
 }
 
-double Triangle::area() {
+double Triangle::area() const {
   double temp = (double) (first.x*(second.y-third.y) + second.x*(third.y-first.y)+ third.x*(first.y-second.y))/2.0;
   if (temp < 0) temp = -temp;
   return temp;
 }
 
-bool Triangle::hasPoint(Point P) {
+bool Triangle::hasPoint(Point P) const {
   double temp = area() - Triangle(P, second, third).area() - Triangle(P, first, third).area() - Triangle(P, first, second).area();
   if (temp < 0) temp = -temp;
   return temp < 0.0001;

@@ -18,5 +18,5 @@ public:
   Line(const Line&);
   Line& operator=(const Line&);
 
-  double gradient();
+  double gradient() const;
 };

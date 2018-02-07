@@ -46,7 +46,7 @@ Line& Line::operator=(const Line& L) {
   return *this;
 }
 
-double Line::gradient() {
+double Line::gradient() const {
   if (first.x - second.x == 0) {
     if (first.y >= second.y)
       return UNDEF;
