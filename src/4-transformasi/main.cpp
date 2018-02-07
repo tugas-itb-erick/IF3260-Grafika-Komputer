@@ -22,6 +22,7 @@ using namespace std;
 
 //----- GLOBAL VARIABLES -----//
 struct termios origTermios;
+Drawable plane;
 
 
 //----- FUNCTION DECLARATIONS -----//
@@ -56,19 +57,70 @@ int kbhit() {
   return select(1, &fds, NULL, NULL, &tv);
 }
 
+void init() {
+    FILE *fp;
+    char c;
+
+    char filename[] = "chars/4/Pesawat.txt"; // ISINYA MASI HURUF O
+    
+    fp = fopen(filename, "r");
+    if (fp != NULL) {
+        int nPoint, nTriangle;
+        vector<Point> vp;
+        vector<Triangle> vt;
+
+        // Read points
+        fscanf(fp, "%d", &nPoint);
+        for (int i=0; i<nPoint; i++) {
+            int x, y;
+            fscanf(fp, "%d", &x);
+            fscanf(fp, "%d", &y);
+            vp.push_back(Point(x, y));
+        }
+
+        // Read triangles
+        fscanf(fp, "%d", &nTriangle);
+        for (int i=0; i<nTriangle; i++) {
+            int a, b, c;
+            fscanf(fp, "%d", &a);
+            fscanf(fp, "%d", &b);
+            fscanf(fp, "%d", &c);
+            vt.push_back(Triangle(vp[a], vp[b], vp[c]));
+        }
+
+        plane = Drawable(vp, vt);
+        fclose(fp);
+    }
+
+}
 
 //----- MAIN PROGRAM -----//
 int main() {
+  init();
   Buffer buff;
 
-  for (int i=0; i<buff.getWidth(); i++) {
-    for (int j=0; j<buff.getHeight(); j++) {
-      buff[i][j] = Color::RED;
+  setConioTerminalNode();
+  
+  buff.addShape("plane", plane);
+
+  // buff.addShape("body", body);
+  // buff.addShape("wing-l", wingL);
+  // buff.addShape("wing-r", wingR);
+  // buff.addShape("blades-l", bladesL);
+  // buff.addShape("blades-r", bladesR);
+  // buff.addShape("wheel-l", wheelL);
+  // buff.addShape("wheel-r", wheelR);
+  // buff.addShape("cannon", cannon);
+
+  for (int time = 0; time < 300; time++) {
+    if (time % 30 == 0) {
+      buff.reset();
+      buff.drawShape("plane", 0, 0, Color::RED);
+      buff.scaleShape("plane", 1.08);
+      buff.centerShape("plane");
+      buff.apply();
     }
   }
-
-  buff.apply();
-
 
   return 0;
 }

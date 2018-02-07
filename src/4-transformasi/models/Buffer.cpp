@@ -136,27 +136,83 @@ void Buffer::delShape(const string& id) {
  shapes.erase(id);
 }
 
-void Buffer::translateShape(const string&, int tx, int ty, int a, int b) {
+void Buffer::translateShape(const string& id, int tx, int ty) {
+  translateShape(id, Point(tx, ty));
+}
 
+void Buffer::translateShape(const string& id, const Point& p) {
+  for (auto& e : shapes[id].points) {
+    e += p;
+  }
+  for (auto& e : shapes[id].triangles) {
+    e.first += p;
+    e.second += p;
+    e.third += p;
+  }
+}
+
+void Buffer::translateSomeShape(string* ids, const Point& p) {
+  // for (auto* id : ids) {
+  //   translateShape(id, p);
+  // }
+}
+
+void Buffer::translateAllShape(const Point& p) {
+  for (auto shape : shapes) {
+    translateShape(shape.first, p);
+  }
 }
 
 void Buffer::scaleShape(const string& id, double k, int a, int b) {
-  for (auto& e : d.points) {
-    e *= k;
+  for (auto& e : shapes[id].points) {
+    e = Point(k*(e.x - a) + a, k*(e.y - b) + b);
   }
-  for (auto& e : d.triangles) {
-    e.first *= k;
-    e.second *= k;
-    e.third *= k;
+  for (auto& e : shapes[id].triangles) {
+    e.first = Point(k*(e.first.x - a) + a, k*(e.first.y - b) + b);
+    e.second = Point(k*(e.second.x - a) + a, k*(e.second.y - b) + b);
+    e.third = Point(k*(e.third.x - a) + a, k*(e.third.y - b) + b);
+  }
+}
+
+void Buffer::scaleSomeShape(string* ids, double k, int a, int b) {
+  //
+}
+
+void Buffer::scaleAllShape(double k, int a, int b) {
+  for (auto shape : shapes) {
+    scaleShape(shape.first, k, a, b);
   }
 }
 
 void Buffer::rotateShape(const string& id, double theta, int a, int b) {
-
+  cout << "Buffer::rotateShape has not been implemented" << endl;
 }
 
-void centerShape(const string& id) {
+void Buffer::rotateSomeShape(string* ids, double theta, int a, int b) {
+  //
+}
 
+void Buffer::rotateAllShape(double theta, int a, int b) {
+  for (auto shape : shapes) {
+    rotateShape(shape.first, theta, a, b);
+  }
+}
+
+void Buffer::centerShape(const string& id) {
+  Point cen = shapes[id].centroid();
+  cen.negate();
+  cen += CENTER;
+  translateShape(id, cen);
+}
+
+void Buffer::centerSomeShape(string* ids) {
+  //
+}
+
+void Buffer::centerAllShape() {
+  for (auto shape : shapes) {
+    centerShape(shape.first);
+  }
 }
 
 void Buffer::drawPoint(int x, int y, Color cl) {

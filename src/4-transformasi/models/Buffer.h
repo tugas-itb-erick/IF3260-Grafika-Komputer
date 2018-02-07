@@ -28,15 +28,27 @@ public:
   void addShape(const string&, const Drawable&);
   void delShape(const string&);
   void drawShape(const string&, int, int, Color cl = Color::WHITE);
-  // void fillShape(const string&, int, int, Color cl = Color::WHITE);
+  // Note: kalo misalnya emg hrs pake scanLine gw mikirnya mnding drawShape
+  // cukup warnain outline, klo mau diwarnain dalemnya pake scanLineShape
+  // , trus Drawable gapake segitiga2 lagi :(
+  // void scanLineShape(const string& id, double gradient, Color* pattern);
   void reset();
   void apply();
 
   // Transformation Methods
-  void translateShape(const string&, int tx, int ty, int a = 0, int b = 0);
+  void translateShape(const string&, int tx, int ty);
+  void translateShape(const string&, const Point&);
+  void translateSomeShape(string*, const Point&);
+  void translateAllShape(const Point&);
   void scaleShape(const string&, double k, int a = 0, int b = 0);
+  void scaleSomeShape(string*, double k, int a = 0, int b = 0);
+  void scaleAllShape(double k, int a = 0, int b = 0);
   void rotateShape(const string&, double theta, int a = 0, int b = 0);
+  void rotateSomeShape(string*, double theta, int a = 0, int b = 0);
+  void rotateAllShape(double theta, int a = 0, int b = 0);
   void centerShape(const string&);
+  void centerSomeShape(string*);
+  void centerAllShape();
   
   // Helper class for overloading [][]
   class Proxy {
@@ -49,7 +61,8 @@ public:
     Color* _arr;
   };
 
-  // Operator overloading [][]
+  // Operator overloading [][] to access Color array
+  // Kalo mau mapping supaya (0,0) ditengah, urusnya disini
   Proxy operator[](int index) {
     return Proxy(arr[index]);
   }
@@ -76,4 +89,5 @@ private:
   char *fbp = 0;
   int fbfd;
   long int screensize;
+  const Point CENTER = Point(680, 350);
 };
