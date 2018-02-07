@@ -16,16 +16,27 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#include <cmath>
+#include <fstream>
 #include "models/Color.h"
 #include "models/Buffer.h"
 using namespace std;
 
+
+//----- CONSTANTS -----//
+#define PI 3.14159265
+#define DOUBLE2INT_CORRECTION_VAL 0.5
+
+
 //----- GLOBAL VARIABLES -----//
 struct termios origTermios;
-Drawable plane;
 
 
 //----- FUNCTION DECLARATIONS -----//
+Drawable readFromFile(const string& filename);
+int parabolaX(double initSpeed, double theta, double time);
+int parabolaY(double initSpeed, double theta, double time, double accel);
+int freefall(double initSpeed, double time, double gravity);
 void resetTerminalMode();
 void setConioTerminalNode();
 int kbhit();
@@ -57,52 +68,56 @@ int kbhit() {
   return select(1, &fds, NULL, NULL, &tv);
 }
 
-void init() {
-    FILE *fp;
-    char c;
+Drawable readFromFile(const string& filename) {
+  ifstream infile(filename);
+  if (infile.fail()) {
+    // file not found, access denied, etc
+  } else {
+    int nPoint, nTriangle;
+    vector<Point> vp;
+    vector<Triangle> vt;
 
-    char filename[] = "chars/4/Pesawat.txt"; // ISINYA MASI HURUF O
-    
-    fp = fopen(filename, "r");
-    if (fp != NULL) {
-        int nPoint, nTriangle;
-        vector<Point> vp;
-        vector<Triangle> vt;
-
-        // Read points
-        fscanf(fp, "%d", &nPoint);
-        for (int i=0; i<nPoint; i++) {
-            int x, y;
-            fscanf(fp, "%d", &x);
-            fscanf(fp, "%d", &y);
-            vp.push_back(Point(x, y));
-        }
-
-        // Read triangles
-        fscanf(fp, "%d", &nTriangle);
-        for (int i=0; i<nTriangle; i++) {
-            int a, b, c;
-            fscanf(fp, "%d", &a);
-            fscanf(fp, "%d", &b);
-            fscanf(fp, "%d", &c);
-            vt.push_back(Triangle(vp[a], vp[b], vp[c]));
-        }
-
-        plane = Drawable(vp, vt);
-        fclose(fp);
+    // Read points
+    infile >> nPoint;
+    for (int i=0; i<nPoint; i++) {
+      int x, y;
+      infile >> x >> y;
+      vp.push_back(Point(x, y));
     }
 
+    // Read triangles
+    infile >> nTriangle;
+    for (int i=0; i<nTriangle; i++) {
+      int a, b, c;
+      infile >> a >> b >> c;
+      vt.push_back(Triangle(vp[a], vp[b], vp[c]));
+    }
+
+    infile.close();
+    return Drawable(vp, vt);
+  }
+  return Drawable();
 }
+
+int parabolaX(double initSpeed, double theta, double time) {
+  return (int)(initSpeed * cos(theta*PI/180.0) * time + DOUBLE2INT_CORRECTION_VAL);
+}
+
+int parabolaY(double initSpeed, double theta, double time, double accel) {
+  return (int)(initSpeed * sin(theta*PI/180.0) * time - 0.5 * accel * time * time + DOUBLE2INT_CORRECTION_VAL);
+}
+
+int freefall(double initSpeed, double time, double gravity) {
+  return (int)(initSpeed * time + 0.5 * gravity * time * time + DOUBLE2INT_CORRECTION_VAL);
+}
+
 
 //----- MAIN PROGRAM -----//
 int main() {
-  init();
   Buffer buff;
-
   setConioTerminalNode();
   
-  buff.addShape("plane", plane);
-
+  buff.addShape("plane", readFromFile("chars/4/Pesawat.txt"));
   // buff.addShape("body", body);
   // buff.addShape("wing-l", wingL);
   // buff.addShape("wing-r", wingR);
@@ -110,7 +125,9 @@ int main() {
   // buff.addShape("blades-r", bladesR);
   // buff.addShape("wheel-l", wheelL);
   // buff.addShape("wheel-r", wheelR);
-  // buff.addShape("cannon", cannon);
+  buff.addShape("platform", readFromFile("chars/4/Platform.txt"));
+  buff.addShape("cannon", readFromFile("chars/4/Cannon.txt"));
+  buff.addShape("ground", readFromFile("chars/4/Ground.txt"));
 
   for (int time = 0; time < 300; time++) {
     if (time % 30 == 0) {
