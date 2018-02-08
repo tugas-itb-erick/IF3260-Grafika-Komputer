@@ -10,6 +10,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <time.h>
 #include <string.h>
 #include <termios.h>
@@ -36,7 +37,7 @@ struct termios origTermios;
 Drawable readFromFile(const string& filename);
 int parabolaX(double initSpeed, double theta, double time);
 int parabolaY(double initSpeed, double theta, double time, double accel);
-int freefall(double initSpeed, double time, double gravity);
+int freefall(double initSpeed, double time, double accel);
 void resetTerminalMode();
 void setConioTerminalNode();
 int kbhit();
@@ -104,18 +105,19 @@ int parabolaX(double initSpeed, double theta, double time) {
 }
 
 int parabolaY(double initSpeed, double theta, double time, double accel) {
-  return (int)(initSpeed * sin(theta*PI/180.0) * time - 0.5 * accel * time * time + DOUBLE2INT_CORRECTION_VAL);
+  int sign = (time >= (initSpeed * sin(theta*PI/180.0) / accel)) ? 1 : -1;
+  return (int)(initSpeed * sin(theta*PI/180.0) * time + sign * 0.5 * accel * pow(time, 2) + DOUBLE2INT_CORRECTION_VAL);
 }
 
-int freefall(double initSpeed, double time, double gravity) {
-  return (int)(initSpeed * time + 0.5 * gravity * time * time + DOUBLE2INT_CORRECTION_VAL);
+int freefall(double initSpeed, double time, double accel) {
+  return (int)(initSpeed * time + 0.5 * accel * time * time + DOUBLE2INT_CORRECTION_VAL);
 }
 
 
 //----- MAIN PROGRAM -----//
 int main() {
   Buffer buff;
-  setConioTerminalNode();
+  //setConioTerminalNode();
   
   buff.addShape("plane", readFromFile("chars/4/Pesawat.txt"));
   // buff.addShape("body", body);
@@ -128,15 +130,33 @@ int main() {
   buff.addShape("platform", readFromFile("chars/4/Platform.txt"));
   buff.addShape("cannon", readFromFile("chars/4/Cannon.txt"));
   buff.addShape("ground", readFromFile("chars/4/Ground.txt"));
+  buff.addShape("bullet", readFromFile("chars/4/Bullet.txt"));
 
-  for (int time = 0; time < 300; time++) {
-    if (time % 30 == 0) {
-      buff.reset();
-      buff.drawShape("plane", 0, 0, Color::RED);
+  int initBulletX = 131;
+  int initBulletY = 600;
+  int loopCount = 0;
+  for (double time = 0; time < 500; time += 0.5) {
+    buff.reset();
+
+    buff.drawShape("plane", 0, 0, Color::RED);
+    if (loopCount % 2 == 0) {
       buff.scaleShape("plane", 1.08);
       buff.centerShape("plane");
-      buff.apply();
     }
+
+
+    buff.drawShape("ground", 30, 650, Color::GREEN);
+    buff.drawShape("platform", 30, 600, Color::BLUE);
+    buff.drawShape("cannon", 81, 600, Color::PURPLE);
+
+    int deltaX = parabolaX(100, 60, time);
+    int deltaY = parabolaY(-100, 60, time, 10);
+    buff.drawShape("bullet", initBulletX + deltaX, initBulletY + deltaY, Color::WHITE);
+
+    buff.apply();
+    
+    usleep(50);
+    ++loopCount;
   }
 
   return 0;
