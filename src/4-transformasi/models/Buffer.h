@@ -38,16 +38,12 @@ public:
   // Transformation Methods
   void translateShape(const string&, int tx, int ty);
   void translateShape(const string&, const Point&);
-  void translateSomeShape(string*, const Point&);
   void translateAllShape(const Point&);
   void scaleShape(const string&, double k, int a = 0, int b = 0);
-  void scaleSomeShape(string*, double k, int a = 0, int b = 0);
   void scaleAllShape(double k, int a = 0, int b = 0);
-  void rotateShape(const string&, double theta);
-  void rotateSomeShape(string*, double theta);
-  void rotateAllShape(double theta);
+  void rotateShape(const string&, double theta, int a = 0, int b = 0);
+  void rotateAllShape(double theta, int a = 0, int b = 0);
   void centerShape(const string&);
-  void centerSomeShape(string*);
   void centerAllShape();
   void setToOrigin(const string&);
   
