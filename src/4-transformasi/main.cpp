@@ -75,9 +75,8 @@ Drawable readFromFile(const string& filename) {
   if (infile.fail()) {
     // file not found, access denied, etc
   } else {
-    int nPoint, nTriangle;
+    int nPoint;
     vector<Point> vp;
-    vector<Triangle> vt;
 
     // Read points
     infile >> nPoint;
@@ -87,16 +86,8 @@ Drawable readFromFile(const string& filename) {
       vp.push_back(Point(x, y));
     }
 
-    // Read triangles
-    infile >> nTriangle;
-    for (int i=0; i<nTriangle; i++) {
-      int a, b, c;
-      infile >> a >> b >> c;
-      vt.push_back(Triangle(vp[a], vp[b], vp[c]));
-    }
-
     infile.close();
-    return Drawable(vp, vt);
+    return Drawable(vp);
   }
   return Drawable();
 }
@@ -119,8 +110,12 @@ int freefall(double initSpeed, double time, double accel) {
 int main() {
   Buffer buff;
   //setConioTerminalNode();
+
+  buff.addShape("test", readFromFile("chars/4/Test.txt"));
+  buff.drawShape("test", 100, 100, Color::RED);
+  buff.apply();
   
-  buff.addShape("plane", readFromFile("chars/4/Pesawat.txt"));
+  /*buff.addShape("plane", readFromFile("chars/4/Pesawat.txt"));
   // buff.addShape("body", body);
   // buff.addShape("wing-l", wingL);
   // buff.addShape("wing-r", wingR);
@@ -178,7 +173,7 @@ int main() {
     
     usleep(50);
     ++loopCount;
-  }
+  }*/
 
   return 0;
 }

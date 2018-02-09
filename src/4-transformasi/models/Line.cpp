@@ -55,3 +55,30 @@ double Line::gradient() const {
   }
   return (double) (first.y - second.y) / (first.x - second.x);
 }
+
+Point Line::intersection(const Line& l) {
+  double m = gradient(), m2 = l.gradient();
+  double c = (double)first.y - m*first.x, c2 = (double)l.first.y - m2*l.first.x;
+  if (m == m2) return Point::UNDEF;
+  double xd = (c - c2)/(m2 - m), yd = m*xd + c;
+  int xi = (int)xi, yi = (int)xi;
+  return Point(xi, yi);
+}
+
+bool Line::contains(const Point& p) {
+  if (first == p || second == p) return false;
+  Point left = first, right = second, temp;
+  if (left.x > right.x) {
+    temp = left;
+    left = right;
+    right = temp;
+  }
+  if (p.x < left.x || p.y > right.y) return false;
+  if (left.y > right.y) {
+    temp = left;
+    left = right;
+    right = temp;
+  }
+  if (p.y < left.y || p.y > right.y) return false;
+  return true;
+}

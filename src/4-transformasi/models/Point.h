@@ -13,9 +13,16 @@ public:
   Point(int, int, Color);
   Point(const Point&);
   void negate();
+  bool operator==(const Point&);
   Point& operator=(const Point&);
   Point operator+(const Point&);
   Point operator-(const Point&);
   Point& operator*=(double);
   Point& operator+=(const Point&);
+  Point& operator-=(const Point&);
+
+  bool isDefined();
+  bool isUndefined();
+
+  static const Point UNDEF;
 };

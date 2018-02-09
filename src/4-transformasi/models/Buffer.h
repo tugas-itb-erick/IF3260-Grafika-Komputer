@@ -76,9 +76,6 @@ private:
   void drawPoint(int, int, Color cl = Color::WHITE);
   void drawPoint(const Point&, Color cl = Color::WHITE);
   void drawLine(const Line&, Color cl = Color::WHITE);
-  bool canDrawTriangle(const Triangle&);
-  void drawTriangle(const Triangle&, Color cl = Color::WHITE);
-  void fillTriangle(const Triangle&, Color cl = Color::WHITE);
 
   // Attributes
   int width;

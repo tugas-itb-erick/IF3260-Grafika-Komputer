@@ -1,5 +1,7 @@
 #include "Point.h"
 
+const Point Point::UNDEF = Point(-100, -100);
+
 Point::Point() {
   x = 0;
   y = 0;
@@ -27,6 +29,10 @@ Point::Point(const Point& p) {
 void Point::negate() {
   x = -x;
   y = -y;
+}
+
+bool Point::operator==(const Point& p) {
+  return (x == p.x && y == p.y);
 }
 
 Point& Point::operator=(const Point& p) {
@@ -63,4 +69,18 @@ Point& Point::operator+=(const Point& p) {
   x += p.x;
   y += p.y;
   return *this;
+}
+
+Point& Point::operator-=(const Point& p) {
+  x -= p.x;
+  y -= p.y;
+  return *this;
+}
+
+bool Point::isUndefined() {
+  return operator==(UNDEF);
+}
+
+bool Point::isDefined() {
+  return !isUndefined();
 }
