@@ -43,12 +43,13 @@ public:
   void scaleShape(const string&, double k, int a = 0, int b = 0);
   void scaleSomeShape(string*, double k, int a = 0, int b = 0);
   void scaleAllShape(double k, int a = 0, int b = 0);
-  void rotateShape(const string&, double theta, int a = 0, int b = 0);
-  void rotateSomeShape(string*, double theta, int a = 0, int b = 0);
-  void rotateAllShape(double theta, int a = 0, int b = 0);
+  void rotateShape(const string&, double theta);
+  void rotateSomeShape(string*, double theta);
+  void rotateAllShape(double theta);
   void centerShape(const string&);
   void centerSomeShape(string*);
   void centerAllShape();
+  void setToOrigin(const string&);
   
   // Helper class for overloading [][]
   class Proxy {
@@ -66,6 +67,8 @@ public:
   Proxy operator[](int index) {
     return Proxy(arr[index]);
   }
+
+  static const Point CENTER;
 
 private:
   // Private Methods
@@ -89,5 +92,4 @@ private:
   char *fbp = 0;
   int fbfd;
   long int screensize;
-  const Point CENTER = Point(680, 350);
 };

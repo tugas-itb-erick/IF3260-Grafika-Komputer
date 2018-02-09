@@ -7,6 +7,7 @@
 #include <sys/select.h>
 #include <iostream>
 #include <queue>
+#include <cmath>
 using namespace std;
 
 const Point dp[] = {Point(0, 1), Point(-1, 0), Point(0, -1), Point(1, 0)};
@@ -184,17 +185,35 @@ void Buffer::scaleAllShape(double k, int a, int b) {
   }
 }
 
-void Buffer::rotateShape(const string& id, double theta, int a, int b) {
-  cout << "Buffer::rotateShape has not been implemented" << endl;
+void Buffer::rotateShape(const string& id, double theta) {
+  setToOrigin(id);
+  int xn, yn;
+  for (auto& e:shapes[id].points) {
+    xn = e.x*cos(theta) - e.y*sin(theta);
+    yn = e.x*sin(theta) + e.y*cos(theta);
+    e = Point(xn, yn);
+  }
+  for (auto& e:shapes[id].triangles) {
+    xn = e.first.x*cos(theta) - e.first.y*sin(theta);
+    yn = e.first.x*sin(theta) + e.first.y*cos(theta);
+    e.first = Point(xn, yn);
+    xn = e.second.x*cos(theta) - e.second.y*sin(theta);
+    yn = e.second.x*sin(theta) + e.second.y*cos(theta);
+    e.second = Point(xn, yn);
+    xn = e.third.x*cos(theta) - e.third.y*sin(theta);
+    yn = e.third.x*sin(theta) + e.third.y*cos(theta);
+    e.third = Point(xn, yn);
+  }
+  centerShape(id);
 }
 
-void Buffer::rotateSomeShape(string* ids, double theta, int a, int b) {
+void Buffer::rotateSomeShape(string* ids, double theta) {
   //
 }
 
-void Buffer::rotateAllShape(double theta, int a, int b) {
+void Buffer::rotateAllShape(double theta) {
   for (auto shape : shapes) {
-    rotateShape(shape.first, theta, a, b);
+    rotateShape(shape.first, theta);
   }
 }
 
@@ -213,6 +232,12 @@ void Buffer::centerAllShape() {
   for (auto shape : shapes) {
     centerShape(shape.first);
   }
+}
+
+void Buffer::setToOrigin(const string& s) {
+  Point center = shapes[s].centroid();
+  center.negate();
+  translateShape(s, center);
 }
 
 void Buffer::drawPoint(int x, int y, Color cl) {
@@ -308,3 +333,5 @@ void Buffer::fillTriangle(const Triangle& T, Color cl) {
     }
   }
 }
+
+const Point Buffer::CENTER = Point(680, 350);

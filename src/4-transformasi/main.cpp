@@ -27,6 +27,7 @@ using namespace std;
 //----- CONSTANTS -----//
 #define PI 3.14159265
 #define DOUBLE2INT_CORRECTION_VAL 0.5
+#define UNDEFINED -1
 
 
 //----- GLOBAL VARIABLES -----//
@@ -131,9 +132,13 @@ int main() {
   buff.addShape("cannon", readFromFile("chars/4/Cannon.txt"));
   buff.addShape("ground", readFromFile("chars/4/Ground.txt"));
   buff.addShape("bullet", readFromFile("chars/4/Bullet.txt"));
+  buff.addShape("person", readFromFile("chars/4/Bullet.txt"));
 
   int initBulletX = 131;
   int initBulletY = 600;
+  int initPersonX = Buffer::CENTER.x;
+  int initPersonY = Buffer::CENTER.y;
+  int startPerson = UNDEFINED;
   int loopCount = 0;
   for (double time = 0; time < 500; time += 0.5) {
     buff.reset();
@@ -142,6 +147,7 @@ int main() {
     if (loopCount % 2 == 0) {
       buff.scaleShape("plane", 1.08);
       buff.centerShape("plane");
+      buff.rotateShape("plane", PI/2);
     }
 
 
@@ -152,6 +158,13 @@ int main() {
     int deltaX = parabolaX(100, 60, time);
     int deltaY = parabolaY(-100, 60, time, 10);
     buff.drawShape("bullet", initBulletX + deltaX, initBulletY + deltaY, Color::WHITE);
+
+    if (time > 10) { /////////////////////////// HARUSNYA PAS PESAWATNYA KENA PELURU
+      if (startPerson == UNDEFINED) startPerson = time;
+      deltaX = parabolaX(-50, 60, time - startPerson);
+      deltaY = parabolaY(-100, 60, time - startPerson, 15);
+      buff.drawShape("person", initPersonX + deltaX, initPersonY + deltaY, Color::YELLOW);
+    }
 
     buff.apply();
     
