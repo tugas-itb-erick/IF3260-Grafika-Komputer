@@ -10,6 +10,7 @@
 #include <cmath>
 using namespace std;
 
+const Point Buffer::CENTER = Point(680, 350);
 const Point dp[] = {Point(0, 1), Point(-1, 0), Point(0, -1), Point(1, 0)};
 
 void Buffer::initFramebuffer() {
@@ -152,12 +153,6 @@ void Buffer::translateShape(const string& id, const Point& p) {
   }
 }
 
-void Buffer::translateSomeShape(string* ids, const Point& p) {
-  // for (auto* id : ids) {
-  //   translateShape(id, p);
-  // }
-}
-
 void Buffer::translateAllShape(const Point& p) {
   for (auto shape : shapes) {
     translateShape(shape.first, p);
@@ -175,45 +170,37 @@ void Buffer::scaleShape(const string& id, double k, int a, int b) {
   }
 }
 
-void Buffer::scaleSomeShape(string* ids, double k, int a, int b) {
-  //
-}
-
 void Buffer::scaleAllShape(double k, int a, int b) {
   for (auto shape : shapes) {
     scaleShape(shape.first, k, a, b);
   }
 }
 
-void Buffer::rotateShape(const string& id, double theta) {
+void Buffer::rotateShape(const string& id, double theta, int a, int b) {
   setToOrigin(id);
   int xn, yn;
   for (auto& e:shapes[id].points) {
-    xn = e.x*cos(theta) - e.y*sin(theta);
-    yn = e.x*sin(theta) + e.y*cos(theta);
+    xn = e.x*cos(theta) - e.y*sin(theta) + a;
+    yn = e.x*sin(theta) + e.y*cos(theta) + b;
     e = Point(xn, yn);
   }
   for (auto& e:shapes[id].triangles) {
-    xn = e.first.x*cos(theta) - e.first.y*sin(theta);
-    yn = e.first.x*sin(theta) + e.first.y*cos(theta);
+    xn = (e.first.x - a)*cos(theta) - (e.first.y - b)*sin(theta) + a;
+    yn = (e.first.x - a)*sin(theta) + (e.first.y - b)*cos(theta) + b;
     e.first = Point(xn, yn);
-    xn = e.second.x*cos(theta) - e.second.y*sin(theta);
-    yn = e.second.x*sin(theta) + e.second.y*cos(theta);
+    xn = (e.second.x - a)*cos(theta) - (e.second.y - b)*sin(theta) + a;
+    yn = (e.second.x - a)*sin(theta) + (e.second.y - b)*cos(theta) + b;
     e.second = Point(xn, yn);
-    xn = e.third.x*cos(theta) - e.third.y*sin(theta);
-    yn = e.third.x*sin(theta) + e.third.y*cos(theta);
+    xn = (e.third.x - a)*cos(theta) - (e.third.y - b)*sin(theta) + a;
+    yn = (e.third.x - a)*sin(theta) + (e.third.y - b)*cos(theta) + b;
     e.third = Point(xn, yn);
   }
   centerShape(id);
 }
 
-void Buffer::rotateSomeShape(string* ids, double theta) {
-  //
-}
-
-void Buffer::rotateAllShape(double theta) {
+void Buffer::rotateAllShape(double theta, int a, int b) {
   for (auto shape : shapes) {
-    rotateShape(shape.first, theta);
+    rotateShape(shape.first, theta, a, b);
   }
 }
 
@@ -222,10 +209,6 @@ void Buffer::centerShape(const string& id) {
   cen.negate();
   cen += CENTER;
   translateShape(id, cen);
-}
-
-void Buffer::centerSomeShape(string* ids) {
-  //
 }
 
 void Buffer::centerAllShape() {
@@ -333,5 +316,3 @@ void Buffer::fillTriangle(const Triangle& T, Color cl) {
     }
   }
 }
-
-const Point Buffer::CENTER = Point(680, 350);
