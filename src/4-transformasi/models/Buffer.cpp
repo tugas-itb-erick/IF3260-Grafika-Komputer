@@ -106,11 +106,31 @@ void Buffer::apply() {
 }
 
 void Buffer::drawShape(const string& id, int x, int y, Color cl) {
-  for (int i=0; i<shapes[id].triangles.size(); i++) {
-    if (canDrawTriangle(shapes[id].triangles[i] + Point(x, y))) {
-      drawTriangle(shapes[id].triangles[i] + Point(x, y), cl);
-      fillTriangle(shapes[id].triangles[i] + Point(x, y), cl);
+  for (auto& e:shapes[id].points) {
+    e += Point(x, y);
+  }
+  Line scanline, edge;
+  Point intersect;
+  vector<Point> intersection;
+  for (int j=0;j<height; ++j) {
+    scanline = Line(Point(0, j), Point(width, j));
+    for (int i=0;i<shapes[id].points.size();++i) {
+      if (i+2<shapes[id].points.size()) {
+        edge = Line(shapes[id].points[i], shapes[id].points[i+1]);
+        intersect = scanline.intersection(edge);
+        if (edge.contains(intersect)) {
+          intersection.push_back(intersect);
+        }
+      }
     }
+    for (int k=1;k<intersection.size();k+=2) {
+      for (int i=intersection[k-1].x;i<=intersection[k].x;++i) {
+        drawPoint(i, j, cl);
+      }
+    }
+  }
+  for (auto& e:shapes[id].points) {
+    e -= Point(x, y);
   }
 }
 
@@ -146,11 +166,6 @@ void Buffer::translateShape(const string& id, const Point& p) {
   for (auto& e : shapes[id].points) {
     e += p;
   }
-  for (auto& e : shapes[id].triangles) {
-    e.first += p;
-    e.second += p;
-    e.third += p;
-  }
 }
 
 void Buffer::translateAllShape(const Point& p) {
@@ -162,11 +177,6 @@ void Buffer::translateAllShape(const Point& p) {
 void Buffer::scaleShape(const string& id, double k, int a, int b) {
   for (auto& e : shapes[id].points) {
     e = Point(k*(e.x - a) + a, k*(e.y - b) + b);
-  }
-  for (auto& e : shapes[id].triangles) {
-    e.first = Point(k*(e.first.x - a) + a, k*(e.first.y - b) + b);
-    e.second = Point(k*(e.second.x - a) + a, k*(e.second.y - b) + b);
-    e.third = Point(k*(e.third.x - a) + a, k*(e.third.y - b) + b);
   }
 }
 
@@ -183,17 +193,6 @@ void Buffer::rotateShape(const string& id, double theta, int a, int b) {
     xn = e.x*cos(theta) - e.y*sin(theta) + a;
     yn = e.x*sin(theta) + e.y*cos(theta) + b;
     e = Point(xn, yn);
-  }
-  for (auto& e:shapes[id].triangles) {
-    xn = (e.first.x - a)*cos(theta) - (e.first.y - b)*sin(theta) + a;
-    yn = (e.first.x - a)*sin(theta) + (e.first.y - b)*cos(theta) + b;
-    e.first = Point(xn, yn);
-    xn = (e.second.x - a)*cos(theta) - (e.second.y - b)*sin(theta) + a;
-    yn = (e.second.x - a)*sin(theta) + (e.second.y - b)*cos(theta) + b;
-    e.second = Point(xn, yn);
-    xn = (e.third.x - a)*cos(theta) - (e.third.y - b)*sin(theta) + a;
-    yn = (e.third.x - a)*sin(theta) + (e.third.y - b)*cos(theta) + b;
-    e.third = Point(xn, yn);
   }
   centerShape(id);
 }
@@ -280,39 +279,4 @@ void Buffer::drawLine(const Line& L, Color cl) {
   }
 }
 
-bool Buffer::canDrawTriangle(const Triangle& t) {
-    if (t.first.y < 5 || t.first.y > vinfo.yres - 10) return false;
-    if (t.second.y < 5 || t.second.y > vinfo.yres - 10) return false;
-    if (t.third.y < 5 || t.third.y > vinfo.yres - 10) return false;
-    if (t.first.x < 5 || t.first.x > vinfo.xres - 10) return false;
-    if (t.second.x < 5 || t.second.x > vinfo.xres - 10) return false;
-    if (t.third.x < 5 || t.third.x > vinfo.xres - 10) return false;
-    return true;
-}
-
-void Buffer::drawTriangle(const Triangle& t, Color cl) {
-  drawLine(Line(t.first, t.second), cl);
-  drawLine(Line(t.first, t.third), cl);
-  drawLine(Line(t.third, t.second), cl);
-}
-
-void Buffer::fillTriangle(const Triangle& T, Color cl) {
-  Point center = T.centroid();
-  queue<Point> q;
-  q.push(center);
-
-  drawPoint(center, cl);
-
-  while (!q.empty()) {
-    Point c = q.front();
-    q.pop();
-
-    for (int i = 0; i < 4; ++i) {
-      Point next = c + dp[i];
-      if (arr[next.x][next.y] == Color::BLACK) {
-        drawPoint(next, cl);
-        q.push(next);
-      }
-    }
-  }
-}
+const Point Buffer::CENTER = Point(680, 350);
