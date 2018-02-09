@@ -140,6 +140,10 @@ int main() {
   int initPersonY = Buffer::CENTER.y;
   int startPerson = UNDEFINED;
   int loopCount = 0;
+	double speedX, speedY;
+	speedX = 100;
+	speedY = -100;
+	double timecol = 0;
   for (double time = 0; time < 500; time += 0.5) {
     buff.reset();
 
@@ -151,12 +155,16 @@ int main() {
     }
 
 
-    buff.drawShape("ground", 30, 650, Color::GREEN);
-    buff.drawShape("platform", 30, 600, Color::BLUE);
-    buff.drawShape("cannon", 81, 600, Color::PURPLE);
+    buff.drawShape("ground", 30, 670, Color::GREEN);
+    buff.drawShape("platform", 30, 620, Color::BLUE);
+    buff.drawShape("cannon", 81, 620, Color::PURPLE);
 
-    int deltaX = parabolaX(100, 60, time);
-    int deltaY = parabolaY(-100, 60, time, 10);
+	int deltaX = parabolaX(speedX, 60, time);
+	int deltaY = parabolaY(speedY, 60, time-timecol, 10);
+    if ((initBulletY + deltaY) >= 650) {
+    	speedY = speedY/2;
+    	timecol = time;
+    }
     buff.drawShape("bullet", initBulletX + deltaX, initBulletY + deltaY, Color::WHITE);
 
     if (time > 10) { /////////////////////////// HARUSNYA PAS PESAWATNYA KENA PELURU
