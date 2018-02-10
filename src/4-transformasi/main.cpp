@@ -80,7 +80,7 @@ Drawable readFromFile(const string& filename) {
 
     // Read points
     infile >> nPoint;
-    for (int i=0; i<nPoint; i++) {
+    for (int i=0; i<nPoint + 1; i++) {
       int x, y;
       infile >> x >> y;
       vp.push_back(Point(x, y));
@@ -112,7 +112,7 @@ int main() {
   //setConioTerminalNode();
 
   buff.addShape("test", readFromFile("chars/4/Test.txt"));
-  buff.drawShape("test", 100, 100, Color::RED);
+  buff.drawShape("test", 0, 0, Color::RED);
   buff.apply();
   
   /*buff.addShape("plane", readFromFile("chars/4/Pesawat.txt"));

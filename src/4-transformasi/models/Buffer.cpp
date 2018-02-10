@@ -113,6 +113,7 @@ void Buffer::drawShape(const string& id, int x, int y, Color cl) {
   Point intersect;
   vector<Point> intersection;
   for (int j=0;j<height; ++j) {
+    intersection.clear();
     scanline = Line(Point(0, j), Point(width, j));
     for (int i=0;i<shapes[id].points.size();++i) {
       if (i+2<shapes[id].points.size()) {
@@ -120,11 +121,28 @@ void Buffer::drawShape(const string& id, int x, int y, Color cl) {
         intersect = scanline.intersection(edge);
         if (edge.contains(intersect)) {
           intersection.push_back(intersect);
+          if (intersect.y >= edge.first.y && intersect.y >= edge.second.y) {
+            intersection.push_back(intersect);
+          }
         }
       }
     }
+    edge = Line(shapes[id].points[0], shapes[id].points[shapes[id].points.size()-2]);
+    intersect = scanline.intersection(edge);
+    if (edge.contains(intersect)) {
+      intersection.push_back(intersect);
+      if (intersect.y >= edge.first.y && intersect.y >= edge.second.y) {
+        intersection.push_back(intersect);
+      }
+    }
     for (int k=1;k<intersection.size();k+=2) {
-      for (int i=intersection[k-1].x;i<=intersection[k].x;++i) {
+      int start = intersection[k-1].x, end = intersection[k].x;
+      if (start > end) {
+        int temp = start;
+        start = end;
+        end = temp;
+      }
+      for (int i=start;i<=end;++i) {
         drawPoint(i, j, cl);
       }
     }
@@ -278,5 +296,3 @@ void Buffer::drawLine(const Line& L, Color cl) {
     }
   }
 }
-
-const Point Buffer::CENTER = Point(680, 350);
