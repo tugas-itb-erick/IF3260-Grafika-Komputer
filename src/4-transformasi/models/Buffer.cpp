@@ -198,6 +198,10 @@ void Buffer::scaleShape(const string& id, double k, int a, int b) {
   }
 }
 
+void Buffer::scaleShape(const string& id, double k, const Point& p) {
+  scaleShape(id, k, p.x, p.y);
+}
+
 void Buffer::scaleAllShape(double k, int a, int b) {
   for (auto shape : shapes) {
     scaleShape(shape.first, k, a, b);
@@ -213,6 +217,15 @@ void Buffer::rotateShape(const string& id, double theta, int a, int b) {
     e = Point(xn, yn);
   }
   centerShape(id);
+}
+
+void Buffer::rotateShape(const string& id, double theta, const Point& p) {
+  rotateShape(id, theta, p.x, p.y);
+}
+
+void Buffer::rotateShape(const string&, double theta) {
+  Point center = shapes[id].centroid();
+  rotateShape(id, theta, center);
 }
 
 void Buffer::rotateAllShape(double theta, int a, int b) {
