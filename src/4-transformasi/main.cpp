@@ -195,7 +195,7 @@ int main() {
       deltaX = parabolaX(-50, 10, time - startNabrak);
       deltaY = parabolaY(-100, 10, time - startNabrak, 15);
       buff.drawShape("person", deltaX, deltaY, Color::ORANGE);
-      if (time - startNabrak > 15) {
+      if (time - startNabrak > 5) {
          buff.drawShape("parachute", deltaX, deltaY, Color::RED);
       }
     }
@@ -223,7 +223,7 @@ int main() {
     }
     
     /******** MEMBACA SPACEBAR ******/
-    if (kbhit()){
+  if (kbhit()){
 		int r;
 		unsigned char c;
 		if (r = read(0, &c, sizeof(c)) < 0) { //ngecek apakah tombol 0 s.d. 9 dipencet
@@ -238,18 +238,15 @@ int main() {
 	}
 	
 	if (bulletVisible) {
-		buff.drawShape("bullet", initBulletX + deltaX, initBulletY + deltaY, Color::WHITE);
+		nabrak |= buff.drawShape("bullet", initBulletX + deltaX, initBulletY + deltaY, Color::WHITE);
 	}
-    
-    if (time > 5) { /////////////////////////// HARUSNYA PAS PESAWATNYA KENA PELURU
-      nabrak = true;
-      bulletVisible = 0;
-      if (startNabrak == UNDEFINED) startNabrak = time;
-    }
+  if (nabrak) {
+    bulletVisible = 0;
+    if (startNabrak == UNDEFINED) startNabrak = time;
+  }
 
-    buff.apply();
+  buff.apply();
     
- //    usleep(50);
     ++loopCount;
   }
 
