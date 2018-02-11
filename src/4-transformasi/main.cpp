@@ -112,8 +112,9 @@ int freefall(double initSpeed, double time, double accel) {
 int main() {
 	
   Buffer buff;
-  //setConioTerminalNode();
-
+  setConioTerminalNode();
+  int bulletVisible = 0;
+  
   Drawable plane = readFromFile("chars/4/pesawat.txt");
   // 
   buff.addShape("plane", plane);
@@ -189,6 +190,7 @@ int main() {
       buff.scaleShape("person", SCALECONSTANT, Buffer::CENTER);
       buff.scaleShape("parachute",SCALECONSTANT, Buffer::CENTER);
     }
+    
     if (nabrak) {
       deltaX = parabolaX(-50, 60, time - startNabrak);
       deltaY = parabolaY(-100, 60, time - startNabrak, 15);
@@ -219,10 +221,29 @@ int main() {
     	speedY = speedY/2;
     	timecol = time;
     }
-    buff.drawShape("bullet", initBulletX + deltaX, initBulletY + deltaY, Color::WHITE);
-
+    
+    /******** MEMBACA SPACEBAR ******/
+    if (kbhit()){
+		int r;
+		unsigned char c;
+		if (r = read(0, &c, sizeof(c)) < 0) { //ngecek apakah tombol 0 s.d. 9 dipencet
+			//do nothing
+		} else { //selain 0 s.d. 9
+			if (c == ' ') {
+				if (!bulletVisible) {
+					bulletVisible = 1;
+				}
+			}
+		}
+	}
+	
+	if (bulletVisible) {
+		buff.drawShape("bullet", initBulletX + deltaX, initBulletY + deltaY, Color::WHITE);
+	}
+    
     if (time > 5) { /////////////////////////// HARUSNYA PAS PESAWATNYA KENA PELURU
       nabrak = true;
+      bulletVisible = 0;
       if (startNabrak == UNDEFINED) startNabrak = time;
     }
 
