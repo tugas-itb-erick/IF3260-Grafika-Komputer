@@ -38,17 +38,14 @@ public:
   // Transformation Methods
   void translateShape(const string&, int tx, int ty);
   void translateShape(const string&, const Point&);
-  void translateSomeShape(string*, const Point&);
   void translateAllShape(const Point&);
   void scaleShape(const string&, double k, int a = 0, int b = 0);
-  void scaleSomeShape(string*, double k, int a = 0, int b = 0);
   void scaleAllShape(double k, int a = 0, int b = 0);
   void rotateShape(const string&, double theta, int a = 0, int b = 0);
-  void rotateSomeShape(string*, double theta, int a = 0, int b = 0);
   void rotateAllShape(double theta, int a = 0, int b = 0);
   void centerShape(const string&);
-  void centerSomeShape(string*);
   void centerAllShape();
+  void setToOrigin(const string&);
   
   // Helper class for overloading [][]
   class Proxy {
@@ -67,15 +64,14 @@ public:
     return Proxy(arr[index]);
   }
 
+  static const Point CENTER;
+
 private:
   // Private Methods
   void initFramebuffer();
   void drawPoint(int, int, Color cl = Color::WHITE);
   void drawPoint(const Point&, Color cl = Color::WHITE);
   void drawLine(const Line&, Color cl = Color::WHITE);
-  bool canDrawTriangle(const Triangle&);
-  void drawTriangle(const Triangle&, Color cl = Color::WHITE);
-  void fillTriangle(const Triangle&, Color cl = Color::WHITE);
 
   // Attributes
   int width;
@@ -89,5 +85,4 @@ private:
   char *fbp = 0;
   int fbfd;
   long int screensize;
-  const Point CENTER = Point(680, 350);
 };

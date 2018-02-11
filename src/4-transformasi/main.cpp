@@ -27,6 +27,7 @@ using namespace std;
 //----- CONSTANTS -----//
 #define PI 3.14159265
 #define DOUBLE2INT_CORRECTION_VAL 0.5
+#define UNDEFINED -1
 
 
 //----- GLOBAL VARIABLES -----//
@@ -74,28 +75,19 @@ Drawable readFromFile(const string& filename) {
   if (infile.fail()) {
     // file not found, access denied, etc
   } else {
-    int nPoint, nTriangle;
+    int nPoint;
     vector<Point> vp;
-    vector<Triangle> vt;
 
     // Read points
     infile >> nPoint;
-    for (int i=0; i<nPoint; i++) {
+    for (int i=0; i<nPoint + 1; i++) {
       int x, y;
       infile >> x >> y;
       vp.push_back(Point(x, y));
     }
 
-    // Read triangles
-    infile >> nTriangle;
-    for (int i=0; i<nTriangle; i++) {
-      int a, b, c;
-      infile >> a >> b >> c;
-      vt.push_back(Triangle(vp[a], vp[b], vp[c]));
-    }
-
     infile.close();
-    return Drawable(vp, vt);
+    return Drawable(vp);
   }
   return Drawable();
 }
@@ -118,8 +110,12 @@ int freefall(double initSpeed, double time, double accel) {
 int main() {
   Buffer buff;
   //setConioTerminalNode();
+
+  buff.addShape("test", readFromFile("chars/4/Test.txt"));
+  buff.drawShape("test", 0, 0, Color::RED);
+  buff.apply();
   
-  buff.addShape("plane", readFromFile("chars/4/Pesawat.txt"));
+  /*buff.addShape("plane", readFromFile("chars/4/Pesawat.txt"));
   // buff.addShape("body", body);
   // buff.addShape("wing-l", wingL);
   // buff.addShape("wing-r", wingR);
@@ -131,10 +127,18 @@ int main() {
   buff.addShape("cannon", readFromFile("chars/4/Cannon.txt"));
   buff.addShape("ground", readFromFile("chars/4/Ground.txt"));
   buff.addShape("bullet", readFromFile("chars/4/Bullet.txt"));
+  buff.addShape("person", readFromFile("chars/4/Bullet.txt"));
 
   int initBulletX = 131;
   int initBulletY = 600;
+  int initPersonX = Buffer::CENTER.x;
+  int initPersonY = Buffer::CENTER.y;
+  int startPerson = UNDEFINED;
   int loopCount = 0;
+	double speedX, speedY;
+	speedX = 100;
+	speedY = -100;
+	double timecol = 0;
   for (double time = 0; time < 500; time += 0.5) {
     buff.reset();
 
@@ -142,22 +146,34 @@ int main() {
     if (loopCount % 2 == 0) {
       buff.scaleShape("plane", 1.08);
       buff.centerShape("plane");
+      buff.rotateShape("plane", PI/2);
     }
 
 
-    buff.drawShape("ground", 30, 650, Color::GREEN);
-    buff.drawShape("platform", 30, 600, Color::BLUE);
-    buff.drawShape("cannon", 81, 600, Color::PURPLE);
+    buff.drawShape("ground", 30, 670, Color::GREEN);
+    buff.drawShape("platform", 30, 620, Color::BLUE);
+    buff.drawShape("cannon", 81, 620, Color::PURPLE);
 
-    int deltaX = parabolaX(100, 60, time);
-    int deltaY = parabolaY(-100, 60, time, 10);
+	int deltaX = parabolaX(speedX, 60, time);
+	int deltaY = parabolaY(speedY, 60, time-timecol, 10);
+    if ((initBulletY + deltaY) >= 650) {
+    	speedY = speedY/2;
+    	timecol = time;
+    }
     buff.drawShape("bullet", initBulletX + deltaX, initBulletY + deltaY, Color::WHITE);
+
+    if (time > 10) { /////////////////////////// HARUSNYA PAS PESAWATNYA KENA PELURU
+      if (startPerson == UNDEFINED) startPerson = time;
+      deltaX = parabolaX(-50, 60, time - startPerson);
+      deltaY = parabolaY(-100, 60, time - startPerson, 15);
+      buff.drawShape("person", initPersonX + deltaX, initPersonY + deltaY, Color::YELLOW);
+    }
 
     buff.apply();
     
     usleep(50);
     ++loopCount;
-  }
+  }*/
 
   return 0;
 }

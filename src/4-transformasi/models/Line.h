@@ -19,4 +19,6 @@ public:
   Line& operator=(const Line&);
 
   double gradient() const;
+  Point intersection(const Line&);
+  bool contains(const Point&);
 };

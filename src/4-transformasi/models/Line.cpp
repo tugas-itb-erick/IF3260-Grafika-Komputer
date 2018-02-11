@@ -1,4 +1,7 @@
 #include "Line.h"
+#include <iostream>
+
+using namespace std;
 
 const double Line::UNDEF = 100000;
 
@@ -54,4 +57,32 @@ double Line::gradient() const {
       return -UNDEF;
   }
   return (double) (first.y - second.y) / (first.x - second.x);
+}
+
+Point Line::intersection(const Line& l) {
+  double m = gradient(), m2 = l.gradient();
+  double c = (double)first.y - m*first.x, c2 = (double)l.first.y - m2*l.first.x;
+  if (m == m2) return Point::UNDEF;
+  if (m == 0 && (m2 == UNDEF || m2 == -UNDEF)) return Point(l.first.x, first.y);
+  if (m2 == 0 && (m == UNDEF || m == -UNDEF)) return Point(first.x, l.first.y);
+  double xd = (c - c2)/(m2 - m), yd = m*xd + c;
+  int xi = (int)xd, yi = (int)yd;
+  return Point(xi, yi);
+}
+
+bool Line::contains(const Point& p) {
+  Point left = first, right = second, temp;
+  if (left.x > right.x) {
+    temp = left;
+    left = right;
+    right = temp;
+  }
+  if (p.x < left.x || p.x > right.x) return false;
+  if (left.y > right.y) {
+    temp = left;
+    left = right;
+    right = temp;
+  }
+  if (p.y < left.y || p.y > right.y) return false;
+  return true;
 }

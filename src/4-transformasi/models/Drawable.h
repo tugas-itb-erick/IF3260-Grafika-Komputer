@@ -8,11 +8,10 @@ using namespace std;
 class Drawable {
 public:
   vector<Point> points;
-  vector<Triangle> triangles;
 
   Drawable();
-  Drawable(Point*, Triangle*);
-  Drawable(vector<Point>, vector<Triangle>);
+  Drawable(Point*);
+  Drawable(vector<Point>);
   Drawable(const Drawable&);
   Drawable& operator=(const Drawable&);
   void useColor(Color);
