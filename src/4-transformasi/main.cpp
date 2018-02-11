@@ -148,7 +148,7 @@ int main() {
 	double timecol = 0;
   bool nabrak = false;
 
-  for (double time = 0; time < 500; time += 0.5) {
+  for (double time = 0; time < 50; time += 0.5) {
     buff.reset();
 
      // Atur baling baling
