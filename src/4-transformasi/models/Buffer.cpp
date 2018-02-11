@@ -105,8 +105,8 @@ void Buffer::apply() {
   }
 }
 
-void Buffer::drawShape(const string& id, int x, int y, Color cl) {
-  // cout<<"masukdraw";
+bool Buffer::drawShape(const string& id, int x, int y, Color cl) {
+  bool res = false;
   for (auto& e:shapes[id].points) {
     e += Point(x, y);
   }
@@ -144,13 +144,14 @@ void Buffer::drawShape(const string& id, int x, int y, Color cl) {
         end = temp;
       }
       for (int i=start;i<=end;++i) {
-        drawPoint(i, j, cl);
+        res |= drawPoint(i, j, cl);
       }
     }
   }
   for (auto& e:shapes[id].points) {
     e -= Point(x, y);
   }
+  return res;
 }
 
 int Buffer::getWidth() {
@@ -257,9 +258,12 @@ void Buffer::setToOrigin(const string& s) {
   translateShape(s, center);
 }
 
-void Buffer::drawPoint(int x, int y, Color cl) {
-	if (x && y && x < width && y < height && arr[x][y] == Color::BLACK) {
-		arr[x][y] = cl;
+bool Buffer::drawPoint(int x, int y, Color cl) {
+	if (x && y && x < width && y < height) {
+    if (arr[x][y] == Color::BLACK) {
+		  arr[x][y] = cl;
+      return false;
+    } else return true;
 	}
 }
 

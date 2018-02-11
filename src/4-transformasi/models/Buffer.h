@@ -27,10 +27,8 @@ public:
   // Methods
   void addShape(const string&, const Drawable&);
   void delShape(const string&);
-  void drawShape(const string&, int, int, Color cl = Color::WHITE);
-  // Note: kalo misalnya emg hrs pake scanLine gw mikirnya mnding drawShape
-  // cukup warnain outline, klo mau diwarnain dalemnya pake scanLineShape
-  // , trus Drawable gapake segitiga2 lagi :(
+  bool drawShape(const string&, int, int, Color cl = Color::WHITE);
+  
   // void scanLineShape(const string& id, double gradient, Color* pattern);
   void reset();
   void apply();
@@ -72,7 +70,7 @@ public:
 private:
   // Private Methods
   void initFramebuffer();
-  void drawPoint(int, int, Color cl = Color::WHITE);
+  bool drawPoint(int, int, Color cl = Color::WHITE);
   void drawPoint(const Point&, Color cl = Color::WHITE);
   void drawLine(const Line&, Color cl = Color::WHITE);
 
