@@ -143,6 +143,8 @@ bool Buffer::drawShape(const string& id, int x, int y, Color cl) {
         start = end;
         end = temp;
       }
+      if (start < 0) start = 0;
+      if (end >= width) end = width;
       for (int i=start;i<=end;++i) {
         res |= drawPoint(i, j, cl);
       }
