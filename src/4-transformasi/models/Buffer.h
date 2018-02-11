@@ -42,7 +42,7 @@ public:
   void scaleShape(const string&, double k, int a = 0, int b = 0);
   void scaleShape(const string&, double k, const Point&);
   void scaleAllShape(double k, int a = 0, int b = 0);
-  void rotateShape(const string&, double theta, int a = 0, int b = 0);
+  void rotateShape(const string&, double theta, int,int);
   void rotateShape(const string&, double theta, const Point&);
   void rotateShape(const string&, double theta);
   void rotateAllShape(double theta, int a = 0, int b = 0);

@@ -106,6 +106,7 @@ void Buffer::apply() {
 }
 
 void Buffer::drawShape(const string& id, int x, int y, Color cl) {
+  cout<<"masukdraw";
   for (auto& e:shapes[id].points) {
     e += Point(x, y);
   }
@@ -212,18 +213,21 @@ void Buffer::rotateShape(const string& id, double theta, int a, int b) {
   setToOrigin(id);
   int xn, yn;
   for (auto& e:shapes[id].points) {
-    xn = e.x*cos(theta) - e.y*sin(theta) + a;
-    yn = e.x*sin(theta) + e.y*cos(theta) + b;
+    xn = e.x*cos(theta) - e.y*sin(theta) ;
+    yn = e.x*sin(theta) + e.y*cos(theta) ;
     e = Point(xn, yn);
   }
   centerShape(id);
+  for (auto& e:shapes[id].points) {
+	e+= Point(a,b);
+  }
 }
 
 void Buffer::rotateShape(const string& id, double theta, const Point& p) {
   rotateShape(id, theta, p.x, p.y);
 }
 
-void Buffer::rotateShape(const string&, double theta) {
+void Buffer::rotateShape(const string& id, double theta) {
   Point center = shapes[id].centroid();
   rotateShape(id, theta, center);
 }

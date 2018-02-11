@@ -108,11 +108,12 @@ int freefall(double initSpeed, double time, double accel) {
 
 //----- MAIN PROGRAM -----//
 int main() {
+	
   Buffer buff;
   //setConioTerminalNode();
 
-  Drawable plane = readFromFile("chars/4/Pesawat.txt");
-  
+  Drawable plane = readFromFile("chars/4/pesawat.txt");
+  // 
   buff.addShape("plane", plane);
   buff.addShape("leftWindow", readFromFile("chars/4/jendela_pesawat_kiri.txt"));
   buff.addShape("rightWindow", readFromFile("chars/4/jendela_pesawat_kanan.txt"));
@@ -122,9 +123,9 @@ int main() {
   buff.addShape("rightBladeLine" , readFromFile("chars/4/LineBaling_Kanan.txt"));
   buff.addShape("person", readFromFile("chars/4/Orang.txt"));
   buff.addShape("parachute", readFromFile("chars/4/Parasut.txt"));
-  buff.addShape("leftWheel", readFromFile("chars/4/Roda_Kiri"));
-  buff.addShape("rightWheel", readFromFile("chars/4/Roda_Kanan"));
-
+  buff.addShape("leftWheel", readFromFile("chars/4/Roda_Kiri.txt"));
+  buff.addShape("rightWheel", readFromFile("chars/4/Roda_Kanan.txt"));
+	
   // Plane Initiation
   Point center = plane.centroid();
   center.negate();
@@ -143,12 +144,13 @@ int main() {
 	double speedX = 100, speedY = -100;
 	double timecol = 0;
   bool nabrak = false;
+
   for (double time = 0; time < 500; time += 0.5) {
     buff.reset();
 
-    // Atur baling baling
-    buff.drawShape("leftBlade", 0, 0, Color::YELLOW);
-    buff.drawShape("rightBlade", 0, 0, Color::YELLOW);
+  //   // Atur baling baling
+    buff.drawShape("leftBlade", 0, 0, Color::RED);
+    buff.drawShape("rightBlade", 0, 0, Color::RED);
     buff.drawShape("leftBladeLine", 0, 0, Color::YELLOW);
     buff.drawShape("rightBladeLine", 0, 0, Color::YELLOW);
     if (loopCount % 2 == 0) {
@@ -163,61 +165,67 @@ int main() {
     }
 
     // Atur roda
-    buff.drawShape("leftWheel", Color::GREEN);
-    buff.drawShape("rightBlade", Color::GREEN);
+    buff.drawShape("leftWheel",0,0, Color::GREEN);
+    buff.drawShape("rightWheel",0,0, Color::GREEN);
     if (loopCount % 2 == 0) {
       buff.scaleShape("leftWheel", 2, Buffer::CENTER);
       buff.scaleShape("rightWheel", 2, Buffer::CENTER);
     }
-    if (nabrak) {
+    // if (nabrak) {
       
-    }
-
+    // }
     // Atur orang dan parasut
-    if (loopCount % 2 == 0) {
-      buff.scaleShape("person", 2, Buffer::CENTER);
-      buff.scaleShape("parachute", 2, Buffer::CENTER);
-    }
-    if (nabrak) {
+    // if (loopCount % 2 == 0) {
+      
+    // }
+    // if (nabrak) {
       deltaX = parabolaX(-50, 60, time - startNabrak);
       deltaY = parabolaY(-100, 60, time - startNabrak, 15);
-      buff.drawShape("person", deltaX, deltaY, Color::RED);
-      if (time - startPerson > 5) {
-        buff.drawShape("parachute", deltaX, deltaY, Color::RED);
-      }
-    }
-
+      buff.drawShape("person", deltaX, deltaY, Color::ORANGE);
+      buff.drawShape("parachute", deltaX, deltaY, Color::RED);
+      int startPerson=0;//dummy
+      // if (time - startPerson > 5) {
+      //   buff.drawShape("parachute", deltaX, deltaY, Color::RED);
+      // }
+    // }
+buff.scaleShape("person", 2, Buffer::CENTER);
+      buff.scaleShape("parachute",2, Buffer::CENTER);
     // Atur pesawat
-    buff.drawShape("plane", 0, 0, Color::ORANGE);
-    buff.drawShape("leftWindow", 0, 0, Color::WHITE);
-    buff.drawShape("rightWindow", 0, 0, Color::WHITE);
+    
+    buff.drawShape("leftWindow", 0,0, Color::WHITE);
+    buff.drawShape("rightWindow", 0,0, Color::WHITE);
+    buff.drawShape("plane", 0,0, Color::ORANGE);
     if (loopCount % 2 == 0) {
-      buff.scaleShape("plane", 2, Buffer::CENTER);
+      
       buff.scaleShape("leftWindow", 2, Buffer::CENTER);
       buff.scaleShape("rightWindow", 2, Buffer::CENTER);
+      buff.scaleShape("plane", 2, Buffer::CENTER);
       buff.centerShape("plane");
+      
     }
+    // buff.drawShape("leftWindow", 50,50, Color::WHITE);
+    // buff.drawShape("rightWindow", 90,90, Color::WHITE);
 
     buff.drawShape("ground", 30, 670, Color::GREEN);
     buff.drawShape("platform", 30, 620, Color::BLUE);
     buff.drawShape("cannon", 81, 620, Color::PURPLE);
 
-	/*int deltaX = parabolaX(speedX, 60, time);
-	int deltaY = parabolaY(speedY, 60, time-timecol, 10);
-    if ((initBulletY + deltaY) >= 650) {
-    	speedY = speedY/2;
-    	timecol = time;
-    }
-    buff.drawShape("bullet", initBulletX + deltaX, initBulletY + deltaY, Color::WHITE);*/
+	// int deltaX = parabolaX(speedX, 60, time);
+	// int deltaY = parabolaY(speedY, 60, time-timecol, 10);
+ //    if ((initBulletY + deltaY) >= 650) {
+ //    	speedY = speedY/2;
+ //    	timecol = time;
+ //    }
+ //    buff.drawShape("bullet", initBulletX + deltaX, initBulletY + deltaY, Color::WHITE);
 
-    if (time > 10) { /////////////////////////// HARUSNYA PAS PESAWATNYA KENA PELURU
-      nabrak = true;
-      if (startnabrak == UNDEFINED) startNabrak = time;
-    }
+    // if (time > 10) { /////////////////////////// HARUSNYA PAS PESAWATNYA KENA PELURU
+    //   nabrak = true;
+    //   if (startNabrak == UNDEFINED) startNabrak = time;
+    // }
 
     buff.apply();
     
-    usleep(50);
+ //    usleep(50);
     ++loopCount;
   }
 
