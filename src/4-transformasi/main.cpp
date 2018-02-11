@@ -28,6 +28,8 @@ using namespace std;
 #define PI 3.14159265
 #define DOUBLE2INT_CORRECTION_VAL 0.5
 #define UNDEFINED -1
+#define SCALECONSTANT 1.2
+#define LOOP 2
 
 
 //----- GLOBAL VARIABLES -----//
@@ -148,16 +150,16 @@ int main() {
   for (double time = 0; time < 500; time += 0.5) {
     buff.reset();
 
-  //   // Atur baling baling
+     // Atur baling baling
     buff.drawShape("leftBlade", 0, 0, Color::RED);
     buff.drawShape("rightBlade", 0, 0, Color::RED);
     buff.drawShape("leftBladeLine", 0, 0, Color::YELLOW);
     buff.drawShape("rightBladeLine", 0, 0, Color::YELLOW);
-    if (loopCount % 2 == 0) {
-      buff.scaleShape("leftBlade", 2, Buffer::CENTER);
-      buff.scaleShape("rightBlade", 2, Buffer::CENTER);
-      buff.scaleShape("leftBladeLine", 2, Buffer::CENTER);
-      buff.scaleShape("rightBladeLine", 2, Buffer::CENTER);
+    if (loopCount % LOOP == 0) {
+      buff.scaleShape("leftBlade", SCALECONSTANT, Buffer::CENTER);
+      buff.scaleShape("rightBlade", SCALECONSTANT, Buffer::CENTER);
+      buff.scaleShape("leftBladeLine", SCALECONSTANT, Buffer::CENTER);
+      buff.scaleShape("rightBladeLine", SCALECONSTANT, Buffer::CENTER);
       buff.rotateShape("leftBlade", PI/3);
       buff.rotateShape("rightBlade", PI/3);
       buff.rotateShape("leftBladeLine", PI/3);
@@ -167,18 +169,20 @@ int main() {
     // Atur roda
     buff.drawShape("leftWheel",0,0, Color::GREEN);
     buff.drawShape("rightWheel",0,0, Color::GREEN);
-    if (loopCount % 2 == 0) {
-      buff.scaleShape("leftWheel", 2, Buffer::CENTER);
-      buff.scaleShape("rightWheel", 2, Buffer::CENTER);
+    if (loopCount % LOOP == 0) {
+      buff.scaleShape("leftWheel", SCALECONSTANT, Buffer::CENTER);
+      buff.scaleShape("rightWheel", SCALECONSTANT, Buffer::CENTER);
     }
-    // if (nabrak) {
+    if (nabrak) {
       
-    // }
+    }
+
     // Atur orang dan parasut
-    // if (loopCount % 2 == 0) {
-      
-    // }
-    // if (nabrak) {
+    if (loopCount % LOOP == 0) {
+      buff.scaleShape("person", SCALECONSTANT, Buffer::CENTER);
+      buff.scaleShape("parachute",SCALECONSTANT, Buffer::CENTER);
+    }
+    if (nabrak) {
       deltaX = parabolaX(-50, 60, time - startNabrak);
       deltaY = parabolaY(-100, 60, time - startNabrak, 15);
       buff.drawShape("person", deltaX, deltaY, Color::ORANGE);
@@ -187,19 +191,18 @@ int main() {
       // if (time - startPerson > 5) {
       //   buff.drawShape("parachute", deltaX, deltaY, Color::RED);
       // }
-    // }
-buff.scaleShape("person", 2, Buffer::CENTER);
-      buff.scaleShape("parachute",2, Buffer::CENTER);
+    }
+
     // Atur pesawat
     
     buff.drawShape("leftWindow", 0,0, Color::WHITE);
     buff.drawShape("rightWindow", 0,0, Color::WHITE);
     buff.drawShape("plane", 0,0, Color::ORANGE);
-    if (loopCount % 2 == 0) {
+    if (loopCount % LOOP == 0) {
       
-      buff.scaleShape("leftWindow", 2, Buffer::CENTER);
-      buff.scaleShape("rightWindow", 2, Buffer::CENTER);
-      buff.scaleShape("plane", 2, Buffer::CENTER);
+      buff.scaleShape("leftWindow", SCALECONSTANT, Buffer::CENTER);
+      buff.scaleShape("rightWindow", SCALECONSTANT, Buffer::CENTER);
+      buff.scaleShape("plane", SCALECONSTANT, Buffer::CENTER);
       buff.centerShape("plane");
       
     }
