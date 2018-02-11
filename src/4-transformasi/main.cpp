@@ -158,10 +158,10 @@ int main() {
       buff.scaleShape("rightBlade", 2, Buffer::CENTER);
       buff.scaleShape("leftBladeLine", 2, Buffer::CENTER);
       buff.scaleShape("rightBladeLine", 2, Buffer::CENTER);
-      buff.rotateShape("leftBlade", PI/2);
-      buff.rotateShape("rightBlade", PI/2);
-      buff.rotateShape("leftBladeLine", PI/2);
-      buff.rotateShape("rightBladeLine", PI/2);
+      buff.rotateShape("leftBlade", PI/3);
+      buff.rotateShape("rightBlade", PI/3);
+      buff.rotateShape("leftBladeLine", PI/3);
+      buff.rotateShape("rightBladeLine", PI/3);
     }
 
     // Atur roda

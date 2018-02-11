@@ -106,7 +106,7 @@ void Buffer::apply() {
 }
 
 void Buffer::drawShape(const string& id, int x, int y, Color cl) {
-  cout<<"masukdraw";
+  // cout<<"masukdraw";
   for (auto& e:shapes[id].points) {
     e += Point(x, y);
   }
@@ -217,7 +217,7 @@ void Buffer::rotateShape(const string& id, double theta, int a, int b) {
     yn = e.x*sin(theta) + e.y*cos(theta) ;
     e = Point(xn, yn);
   }
-  centerShape(id);
+  // centerShape(id);
   for (auto& e:shapes[id].points) {
 	e+= Point(a,b);
   }
