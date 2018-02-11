@@ -190,10 +190,10 @@ int main() {
       buff.scaleShape("parachute",SCALECONSTANT, Buffer::CENTER);
     }
     if (nabrak) {
-      deltaX = parabolaX(-50, 60, time - startNabrak);
-      deltaY = parabolaY(-100, 60, time - startNabrak, 15);
+      deltaX = parabolaX(-50, 10, time - startNabrak);
+      deltaY = parabolaY(-100, 10, time - startNabrak, 15);
       buff.drawShape("person", deltaX, deltaY, Color::ORANGE);
-      if (time - startNabrak > 5) {
+      if (time - startNabrak > 15) {
          buff.drawShape("parachute", deltaX, deltaY, Color::RED);
       }
     }
