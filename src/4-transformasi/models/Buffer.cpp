@@ -265,6 +265,7 @@ bool Buffer::drawPoint(int x, int y, Color cl) {
       return false;
     } else return true;
 	}
+  return false;
 }
 
 void Buffer::drawPoint(const Point& P, Color cl) {

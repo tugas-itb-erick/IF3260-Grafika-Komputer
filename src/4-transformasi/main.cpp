@@ -142,7 +142,7 @@ int main() {
   int initBulletX = 131;
   int initBulletY = 600;
   int deltaX, deltaY;
-  int startNabrak = UNDEFINED;
+  int startNabrak = UNDEFINED, startPressed = UNDEFINED;
   int loopCount = 0;
 	double speedX = 100, speedY = -100;
 	double timecol = 0;
@@ -232,12 +232,15 @@ int main() {
 			if (c == ' ') {
 				if (!bulletVisible) {
 					bulletVisible = 1;
+          startPressed = time;
 				}
 			}
 		}
 	}
 	
 	if (bulletVisible) {
+    deltaX = parabolaX(100, 60, time - startPressed);
+    deltaY = parabolaY(-100, 60, time - startPressed);
 		nabrak |= buff.drawShape("bullet", initBulletX + deltaX, initBulletY + deltaY, Color::WHITE);
 	}
   if (nabrak) {
