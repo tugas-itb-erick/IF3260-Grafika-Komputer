@@ -213,17 +213,17 @@ int main() {
     buff.drawShape("platform", 30, 620, Color::BLUE);
     buff.drawShape("cannon", 81, 620, Color::PURPLE);
 
-	// int deltaX = parabolaX(speedX, 60, time);
-	// int deltaY = parabolaY(speedY, 60, time-timecol, 10);
- //    if ((initBulletY + deltaY) >= 650) {
- //    	speedY = speedY/2;
- //    	timecol = time;
- //    }
- //    buff.drawShape("bullet", initBulletX + deltaX, initBulletY + deltaY, Color::WHITE);
+	  deltaX = parabolaX(speedX, 60, time);
+	  deltaY = parabolaY(speedY, 60, time-timecol, 10);
+    if ((initBulletY + deltaY) >= 650) {
+    	speedY = speedY/2;
+    	timecol = time;
+    }
+    buff.drawShape("bullet", initBulletX + deltaX, initBulletY + deltaY, Color::WHITE);
 
-    if (time > 10) { /////////////////////////// HARUSNYA PAS PESAWATNYA KENA PELURU
-       nabrak = true;
-       if (startNabrak == UNDEFINED) startNabrak = time;
+    if (time > 5) { /////////////////////////// HARUSNYA PAS PESAWATNYA KENA PELURU
+      nabrak = true;
+      if (startNabrak == UNDEFINED) startNabrak = time;
     }
 
     buff.apply();
