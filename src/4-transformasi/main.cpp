@@ -194,7 +194,7 @@ int main() {
     if (nabrak) {
       deltaX = parabolaX(-50, 10, time - startNabrak);
       deltaY = parabolaY(-100, 10, time - startNabrak, 15);
-      buff.drawShape("person", deltaX, deltaY, Color::ORANGE);
+      buff.drawShape("person", deltaX, deltaY, Color::WHITE);
       if (time - startNabrak > 5) {
          buff.drawShape("parachute", deltaX, deltaY, Color::RED);
       }
@@ -240,7 +240,7 @@ int main() {
 	
 	if (bulletVisible) {
     deltaX = parabolaX(100, 60, time - startPressed);
-    deltaY = parabolaY(-100, 60, time - startPressed);
+    deltaY = parabolaY(-100, 60, time - startPressed,15);
 		nabrak |= buff.drawShape("bullet", initBulletX + deltaX, initBulletY + deltaY, Color::WHITE);
     if (initBulletY + deltaY >= 750) {
       bulletVisible = 0;
