@@ -144,6 +144,7 @@ int main() {
 	double speedX = 100, speedY = -100;
 	double timecol = 0;
   bool nabrak = false;
+  double growScale = 1.2;
 
   for (double time = 0; time < 500; time += 0.5) {
     buff.reset();
@@ -154,10 +155,10 @@ int main() {
     buff.drawShape("leftBladeLine", 0, 0, Color::YELLOW);
     buff.drawShape("rightBladeLine", 0, 0, Color::YELLOW);
     if (loopCount % 2 == 0) {
-      buff.scaleShape("leftBlade", 2, Buffer::CENTER);
-      buff.scaleShape("rightBlade", 2, Buffer::CENTER);
-      buff.scaleShape("leftBladeLine", 2, Buffer::CENTER);
-      buff.scaleShape("rightBladeLine", 2, Buffer::CENTER);
+      buff.scaleShape("leftBlade", growScale, Buffer::CENTER);
+      buff.scaleShape("rightBlade", growScale, Buffer::CENTER);
+      buff.scaleShape("leftBladeLine", growScale, Buffer::CENTER);
+      buff.scaleShape("rightBladeLine", growScale, Buffer::CENTER);
       buff.rotateShape("leftBlade", PI/3);
       buff.rotateShape("rightBlade", PI/3);
       buff.rotateShape("leftBladeLine", PI/3);
@@ -168,28 +169,28 @@ int main() {
     buff.drawShape("leftWheel",0,0, Color::GREEN);
     buff.drawShape("rightWheel",0,0, Color::GREEN);
     if (loopCount % 2 == 0) {
-      buff.scaleShape("leftWheel", 2, Buffer::CENTER);
-      buff.scaleShape("rightWheel", 2, Buffer::CENTER);
+      buff.scaleShape("leftWheel", growScale, Buffer::CENTER);
+      buff.scaleShape("rightWheel", growScale, Buffer::CENTER);
     }
-    // if (nabrak) {
+    if (nabrak) {
       
-    // }
+    }
     // Atur orang dan parasut
-    // if (loopCount % 2 == 0) {
-      
-    // }
-    // if (nabrak) {
+    if (loopCount % 2 == 0) {
+            buff.scaleShape("person", growScale, Buffer::CENTER);
+      buff.scaleShape("parachute",growScale, Buffer::CENTER);
+    }
+    if (nabrak) {
       deltaX = parabolaX(-50, 60, time - startNabrak);
       deltaY = parabolaY(-100, 60, time - startNabrak, 15);
       buff.drawShape("person", deltaX, deltaY, Color::ORANGE);
       buff.drawShape("parachute", deltaX, deltaY, Color::RED);
       int startPerson=0;//dummy
-      // if (time - startPerson > 5) {
-      //   buff.drawShape("parachute", deltaX, deltaY, Color::RED);
-      // }
-    // }
-buff.scaleShape("person", 2, Buffer::CENTER);
-      buff.scaleShape("parachute",2, Buffer::CENTER);
+      if (time - startPerson > 5) {
+        buff.drawShape("parachute", deltaX, deltaY, Color::RED);
+      }
+    }
+
     // Atur pesawat
     
     buff.drawShape("leftWindow", 0,0, Color::WHITE);
@@ -197,31 +198,29 @@ buff.scaleShape("person", 2, Buffer::CENTER);
     buff.drawShape("plane", 0,0, Color::ORANGE);
     if (loopCount % 2 == 0) {
       
-      buff.scaleShape("leftWindow", 2, Buffer::CENTER);
-      buff.scaleShape("rightWindow", 2, Buffer::CENTER);
-      buff.scaleShape("plane", 2, Buffer::CENTER);
+      buff.scaleShape("leftWindow", growScale, Buffer::CENTER);
+      buff.scaleShape("rightWindow", growScale, Buffer::CENTER);
+      buff.scaleShape("plane", growScale, Buffer::CENTER);
       buff.centerShape("plane");
       
     }
-    // buff.drawShape("leftWindow", 50,50, Color::WHITE);
-    // buff.drawShape("rightWindow", 90,90, Color::WHITE);
 
     buff.drawShape("ground", 30, 670, Color::GREEN);
     buff.drawShape("platform", 30, 620, Color::BLUE);
     buff.drawShape("cannon", 81, 620, Color::PURPLE);
 
-	// int deltaX = parabolaX(speedX, 60, time);
-	// int deltaY = parabolaY(speedY, 60, time-timecol, 10);
- //    if ((initBulletY + deltaY) >= 650) {
- //    	speedY = speedY/2;
- //    	timecol = time;
- //    }
- //    buff.drawShape("bullet", initBulletX + deltaX, initBulletY + deltaY, Color::WHITE);
+	int deltaX = parabolaX(speedX, 60, time);
+	int deltaY = parabolaY(speedY, 60, time-timecol, 10);
+    if ((initBulletY + deltaY) >= 650) {
+    	speedY = speedY/2;
+    	timecol = time;
+    }
+    buff.drawShape("bullet", initBulletX + deltaX, initBulletY + deltaY, Color::WHITE);
 
-    // if (time > 10) { /////////////////////////// HARUSNYA PAS PESAWATNYA KENA PELURU
-    //   nabrak = true;
-    //   if (startNabrak == UNDEFINED) startNabrak = time;
-    // }
+    if (time > 5) { /////////////////////////// HARUSNYA PAS PESAWATNYA KENA PELURU
+      nabrak = true;
+      if (startNabrak == UNDEFINED) startNabrak = time;
+    }
 
     buff.apply();
     
