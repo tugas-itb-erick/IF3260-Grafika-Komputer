@@ -242,6 +242,9 @@ int main() {
     deltaX = parabolaX(100, 60, time - startPressed);
     deltaY = parabolaY(-100, 60, time - startPressed);
 		nabrak |= buff.drawShape("bullet", initBulletX + deltaX, initBulletY + deltaY, Color::WHITE);
+    if (initBulletY + deltaY >= 750) {
+      bulletVisible = 0;
+    }
 	}
   if (nabrak) {
     bulletVisible = 0;
