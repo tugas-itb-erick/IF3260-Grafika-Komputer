@@ -263,7 +263,8 @@ bool Buffer::drawPoint(int x, int y, Color cl) {
     if (arr[x][y] == Color::BLACK) {
 		  arr[x][y] = cl;
       return false;
-    } else return true;
+    } else if (arr[x][y] == Color::ORANGE) return true;
+    else return false;
 	}
   return false;
 }
