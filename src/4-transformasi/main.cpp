@@ -198,7 +198,7 @@ int main() {
         deltaX = parabolaX(-50, 10, time - startNabrak);
         deltaY = parabolaY(-100, 10, time - startNabrak, 15);
         buff.drawShape("person", deltaX, deltaY, Color(238, 203, 173));
-        if (time - startNabrak > 4) {
+        if (time - startNabrak > 5) {
           buff.drawShape("parachute", deltaX, deltaY, Color::RED);
         }
       }
