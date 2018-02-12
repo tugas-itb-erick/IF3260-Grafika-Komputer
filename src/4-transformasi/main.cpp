@@ -28,7 +28,7 @@ using namespace std;
 #define PI 3.14159265
 #define DOUBLE2INT_CORRECTION_VAL 0.5
 #define UNDEFINED -1
-#define SCALECONSTANT 1.15
+#define SCALECONSTANT 1.2
 #define LOOP 2
 
 
@@ -181,10 +181,10 @@ int main() {
       } else {
         deltaX = parabolaX(speedX, 60, time);
         deltaY = parabolaY(speedY, 60, time - timecol, 10);
-        if (deltaY >= 300) {
-          speedY /= 2;
-          timecol = time;
-        }
+        // if (deltaY >= 300) {
+        //   speedY /= 2;
+        //   timecol = time;
+        // }
         buff.drawShape("rightWheel",deltaX,deltaY, Color::GREEN);
       }
 
@@ -197,7 +197,7 @@ int main() {
       if (nabrak) {
         deltaX = parabolaX(-50, 10, time - startNabrak);
         deltaY = parabolaY(-100, 10, time - startNabrak, 15);
-        buff.drawShape("person", deltaX, deltaY, Color::WHITE);
+        buff.drawShape("person", deltaX, deltaY, Color(238, 203, 173));
         if (time - startNabrak > 4) {
           buff.drawShape("parachute", deltaX, deltaY, Color::RED);
         }
@@ -221,7 +221,7 @@ int main() {
 
 		deltaX = parabolaX(speedX, 60, time);
 		deltaY = parabolaY(speedY, 60, time-timecol, 10);
-		if ((initBulletY + deltaY) >= 650) {
+		if ((initBulletY + deltaY) >= 760) {
 			speedY = speedY/2;
 			timecol = time;
 		}
