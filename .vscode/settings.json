@@ -35,6 +35,7 @@
     "deque": "cpp",
     "list": "cpp",
     "vector": "cpp",
-    "xstring": "cpp"
+    "xstring": "cpp",
+    "fstream": "cpp"
   }
 }
