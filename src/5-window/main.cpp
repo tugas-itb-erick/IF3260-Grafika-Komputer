@@ -142,6 +142,7 @@ int main() {
   buff.addShape("cannon", readFromFile("chars/4/Cannon.txt"));
   buff.addShape("ground", readFromFile("chars/4/Ground.txt"));
   buff.addShape("bullet", readFromFile("chars/4/Bullet.txt"));
+  buff.addShape("wall", readFromFile("chars/4/Tembok.txt"));
 
   int initBulletX = 131;
   int initBulletY = 600;
@@ -222,7 +223,8 @@ int main() {
 		buff.drawShape("ground", 30, 670, Color::GREEN);
 		buff.drawShape("platform", 30, 620, Color::BLUE);
 		buff.drawShape("cannon", 81, 620, Color::PURPLE);
-
+		buff.drawShape("wall", 100, 100, Color::WHITE);
+		
 		deltaX = parabolaX(speedX, 60, time);
 		deltaY = parabolaY(speedY, 60, time-timecol, 10);
 		if ((initBulletY + deltaY) >= 760) {
