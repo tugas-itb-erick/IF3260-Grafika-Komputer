@@ -15,6 +15,7 @@ public:
   bool operator==(const Color&);
 
   static const Color WHITE;
+  static const Color GREY;
   static const Color BLACK;
   static const Color RED;
   static const Color ORANGE;

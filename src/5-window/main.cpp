@@ -128,20 +128,17 @@ int main() {
   buff.addShape("parachute", readFromFile("chars/4/Parasut.txt"));
   buff.addShape("leftWheel", readFromFile("chars/4/Roda_Kiri.txt"));
   buff.addShape("rightWheel", readFromFile("chars/4/Roda_Kanan.txt"));
-  buff.drawLine(Line(Point(50, 50), Point(50, 600)));
-  buff.drawLine(Line(Point(50, 50), Point(1200, 50)));
-  buff.drawLine(Line(Point(1200, 50), Point(1200, 600)));
-  buff.drawLine(Line(Point(50, 600), Point(1200, 600)));
-	
+
   // Plane Initiation
   Point center = plane.centroid();
   center.negate();
   buff.translateAllShape(center + Buffer::CENTER);
 
   buff.addShape("platform", readFromFile("chars/4/Platform.txt"));
-  buff.addShape("cannon", readFromFile("chars/4/Cannon.txt"));
-  buff.addShape("ground", readFromFile("chars/4/Ground.txt"));
-  buff.addShape("bullet", readFromFile("chars/4/Bullet.txt"));
+  //buff.addShape("cannon", readFromFile("chars/4/Cannon.txt"));
+  //buff.addShape("ground", readFromFile("chars/4/Ground.txt"));
+  //buff.addShape("bullet", readFromFile("chars/4/Bullet.txt"));
+  buff.addShape("wall", readFromFile("chars/4/Tembok.txt"));
 
   int initBulletX = 131;
   int initBulletY = 600;
@@ -219,10 +216,11 @@ int main() {
       }
     }
 
-		buff.drawShape("ground", 30, 670, Color::GREEN);
-		buff.drawShape("platform", 30, 620, Color::BLUE);
-		buff.drawShape("cannon", 81, 620, Color::PURPLE);
-
+		//buff.drawShape("ground", 30, 670, Color::GREEN);
+		//buff.drawShape("platform", 30, 620, Color::BLUE);
+		//buff.drawShape("cannon", 81, 620, Color::PURPLE);
+		buff.drawShape("wall", 1, 1, Color::GREY);
+		
 		deltaX = parabolaX(speedX, 60, time);
 		deltaY = parabolaY(speedY, 60, time-timecol, 10);
 		if ((initBulletY + deltaY) >= 760) {
@@ -259,11 +257,6 @@ int main() {
       if (startNabrak == UNDEFINED) startNabrak = time;
     }
     
-    buff.drawLine(Line(Point(50, 50), Point(50, 600)));
-  buff.drawLine(Line(Point(50, 50), Point(1200, 50)));
-  buff.drawLine(Line(Point(1200, 50), Point(1200, 600)));
-  buff.drawLine(Line(Point(50, 600), Point(1200, 600)));
-
     buff.apply();
     ++loopCount;
   }
