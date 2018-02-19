@@ -140,6 +140,7 @@ int main() {
   //buff.addShape("bullet", readFromFile("chars/4/Bullet.txt"));
   buff.addShape("wall", readFromFile("chars/4/Tembok.txt"));
   buff.addShape("desk", readFromFile("chars/4/Meja.txt"));
+  buff.addShape("panel", readFromFile("chars/4/Panel.txt"));
   buff.addShape("upButton", readFromFile("chars/4/Tombol_Atas.txt"));
   buff.addShape("downButton", readFromFile("chars/4/Tombol_Bawah.txt"));
 
@@ -160,16 +161,21 @@ int main() {
     /*** GAMBAR TEMBOK DAN TOMBOL ***/
     if (zoomIn) {
 		buff.drawShape("upButton", 1, 1, Color::RED);
-	} else {
-		buff.drawShape("upButton", 1, 1, Color::YELLOW);
 	}
 	
 	if (zoomOut) {
 		buff.drawShape("downButton", 1, 1, Color::RED);
-	} else {
-		buff.drawShape("downButton", 1, 1, Color::YELLOW);
-	}
+	}	
 	
+	if ((int)time % 2 > 0) {
+		buff.drawShape("panel", 1, 1, Color::GREEN);	
+		buff.drawShape("upButton", 1, 1, Color::YELLOW);
+		buff.drawShape("downButton", 1, 1, Color::YELLOW);
+	} else {
+		buff.drawShape("panel", 1, 1, Color::YELLOW);	
+		buff.drawShape("upButton", 1, 1, Color::ORANGE);
+		buff.drawShape("downButton", 1, 1, Color::ORANGE);
+	}
 	buff.drawShape("desk", 1, 1, Color::DARK_GREEN);
 	buff.drawShape("wall", 1, 1, Color::GREY);	
 		
