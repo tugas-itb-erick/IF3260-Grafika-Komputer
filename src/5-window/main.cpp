@@ -139,6 +139,9 @@ int main() {
   //buff.addShape("ground", readFromFile("chars/4/Ground.txt"));
   //buff.addShape("bullet", readFromFile("chars/4/Bullet.txt"));
   buff.addShape("wall", readFromFile("chars/4/Tembok.txt"));
+  buff.addShape("desk", readFromFile("chars/4/Meja.txt"));
+  buff.addShape("upButton", readFromFile("chars/4/Tombol_Atas.txt"));
+  buff.addShape("downButton", readFromFile("chars/4/Tombol_Bawah.txt"));
 
   int initBulletX = 131;
   int initBulletY = 600;
@@ -148,10 +151,29 @@ int main() {
 	double speedX = 60, speedY = 100;
 	double timecol = 0;
   bool nabrak = false;
+  int zoomIn = 0;
+  int zoomOut = 0;
 
   for (double time = 0; time < 50; time += 0.5) {
     buff.reset();
-
+    
+    /*** GAMBAR TEMBOK DAN TOMBOL ***/
+    if (zoomIn) {
+		buff.drawShape("upButton", 1, 1, Color::RED);
+	} else {
+		buff.drawShape("upButton", 1, 1, Color::YELLOW);
+	}
+	
+	if (zoomOut) {
+		buff.drawShape("downButton", 1, 1, Color::RED);
+	} else {
+		buff.drawShape("downButton", 1, 1, Color::YELLOW);
+	}
+	
+	buff.drawShape("desk", 1, 1, Color::DARK_GREEN);
+	buff.drawShape("wall", 1, 1, Color::GREY);	
+		
+		
     if (time < 30) {
       // Atur baling baling
       buff.drawShape("leftBlade", 0, 0, Color::RED);
@@ -188,7 +210,7 @@ int main() {
         // }
         buff.drawShape("rightWheel",deltaX,deltaY, Color::GREEN);
       }
-
+		
       // Atur orang dan parasut
       if (loopCount % LOOP == 0 && !nabrak) {
         buff.scaleShape("person", SCALECONSTANT, Buffer::CENTER);
@@ -219,7 +241,6 @@ int main() {
 		//buff.drawShape("ground", 30, 670, Color::GREEN);
 		//buff.drawShape("platform", 30, 620, Color::BLUE);
 		//buff.drawShape("cannon", 81, 620, Color::PURPLE);
-		buff.drawShape("wall", 1, 1, Color::GREY);
 		
 		deltaX = parabolaX(speedX, 60, time);
 		deltaY = parabolaY(speedY, 60, time-timecol, 10);
@@ -240,9 +261,16 @@ int main() {
             bulletVisible = 1;
             startPressed = time;
           }
-        }
+        } else if (c == 'i') { //upArrow
+			zoomIn = 1;
+		} else if (c == 'o') { //downArrow
+			zoomOut = 1;
+		} 
       }
-    }
+    } else {
+		zoomIn = 0;
+		zoomOut = 0;
+	}
 	
     if (bulletVisible) {
       deltaX = parabolaX(100, 60, time - startPressed);

@@ -21,6 +21,7 @@ public:
   static const Color ORANGE;
   static const Color YELLOW;
   static const Color GREEN;
+  static const Color DARK_GREEN;
   static const Color BLUE;
   static const Color PINK;
   static const Color PURPLE;
