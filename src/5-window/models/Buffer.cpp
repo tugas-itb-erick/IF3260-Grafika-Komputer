@@ -261,7 +261,7 @@ void Buffer::setToOrigin(const string& s) {
 }
 
 bool Buffer::drawPoint(int x, int y, Color cl) {
-	if (x<50 || x > 1200 || y <50 || y> 600) return false;
+	//if (x<50 || x > 1200 || y <50 || y> 600) return false;
 	if (x && y && x < width && y < height) {
     if (arr[x][y] == Color::BLACK) {
 		  arr[x][y] = cl;
