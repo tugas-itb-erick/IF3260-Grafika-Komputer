@@ -261,9 +261,9 @@ int main() {
             bulletVisible = 1;
             startPressed = time;
           }
-        } else if (c == 'i') { //upArrow
+        } else if (c == 'w' || c == 'W') { //keyboard w
 			zoomIn = 1;
-		} else if (c == 'o') { //downArrow
+		} else if (c == 's' || c == 'S') { //keyboard s
 			zoomOut = 1;
 		} 
       }
