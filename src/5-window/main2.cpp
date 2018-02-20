@@ -117,6 +117,7 @@ int main() {
   
   Drawable plane = readFromFile("chars/4/pesawat.txt");
   // 
+  buff.addShape("ear", readFromFile("chars/4/Alien_Ear.txt"));
   buff.addShape("eye", readFromFile("chars/4/Alien_Eye.txt"));
   buff.addShape("face", readFromFile("chars/4/Alien_Face.txt"));
   buff.addShape("lip", readFromFile("chars/4/Alien_Lip.txt"));
@@ -146,7 +147,8 @@ int main() {
     // GAMBAR TEMBOK DAN TOMBOL
   if (zoomIn) {
     buff.drawShape("upButton", 1, 1, Color::RED, false);
-		buff.scaleShape("eye", SCALECONSTANT);
+	buff.scaleShape("ear", SCALECONSTANT);
+	buff.scaleShape("eye", SCALECONSTANT);
     buff.scaleShape("face", SCALECONSTANT);
     buff.scaleShape("lip", SCALECONSTANT);
     buff.scaleShape("scratch" , SCALECONSTANT);
@@ -161,7 +163,8 @@ int main() {
 	
 	if (zoomOut) {
     buff.drawShape("downButton", 1, 1, Color::RED, false);
-		buff.scaleShape("eye", 1/SCALECONSTANT);
+	buff.scaleShape("ear", 1/SCALECONSTANT);
+    buff.scaleShape("eye", 1/SCALECONSTANT);
     buff.scaleShape("face", 1/SCALECONSTANT);
     buff.scaleShape("lip", 1/SCALECONSTANT);
     buff.scaleShape("scratch" , 1/SCALECONSTANT);
@@ -186,18 +189,19 @@ int main() {
 	buff.drawShape("desk", 1, 1, Color::DARK_GREEN, false);
 	buff.drawShape("wall", 1, 1, Color::GREY, false);	
 
-  buff.drawShape("eye", time, 0, Color::GREY);
-  buff.drawShape("face", time, 0, Color::WHITE);
-  buff.drawShape("lip", time, 0, Color::RED);
   buff.drawShape("scratch" , time, 0, Color::ORANGE);
+  buff.drawShape("ear", time, 0, Color::DARK_GREEN);
+  buff.drawShape("eye", time, 0, Color::BLUE);
+  buff.drawShape("lip", time, 0, Color::RED);
+  buff.drawShape("face", time, 0, Color::GREEN);
   buff.drawShape("cockpit" , time, 0, Color::WHITE);
+  buff.drawShape("neck", time, 0, Color::PURPLE);
+  buff.drawShape("upperbody", time, 0, Color::PINK);
+  buff.drawShape("lowerbody", time, 0, Color::GREEN);
   buff.drawShape("wheel3" , time, 0, Color::YELLOW);
   buff.drawShape("wheel2" , time, 0, Color::YELLOW);
   buff.drawShape("wheel1", time, 0, Color::YELLOW);
-  buff.drawShape("upperbody", time, 0, Color::PINK);
-  buff.drawShape("neck", time, 0, Color::PURPLE);
-  buff.drawShape("lowerbody", time, 0, Color::GREEN);
-
+  
       
 	
     // MEMBACA SPACEBAR
