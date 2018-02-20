@@ -227,9 +227,12 @@ void Buffer::translateAllShape(const Point& p) {
 }
 
 void Buffer::scaleShape(const string& id, double k, int a, int b) {
+  Point center = shapes[id].centroid();
+  setToOrigin(id);
   for (auto& e : shapes[id].points) {
     e = Point(k*(e.x - a) + a, k*(e.y - b) + b);
   }
+  translateShape(id, center);
 }
 
 void Buffer::scaleShape(const string& id, double k, const Point& p) {
