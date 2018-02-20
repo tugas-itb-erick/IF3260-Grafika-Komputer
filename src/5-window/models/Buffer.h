@@ -29,7 +29,8 @@ public:
   // Methods
   void addShape(const string&, const Drawable&);
   void delShape(const string&);
-  bool drawShape(const string&, int, int, Color cl = Color::WHITE);
+  void clip(vector<Point>& v, const Point& p1, const Point& p2);
+  void drawShape(const string&, int, int, Color cl = Color::WHITE, bool b = true);
   
   // void scanLineShape(const string& id, double gradient, Color* pattern);
   void reset();
@@ -70,6 +71,7 @@ public:
   
 
   static const Point CENTER;
+  static const Point CLIP[];
 
 private:
   // Private Methods

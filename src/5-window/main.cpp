@@ -135,9 +135,6 @@ int main() {
   buff.translateAllShape(center + Buffer::CENTER);
 
   buff.addShape("platform", readFromFile("chars/4/Platform.txt"));
-  //buff.addShape("cannon", readFromFile("chars/4/Cannon.txt"));
-  //buff.addShape("ground", readFromFile("chars/4/Ground.txt"));
-  //buff.addShape("bullet", readFromFile("chars/4/Bullet.txt"));
   buff.addShape("wall", readFromFile("chars/4/Tembok.txt"));
   buff.addShape("desk", readFromFile("chars/4/Meja.txt"));
   buff.addShape("panel", readFromFile("chars/4/Panel.txt"));
@@ -158,26 +155,46 @@ int main() {
   for (double time = 0; time < 50; time += 0.5) {
     buff.reset();
     
-    /*** GAMBAR TEMBOK DAN TOMBOL ***/
-    if (zoomIn) {
-		buff.drawShape("upButton", 1, 1, Color::RED);
+    // GAMBAR TEMBOK DAN TOMBOL
+  if (zoomIn) {
+		buff.drawShape("upButton", 1, 1, Color::RED, false);
+    buff.scaleShape("leftBlade", SCALECONSTANT, Buffer::CENTER);
+    buff.scaleShape("rightBlade", SCALECONSTANT, Buffer::CENTER);
+    buff.scaleShape("leftBladeLine", SCALECONSTANT, Buffer::CENTER);
+    buff.scaleShape("rightBladeLine", SCALECONSTANT, Buffer::CENTER);
+    buff.scaleShape("leftWheel", SCALECONSTANT, Buffer::CENTER);
+    buff.scaleShape("rightWheel", SCALECONSTANT, Buffer::CENTER);
+    buff.scaleShape("leftWindow", SCALECONSTANT, Buffer::CENTER);
+    buff.scaleShape("rightWindow", SCALECONSTANT, Buffer::CENTER);
+    buff.scaleShape("plane", SCALECONSTANT, Buffer::CENTER);
+    buff.centerShape("plane");
 	}
 	
 	if (zoomOut) {
-		buff.drawShape("downButton", 1, 1, Color::RED);
+		buff.drawShape("downButton", 1, 1, Color::RED, false);
+    buff.scaleShape("leftBlade", 1/SCALECONSTANT, Buffer::CENTER);
+    buff.scaleShape("rightBlade", 1/SCALECONSTANT, Buffer::CENTER);
+    buff.scaleShape("leftBladeLine", 1/SCALECONSTANT, Buffer::CENTER);
+    buff.scaleShape("rightBladeLine", 1/SCALECONSTANT, Buffer::CENTER);
+    buff.scaleShape("leftWheel", 1/SCALECONSTANT, Buffer::CENTER);
+    buff.scaleShape("rightWheel", 1/SCALECONSTANT, Buffer::CENTER);
+    buff.scaleShape("leftWindow", 1/SCALECONSTANT, Buffer::CENTER);
+    buff.scaleShape("rightWindow", 1/SCALECONSTANT, Buffer::CENTER);
+    buff.scaleShape("plane", 1/SCALECONSTANT, Buffer::CENTER);
+    buff.centerShape("plane");
 	}	
 	
 	if ((int)time % 2 > 0) {
-		buff.drawShape("panel", 1, 1, Color::GREEN);	
-		buff.drawShape("upButton", 1, 1, Color::YELLOW);
-		buff.drawShape("downButton", 1, 1, Color::YELLOW);
+		buff.drawShape("panel", 1, 1, Color::GREEN, false);	
+		buff.drawShape("upButton", 1, 1, Color::YELLOW, false);
+		buff.drawShape("downButton", 1, 1, Color::YELLOW, false);
 	} else {
-		buff.drawShape("panel", 1, 1, Color::YELLOW);	
-		buff.drawShape("upButton", 1, 1, Color::ORANGE);
-		buff.drawShape("downButton", 1, 1, Color::ORANGE);
+		buff.drawShape("panel", 1, 1, Color::YELLOW, false);	
+		buff.drawShape("upButton", 1, 1, Color::ORANGE, false);
+		buff.drawShape("downButton", 1, 1, Color::ORANGE, false);
 	}
-	buff.drawShape("desk", 1, 1, Color::DARK_GREEN);
-	buff.drawShape("wall", 1, 1, Color::GREY);	
+	buff.drawShape("desk", 1, 1, Color::DARK_GREEN, false);
+	buff.drawShape("wall", 1, 1, Color::GREY, false);	
 		
 		
     if (time < 30) {
@@ -216,21 +233,6 @@ int main() {
         // }
         buff.drawShape("rightWheel",deltaX,deltaY, Color::GREEN);
       }
-		
-      // Atur orang dan parasut
-      if (loopCount % LOOP == 0 && !nabrak) {
-        buff.scaleShape("person", SCALECONSTANT, Buffer::CENTER);
-        buff.scaleShape("parachute",SCALECONSTANT, Buffer::CENTER);
-      }
-      
-      if (nabrak) {
-        deltaX = parabolaX(-50, 10, time - startNabrak);
-        deltaY = parabolaY(-100, 10, time - startNabrak, 15);
-        buff.drawShape("person", deltaX, deltaY, Color(238, 203, 173));
-        if (time - startNabrak > 5) {
-          buff.drawShape("parachute", deltaX, deltaY, Color::RED);
-        }
-      }
 
       // Atur pesawat    
       buff.drawShape("leftWindow", 0,0, Color::WHITE);
@@ -243,53 +245,26 @@ int main() {
         buff.centerShape("plane");
       }
     }
-
-		//buff.drawShape("ground", 30, 670, Color::GREEN);
-		//buff.drawShape("platform", 30, 620, Color::BLUE);
-		//buff.drawShape("cannon", 81, 620, Color::PURPLE);
-		
-		deltaX = parabolaX(speedX, 60, time);
-		deltaY = parabolaY(speedY, 60, time-timecol, 10);
-		if ((initBulletY + deltaY) >= 760) {
-			speedY = speedY/2;
-			timecol = time;
-		}
 	
-    /******** MEMBACA SPACEBAR ******/
+    // MEMBACA SPACEBAR
     if (kbhit()){
       int r;
       unsigned char c;
       if (r = read(0, &c, sizeof(c)) < 0) { //ngecek apakah tombol 0 s.d. 9 dipencet
         //do nothing
       } else { //selain 0 s.d. 9
-        if (c == ' ') {
-          if (!bulletVisible) {
-            bulletVisible = 1;
-            startPressed = time;
-          }
-        } else if (c == 'w' || c == 'W') { //keyboard w
+      if (c == 'w' || c == 'W') { //keyboard w
 			zoomIn = 1;
+      zoomOut = 0;
 		} else if (c == 's' || c == 'S') { //keyboard s
 			zoomOut = 1;
+      zoomIn = 0;
 		} 
       }
     } else {
 		zoomIn = 0;
 		zoomOut = 0;
 	}
-	
-    if (bulletVisible) {
-      deltaX = parabolaX(100, 60, time - startPressed);
-      deltaY = parabolaY(-100, 60, time - startPressed,15);
-      nabrak |= buff.drawShape("bullet", initBulletX + deltaX, initBulletY + deltaY, Color::WHITE);
-      if (initBulletY + deltaY >= 750) {
-        bulletVisible = 0;
-      }
-    }
-    if (nabrak) {
-      bulletVisible = 0;
-      if (startNabrak == UNDEFINED) startNabrak = time;
-    }
     
     buff.apply();
     ++loopCount;

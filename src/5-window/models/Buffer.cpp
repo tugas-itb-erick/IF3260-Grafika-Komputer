@@ -12,6 +12,7 @@ using namespace std;
 
 const Point Buffer::CENTER = Point(680, 350);
 const Point dp[] = {Point(0, 1), Point(-1, 0), Point(0, -1), Point(1, 0)};
+const Point Buffer::CLIP[] = {Point(30, 50), Point(1330, 50), Point(1330, 500), Point(30, 500)};
 
 void Buffer::initFramebuffer() {
   fbfd = 0;
@@ -105,10 +106,42 @@ void Buffer::apply() {
   }
 }
 
-bool Buffer::drawShape(const string& id, int x, int y, Color cl) {
-  bool res = false;
+void Buffer::clip(vector<Point>& v, const Point& p1, const Point& p2) {
+  vector<Point> res;
+  Line l1 = Line(p1, p2);
+  for (int i=0;i<v.size();++i) {
+    int k = (i+1)%v.size();
+    int ix = v[i].x, iy = v[i].y;
+    int kx = v[k].x, ky = v[k].y;
+    int i_pos = (p2.x-p1.x)*(iy-p1.y) - (p2.y-p1.y)*(ix-p1.x);
+    int k_pos = (p2.x-p1.x)*(ky-p1.y) - (p2.y-p1.y)*(kx-p1.x);
+    Line l2 = Line(v[i], v[k]);
+    if (i_pos<0 && k_pos<0) {
+      res.push_back(v[k]);
+    } else if (i_pos>=0 && k_pos<0) {
+      res.push_back(l1.intersection(l2));
+      res.push_back(v[k]);
+    } else if (i_pos<0 && k_pos>=0) {
+      res.push_back(l1.intersection(l2));
+    }
+  }
+  v.clear();
+  for (auto e:res) {
+    v.push_back(e);
+  }
+}
+
+void Buffer::drawShape(const string& id, int x, int y, Color cl, bool b) {
   for (auto& e:shapes[id].points) {
     e += Point(x, y);
+  }
+  vector<Point> res = shapes[id].points;
+  res.pop_back();
+  if (b) {
+    for (int i=0;i<4;++i) {
+      int k = (i+3)%4;
+      clip(res, CLIP[i], CLIP[k]);
+    }
   }
   Line scanline, edge;
   Point intersect;
@@ -116,9 +149,9 @@ bool Buffer::drawShape(const string& id, int x, int y, Color cl) {
   for (int j=0;j<height; ++j) {
     intersection.clear();
     scanline = Line(Point(0, j), Point(width, j));
-    for (int i=0;i<shapes[id].points.size();++i) {
-      if (i+2<shapes[id].points.size()) {
-        edge = Line(shapes[id].points[i], shapes[id].points[i+1]);
+    for (int i=0;i<res.size();++i) {
+      if (i+1<res.size()) {
+        edge = Line(res[i], res[i+1]);
         intersect = scanline.intersection(edge);
         if (edge.contains(intersect)) {
           intersection.push_back(intersect);
@@ -128,7 +161,7 @@ bool Buffer::drawShape(const string& id, int x, int y, Color cl) {
         }
       }
     }
-    edge = Line(shapes[id].points[0], shapes[id].points[shapes[id].points.size()-2]);
+    edge = Line(shapes[id].points[0], res.back());
     intersect = scanline.intersection(edge);
     if (edge.contains(intersect)) {
       intersection.push_back(intersect);
@@ -143,17 +176,14 @@ bool Buffer::drawShape(const string& id, int x, int y, Color cl) {
         start = end;
         end = temp;
       }
-      if (start < 0) start = 0;
-      if (end >= width) end = width;
       for (int i=start;i<=end;++i) {
-        res |= drawPoint(i, j, cl);
+        drawPoint(i, j, cl);
       }
     }
   }
   for (auto& e:shapes[id].points) {
     e -= Point(x, y);
   }
-  return res;
 }
 
 int Buffer::getWidth() {
