@@ -105,6 +105,7 @@ int main() {
   Drawable view1 = readFromFile("chars/6/Kotak.txt");
   Drawable view2 = readFromFile("chars/6/PersegiPanjang.txt");
   buff.addShape("menu1", view1);
+  buff.addShape("k1", view1);buff.addShape("k2", view1);
   buff.addShape("menu2", view2);
 
   char menu = '0';
@@ -112,12 +113,16 @@ int main() {
 
   do {
     buff.reset();
+    if (kbhit()) {
+      read(0, &input, sizeof(input));
+      menu = input;
+    }
     switch (menu) {
-      case 'z':
+      case '1':
         buff.drawShape("menu1", 100, 100, Color(100,100,100));
         buff.drawShape("menu2", 100, 300, Color(50,50,50));
         break;
-      case 'x':
+      case '2':
         buff.drawShape("menu1", 100, 100, Color(50,50,50));
         buff.drawShape("menu2", 100, 300, Color(100,100,100));
         break;
@@ -126,18 +131,12 @@ int main() {
         buff.drawShape("menu2", 100, 300, Color(50,50,50));
         break;
     }
-    if (kbhit()) {
-      read(0, &input, sizeof(input));
-      menu = input;
-      // switch (input) {
-      //   case '1':
-      //     break;
-      //   case '2':
-      //     break;
-      //   default:
-      //     break;
-      // }
-    }
+
+    buff.drawShape("k1", 500, 100, Color::RED);
+    buff.drawShape("k2", 600, 100, Color::BLUE);
+
+    buff.drawScaleShape("k1", 500, 400, Color::RED, 2, 600, 450);
+    buff.drawScaleShape("k2", 600, 400, Color::BLUE, 2, 600, 450);
 
     buff.apply();
   } while (input != 'q');

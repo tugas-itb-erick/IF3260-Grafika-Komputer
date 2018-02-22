@@ -105,8 +105,7 @@ void Buffer::apply() {
   }
 }
 
-bool Buffer::drawShape(const string& id, int x, int y, Color cl) {
-  bool res = false;
+void Buffer::drawShape(const string& id, int x, int y, Color cl) {
   for (auto& e:shapes[id].points) {
     e += Point(x, y);
   }
@@ -146,14 +145,37 @@ bool Buffer::drawShape(const string& id, int x, int y, Color cl) {
       if (start < 0) start = 0;
       if (end >= width) end = width;
       for (int i=start;i<=end;++i) {
-        res |= drawPoint(i, j, cl);
+        drawPoint(i, j, cl);
       }
     }
   }
   for (auto& e:shapes[id].points) {
     e -= Point(x, y);
   }
-  return res;
+}
+
+void Buffer::drawShapeBorder(const string& id, int x, int y, Color cl) {
+  for(int i=0; i<shapes[id].points.size() - 1; i++) {
+    drawLine(Line(shapes[id].points[i], shapes[id].points[i+1]), cl);
+  }
+}
+
+void Buffer::drawScaleShape(const string& id, int x, int y, Color cl, double scale, int a, int b) {
+  shapes["tmp"].points.clear();
+  for (auto po : shapes[id].points) {
+    shapes["tmp"].points.push_back(po);
+  }
+  scaleShape("tmp", scale, a, b);
+  drawShape("tmp", x, y, cl);
+}
+
+void Buffer::drawScaleShapeBorder(const string& id, int x, int y, Color cl, double scale, int a, int b) {
+  shapes["tmp"].points.clear();
+  for (auto po : shapes[id].points) {
+    shapes["tmp"].points.push_back(po);
+  }
+  scaleShape("tmp", scale, a, b);
+  drawShapeBorder("tmp", x, y, cl);
 }
 
 int Buffer::getWidth() {
@@ -260,15 +282,12 @@ void Buffer::setToOrigin(const string& s) {
   translateShape(s, center);
 }
 
-bool Buffer::drawPoint(int x, int y, Color cl) {
+void Buffer::drawPoint(int x, int y, Color cl) {
 	if (x && y && x < width && y < height) {
     if (arr[x][y] == Color::BLACK) {
 		  arr[x][y] = cl;
-      return false;
-    } else if (arr[x][y] == Color::ORANGE) return true;
-    else return false;
+    }
 	}
-  return false;
 }
 
 void Buffer::drawPoint(const Point& P, Color cl) {

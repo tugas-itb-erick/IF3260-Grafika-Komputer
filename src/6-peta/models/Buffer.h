@@ -27,7 +27,10 @@ public:
   // Methods
   void addShape(const string&, const Drawable&);
   void delShape(const string&);
-  bool drawShape(const string&, int, int, Color cl = Color::WHITE);
+  void drawShape(const string&, int, int, Color cl = Color::WHITE);
+  void drawShapeBorder(const string&, int, int, Color cl = Color::WHITE);
+  void drawScaleShape(const string&, int, int, Color cl = Color::WHITE, double scale = 1, int a = 0, int b = 0);
+  void drawScaleShapeBorder(const string&, int, int, Color cl = Color::WHITE, double scale = 1, int a = 0, int b = 0);
   
   // void scanLineShape(const string& id, double gradient, Color* pattern);
   void reset();
@@ -70,7 +73,7 @@ public:
 private:
   // Private Methods
   void initFramebuffer();
-  bool drawPoint(int, int, Color cl = Color::WHITE);
+  void drawPoint(int, int, Color cl = Color::WHITE);
   void drawPoint(const Point&, Color cl = Color::WHITE);
   void drawLine(const Line&, Color cl = Color::WHITE);
 
