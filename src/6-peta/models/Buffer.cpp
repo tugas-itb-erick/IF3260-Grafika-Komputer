@@ -192,7 +192,7 @@ Drawable& Buffer::getShape(const string& id) {
   return shapes[id];
 }
 
-unordered_map<string, Drawable>& Buffer::getShapes() {
+map<string, Drawable>& Buffer::getShapes() {
   return shapes;
 }
 

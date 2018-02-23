@@ -1,7 +1,7 @@
 #pragma once
 
 #include <linux/fb.h>
-#include <unordered_map>
+#include <map>
 #include "Color.h"
 #include "Drawable.h"
 #include "Point.h"
@@ -22,7 +22,7 @@ public:
   int getWidth();
   int getHeight();
   Drawable& getShape(const string&);
-  unordered_map<string, Drawable>& getShapes();
+  map<string, Drawable>& getShapes();
 
   // Methods
   void addShape(const string&, const Drawable&);
@@ -81,7 +81,7 @@ private:
   int width;
   int height;
   Color** arr;
-  unordered_map<string, Drawable> shapes;
+  map<string, Drawable> shapes;
 
   // Framebuffer Attributes
   struct fb_var_screeninfo vinfo;

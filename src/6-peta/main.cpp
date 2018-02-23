@@ -25,11 +25,6 @@ using namespace std;
 
 
 //----- CONSTANTS -----//
-#define PI 3.14159265
-#define DOUBLE2INT_CORRECTION_VAL 0.5
-#define UNDEFINED -1
-#define SCALECONSTANT 1.2
-#define LOOP 2
 
 
 //----- GLOBAL VARIABLES -----//
@@ -38,9 +33,6 @@ struct termios origTermios;
 
 //----- FUNCTION DECLARATIONS -----//
 Drawable readFromFile(const string& filename);
-int parabolaX(double initSpeed, double theta, double time);
-int parabolaY(double initSpeed, double theta, double time, double accel);
-int freefall(double initSpeed, double time, double accel);
 void resetTerminalMode();
 void setConioTerminalNode();
 int kbhit();
@@ -97,51 +89,55 @@ Drawable readFromFile(const string& filename) {
 
 //----- MAIN PROGRAM -----//
 int main() {
-	
   Buffer buff;
   buff.reset();
   setConioTerminalNode();
   
   buff.addShape("menu1", readFromFile("chars/6/Menu1.txt"));
   buff.addShape("menu2", readFromFile("chars/6/Menu2.txt"));
-  buff.addShape("item-tree", readFromFile("chars/6/MenuItem.txt"));
-  buff.addShape("item-street", readFromFile("chars/6/MenuItem.txt"));
-  buff.addShape("item-water", readFromFile("chars/6/MenuItem.txt"));
-  buff.addShape("item-building", readFromFile("chars/6/MenuItem.txt"));
+  buff.addShape("item", readFromFile("chars/6/MenuItem.txt"));
+  buff.addShape("checkbox", readFromFile("chars/6/Checkbox.txt"));
+  buff.addShape("checked", readFromFile("chars/6/Checked.txt"));
   buff.addShape("small-box", readFromFile("chars/6/Small.txt"));
-  buff.addShape("map-box", readFromFile("chars/6/Big.txt"));
+  buff.addShape("big-box", readFromFile("chars/6/Big.txt"));
 
-  char menu = '0';
-  char input = '0';
+  // Position config
   int xMenu1 = 50,
     yMenu1 = 50;
-  int xMenu2 = xMenu1,
-    yMenu2 = yMenu1 + 240;
+  int distMenu1Menu2 = 25;
+  int distMenu2Big = 25;
+  int xMenu2 = xMenu1 + buff.getShape("menu1").points[2].x + distMenu1Menu2,
+    yMenu2 = yMenu1;
   int xItem = xMenu1 + 5,
     yItem = yMenu1 + 5,
-    diffItem = 54;
-  int xSmall = 200,
-    ySmall = 150 + yMenu1 + diffItem*3;
-  int xMap = 500,
-    yMap = yMenu1;
+    diffItem = buff.getShape("item").points[2].y + 4;
+  int xCheckbox = xItem + 10,
+    yCheckbox = yItem + 12;
+  int xSmall = xMenu2 + buff.getShape("menu2").points[2].x/2,
+    ySmall = yMenu2 + buff.getShape("menu2").points[2].y/2;
+  int xBig = xMenu2 + buff.getShape("menu2").points[2].x + distMenu2Big,
+    yBig = yMenu1;
   int move = 20,
     xminMove = xMenu2 + buff.getShape("menu2").points[0].x,
     xmaxMove = xMenu2 + buff.getShape("menu2").points[2].x - buff.getShape("small-box").points[2].x,
     yminMove = yMenu2 + buff.getShape("menu2").points[0].y,
     ymaxMove = yMenu2 + buff.getShape("menu2").points[2].y - buff.getShape("small-box").points[2].y;
 
+  // Select menu config
   int selectedMenu = 1;
   int selectedItem = 0; // 0..nItem-1
-  int nItem = 4;
+  int nItem = 4; // total layer i.e tree, building, street, water  -->  4 layers
   bool checkbox[nItem];
-  for (auto el : checkbox) {
-    el = true;
+  for (int i=0; i<nItem; i++) {
+    checkbox[i] = true;
   }
 
+  // Scale config
   int scale = 1,
     minScale = 1,
-    maxScale = 4;
+    maxScale = 8;
 
+  char input = '0';
   do {
     buff.reset();
     if (kbhit()) {
@@ -198,7 +194,18 @@ int main() {
             scale--;
             if (scale < minScale)
               scale = minScale;
-            // TODO: handle min max value and reposition "small-box" if out of bound
+            
+            xminMove = xMenu2 + buff.getShape("menu2").points[0].x,
+            xmaxMove = xMenu2 + buff.getShape("menu2").points[2].x - buff.getShape("small-box").points[2].x*scale,
+            yminMove = yMenu2 + buff.getShape("menu2").points[0].y*scale,
+            ymaxMove = yMenu2 + buff.getShape("menu2").points[2].y - buff.getShape("small-box").points[2].y*scale;
+
+            if (xSmall >= xmaxMove) {
+              xSmall = xmaxMove;
+            }
+            if (ySmall >= ymaxMove) {
+              ySmall = ymaxMove;
+            }
           }
           break;
         case '.': // enlarge
@@ -206,7 +213,18 @@ int main() {
             scale++;
             if (scale > maxScale)
               scale = maxScale;
-            // TODO: handle min max value and reposition "small-box" if out of bound
+            
+            xminMove = xMenu2 + buff.getShape("menu2").points[0].x,
+            xmaxMove = xMenu2 + buff.getShape("menu2").points[2].x - buff.getShape("small-box").points[2].x*scale,
+            yminMove = yMenu2 + buff.getShape("menu2").points[0].y*scale,
+            ymaxMove = yMenu2 + buff.getShape("menu2").points[2].y - buff.getShape("small-box").points[2].y*scale;
+
+            if (xSmall >= xmaxMove) {
+              xSmall = xmaxMove;
+            }
+            if (ySmall >= ymaxMove) {
+              ySmall = ymaxMove;
+            }
           }
           break;
         default:
@@ -221,21 +239,17 @@ int main() {
     else
       buff.drawShapeBorder("menu2", xMenu2, yMenu2, Color::WHITE);
 
-    buff.drawShape("item-tree", xItem, yItem, Color(50,50,50));
-    buff.drawShape("item-street", xItem, yItem+diffItem, Color(50,50,50));
-    buff.drawShape("item-water", xItem, yItem+diffItem*2, Color(50,50,50));
-    buff.drawShape("item-building", xItem, yItem+diffItem*3, Color(50,50,50));
-    switch (selectedItem) {
-      case 0: buff.drawShapeBorder("item-tree", xItem, yItem+diffItem*selectedItem, Color::WHITE); break;
-      case 1: buff.drawShapeBorder("item-street", xItem, yItem+diffItem*selectedItem, Color::WHITE); break;
-      case 2: buff.drawShapeBorder("item-water", xItem, yItem+diffItem*selectedItem, Color::WHITE); break;
-      case 3: buff.drawShapeBorder("item-building", xItem, yItem+diffItem*selectedItem, Color::WHITE); break;
-      // case nItem-1: ...
-      default: break;
+    for (int i=0; i<nItem; i++) {
+      buff.drawShape("item", xItem, yItem+diffItem*i, Color(50,50,50));
+      buff.drawShapeBorder("checkbox", xCheckbox, yCheckbox+diffItem*i, Color::WHITE);
+      if (checkbox[i]) {
+        buff.drawShapeBorder("checked", 5+xCheckbox, 5+yCheckbox+diffItem*i, Color::WHITE);
+      }
     }
+    buff.drawShapeBorder("item", xItem, yItem+diffItem*selectedItem, Color::WHITE);
 
     buff.drawScaleShapeBorder("small-box", xSmall, ySmall, Color::WHITE, scale);
-    buff.drawShapeBorder("map-box", xMap, yMap, Color::WHITE);
+    buff.drawShapeBorder("big-box", xBig, yBig, Color::WHITE);
 
     buff.apply();
   } while (input != 'q');
