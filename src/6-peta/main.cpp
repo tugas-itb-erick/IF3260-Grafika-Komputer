@@ -102,41 +102,140 @@ int main() {
   buff.reset();
   setConioTerminalNode();
   
-  Drawable view1 = readFromFile("chars/6/Kotak.txt");
-  Drawable view2 = readFromFile("chars/6/PersegiPanjang.txt");
-  buff.addShape("menu1", view1);
-  buff.addShape("k1", view1);buff.addShape("k2", view1);
-  buff.addShape("menu2", view2);
+  buff.addShape("menu1", readFromFile("chars/6/Menu1.txt"));
+  buff.addShape("menu2", readFromFile("chars/6/Menu2.txt"));
+  buff.addShape("item-tree", readFromFile("chars/6/MenuItem.txt"));
+  buff.addShape("item-street", readFromFile("chars/6/MenuItem.txt"));
+  buff.addShape("item-water", readFromFile("chars/6/MenuItem.txt"));
+  buff.addShape("item-building", readFromFile("chars/6/MenuItem.txt"));
+  buff.addShape("small-box", readFromFile("chars/6/Small.txt"));
+  buff.addShape("map-box", readFromFile("chars/6/Big.txt"));
 
   char menu = '0';
   char input = '0';
+  int xMenu1 = 50,
+    yMenu1 = 50;
+  int xMenu2 = xMenu1,
+    yMenu2 = yMenu1 + 240;
+  int xItem = xMenu1 + 5,
+    yItem = yMenu1 + 5,
+    diffItem = 54;
+  int xSmall = 200,
+    ySmall = 150 + yMenu1 + diffItem*3;
+  int xMap = 500,
+    yMap = yMenu1;
+  int move = 20,
+    xminMove = xMenu2 + buff.getShape("menu2").points[0].x,
+    xmaxMove = xMenu2 + buff.getShape("menu2").points[2].x - buff.getShape("small-box").points[2].x,
+    yminMove = yMenu2 + buff.getShape("menu2").points[0].y,
+    ymaxMove = yMenu2 + buff.getShape("menu2").points[2].y - buff.getShape("small-box").points[2].y;
+
+  int selectedMenu = 1;
+  int selectedItem = 0; // 0..nItem-1
+  int nItem = 4;
+  bool checkbox[nItem];
+  for (auto el : checkbox) {
+    el = true;
+  }
+
+  int scale = 1,
+    minScale = 1,
+    maxScale = 4;
 
   do {
     buff.reset();
     if (kbhit()) {
       read(0, &input, sizeof(input));
-      menu = input;
+      switch (input) {
+        case '1':
+          selectedMenu = 1;
+          break;
+        case '2':
+          selectedMenu = 2;
+          break;
+        case 'a': // left
+          if (selectedMenu == 2) {
+            xSmall -= move;
+            if (xSmall < xminMove)
+              xSmall = xminMove;
+          }
+          break;
+        case 'd': // right
+          if (selectedMenu == 2) {
+            xSmall += move;
+            if (xSmall > xmaxMove)
+              xSmall = xmaxMove;
+          }
+          break;
+        case 'w': // up
+          if (selectedMenu == 1) {
+            --selectedItem;
+            if (selectedItem < 0)
+              selectedItem += nItem;
+          } else {
+            ySmall -= move;
+            if (ySmall < yminMove)
+              ySmall = yminMove;
+          }
+          break;
+        case 's': // down
+          if (selectedMenu == 1) {
+            ++selectedItem;
+            selectedItem %= nItem;
+          } else {
+            ySmall += move;
+            if (ySmall > ymaxMove)
+              ySmall = ymaxMove;
+          }
+          break;
+        case ' ': // check/uncheck layer
+          if (selectedMenu == 1) {
+            checkbox[selectedItem] = !checkbox[selectedItem];
+          }
+          break;
+        case ',': // shrink
+          if (selectedMenu == 2) {
+            scale--;
+            if (scale < minScale)
+              scale = minScale;
+            // TODO: handle min max value and reposition "small-box" if out of bound
+          }
+          break;
+        case '.': // enlarge
+          if (selectedMenu == 2) {
+            scale++;
+            if (scale > maxScale)
+              scale = maxScale;
+            // TODO: handle min max value and reposition "small-box" if out of bound
+          }
+          break;
+        default:
+          break;
+      }
     }
-    switch (menu) {
-      case '1':
-        buff.drawShape("menu1", 100, 100, Color(100,100,100));
-        buff.drawShape("menu2", 100, 300, Color(50,50,50));
-        break;
-      case '2':
-        buff.drawShape("menu1", 100, 100, Color(50,50,50));
-        buff.drawShape("menu2", 100, 300, Color(100,100,100));
-        break;
-      default:
-        buff.drawShape("menu1", 100, 100, Color(50,50,50));
-        buff.drawShape("menu2", 100, 300, Color(50,50,50));
-        break;
+    
+    buff.drawShape("menu1", xMenu1, yMenu1, Color(100,100,100));
+    buff.drawShape("menu2", xMenu2, yMenu2, Color(100,100,100));
+    if (selectedMenu == 1)
+      buff.drawShapeBorder("menu1", xMenu1, yMenu1, Color::WHITE);
+    else
+      buff.drawShapeBorder("menu2", xMenu2, yMenu2, Color::WHITE);
+
+    buff.drawShape("item-tree", xItem, yItem, Color(50,50,50));
+    buff.drawShape("item-street", xItem, yItem+diffItem, Color(50,50,50));
+    buff.drawShape("item-water", xItem, yItem+diffItem*2, Color(50,50,50));
+    buff.drawShape("item-building", xItem, yItem+diffItem*3, Color(50,50,50));
+    switch (selectedItem) {
+      case 0: buff.drawShapeBorder("item-tree", xItem, yItem+diffItem*selectedItem, Color::WHITE); break;
+      case 1: buff.drawShapeBorder("item-street", xItem, yItem+diffItem*selectedItem, Color::WHITE); break;
+      case 2: buff.drawShapeBorder("item-water", xItem, yItem+diffItem*selectedItem, Color::WHITE); break;
+      case 3: buff.drawShapeBorder("item-building", xItem, yItem+diffItem*selectedItem, Color::WHITE); break;
+      // case nItem-1: ...
+      default: break;
     }
 
-    buff.drawShape("k1", 500, 100, Color::RED);
-    buff.drawShape("k2", 600, 100, Color::BLUE);
-
-    buff.drawScaleShape("k1", 500, 400, Color::RED, 2, 600, 450);
-    buff.drawScaleShape("k2", 600, 400, Color::BLUE, 2, 600, 450);
+    buff.drawScaleShapeBorder("small-box", xSmall, ySmall, Color::WHITE, scale);
+    buff.drawShapeBorder("map-box", xMap, yMap, Color::WHITE);
 
     buff.apply();
   } while (input != 'q');

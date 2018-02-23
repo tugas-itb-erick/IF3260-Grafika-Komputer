@@ -155,9 +155,11 @@ void Buffer::drawShape(const string& id, int x, int y, Color cl) {
 }
 
 void Buffer::drawShapeBorder(const string& id, int x, int y, Color cl) {
-  for(int i=0; i<shapes[id].points.size() - 1; i++) {
-    drawLine(Line(shapes[id].points[i], shapes[id].points[i+1]), cl);
+  for(int i=0; i<shapes[id].points.size() - 2; i++) {
+    drawLine(Line(shapes[id].points[i] + Point(x,y), shapes[id].points[i+1] + Point(x,y), cl));
   }
+  int i = shapes[id].points.size() - 2;
+  drawLine(Line(shapes[id].points[i] + Point(x,y), shapes[id].points[0] + Point(x,y), cl));
 }
 
 void Buffer::drawScaleShape(const string& id, int x, int y, Color cl, double scale, int a, int b) {
@@ -284,9 +286,9 @@ void Buffer::setToOrigin(const string& s) {
 
 void Buffer::drawPoint(int x, int y, Color cl) {
 	if (x && y && x < width && y < height) {
-    if (arr[x][y] == Color::BLACK) {
+    //if (arr[x][y] == Color::BLACK) {
 		  arr[x][y] = cl;
-    }
+    //}
 	}
 }
 
