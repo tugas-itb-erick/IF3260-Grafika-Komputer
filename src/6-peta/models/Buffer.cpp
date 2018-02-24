@@ -105,6 +105,92 @@ void Buffer::apply() {
   }
 }
 
+void Buffer::clip(vector<Point>& v, const Point& p1, const Point& p2) {
+  vector<Point> res;
+  Line l1 = Line(p1, p2);
+  for (int i=0;i<v.size();++i) {
+    int k = (i+1)%v.size();
+    int ix = v[i].x, iy = v[i].y;
+    int kx = v[k].x, ky = v[k].y;
+    int i_pos = (p2.x-p1.x)*(iy-p1.y) - (p2.y-p1.y)*(ix-p1.x);
+    int k_pos = (p2.x-p1.x)*(ky-p1.y) - (p2.y-p1.y)*(kx-p1.x);
+    Line l2 = Line(v[i], v[k]);
+    if (i_pos<0 && k_pos<0) {
+      res.push_back(v[k]);
+    } else if (i_pos>=0 && k_pos<0) {
+      res.push_back(l1.intersection(l2));
+      res.push_back(v[k]);
+    } else if (i_pos<0 && k_pos>=0) {
+      res.push_back(l1.intersection(l2));
+    }
+  }
+  v.clear();
+  for (auto e:res) {
+    v.push_back(e);
+  }
+}
+
+void Buffer::drawClippedShape(const string& id, int x, int y, const string& cli, int ofx, int ofy, double scale, Color cl) {
+  vector<Point> res = shapes[id].points;
+  vector<Point> clips = shapes[cli].points;
+  for (auto& e:clips) {
+    e += Point(ofx, ofy);
+  }
+  res.pop_back();
+  clips.pop_back();
+  for (auto e:clips) {
+    cout << "clips: " << e.x << ' ' << e.y << endl;
+  }
+  for (int i=0;i<clips.size();++i) {
+    int k = (i+3)%4;
+    Point x = clips[i], y = clips[k];
+    clip(res, x, y);
+    cout << i << endl;
+    for (auto e:res) {
+      cout << "points: " << e.x << ' ' << e.y << endl;
+    }
+  }
+  for (auto& e:res) e += Point(x, y);
+  Line scanline, edge;
+  Point intersect;
+  vector<Point> intersection;
+  for (int j=0;j<height; ++j) {
+    intersection.clear();
+    scanline = Line(Point(0, j), Point(width, j));
+    for (int i=0;i<res.size();++i) {
+      if (i+1<res.size()) {
+        edge = Line(res[i], res[i+1]);
+        intersect = scanline.intersection(edge);
+        if (edge.contains(intersect)) {
+          intersection.push_back(intersect);
+          if (intersect.y >= edge.first.y && intersect.y >= edge.second.y) {
+            intersection.push_back(intersect);
+          }
+        }
+      }
+    }
+    edge = Line(shapes[id].points[0], res.back());
+    intersect = scanline.intersection(edge);
+    if (edge.contains(intersect)) {
+      intersection.push_back(intersect);
+      if (intersect.y >= edge.first.y && intersect.y >= edge.second.y) {
+        intersection.push_back(intersect);
+      }
+    }
+    for (int k=1;k<intersection.size();k+=2) {
+      int start = intersection[k-1].x, end = intersection[k].x;
+      if (start > end) {
+        int temp = start;
+        start = end;
+        end = temp;
+      }
+      for (int i=start;i<=end;++i) {
+        drawPoint(i, j, cl);
+      }
+    }
+  }
+}
+
 void Buffer::drawShape(const string& id, int x, int y, Color cl) {
   for (auto& e:shapes[id].points) {
     e += Point(x, y);

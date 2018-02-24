@@ -131,6 +131,55 @@ void Buffer::clip(vector<Point>& v, const Point& p1, const Point& p2) {
   }
 }
 
+void Buffer::drawClippedShape(const string& id, int x, int y, const string& clip, int ofx, int ofy, double scale, Color cl) {
+  for (auto& e:shapes[id].points) {
+    e += Point(x, y);
+  }
+  Line scanline, edge;
+  Point intersect;
+  vector<Point> intersection;
+  for (int j=0;j<height; ++j) {
+    intersection.clear();
+    scanline = Line(Point(0, j), Point(width, j));
+    for (int i=0;i<shapes[id].points.size();++i) {
+      if (i+2<shapes[id].points.size()) {
+        edge = Line(shapes[id].points[i], shapes[id].points[i+1]);
+        intersect = scanline.intersection(edge);
+        if (edge.contains(intersect)) {
+          intersection.push_back(intersect);
+          if (intersect.y >= edge.first.y && intersect.y >= edge.second.y) {
+            intersection.push_back(intersect);
+          }
+        }
+      }
+    }
+    edge = Line(shapes[id].points[0], shapes[id].points[shapes[id].points.size()-2]);
+    intersect = scanline.intersection(edge);
+    if (edge.contains(intersect)) {
+      intersection.push_back(intersect);
+      if (intersect.y >= edge.first.y && intersect.y >= edge.second.y) {
+        intersection.push_back(intersect);
+      }
+    }
+    for (int k=1;k<intersection.size();k+=2) {
+      int start = intersection[k-1].x, end = intersection[k].x;
+      if (start > end) {
+        int temp = start;
+        start = end;
+        end = temp;
+      }
+      if (start < 0) start = 0;
+      if (end >= width) end = width;
+      for (int i=start;i<=end;++i) {
+        drawPoint(i, j, cl);
+      }
+    }
+  }
+  for (auto& e:shapes[id].points) {
+    e -= Point(x, y);
+  }
+}
+
 void Buffer::drawShape(const string& id, int x, int y, Color cl, bool b) {
   for (auto& e:shapes[id].points) {
     e += Point(x, y);
