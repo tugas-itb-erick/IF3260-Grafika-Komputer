@@ -134,21 +134,17 @@ void Buffer::drawClippedShape(const string& id, int x, int y, const string& cli,
   vector<Point> res = shapes[id].points;
   vector<Point> clips = shapes[cli].points;
   for (auto& e:clips) {
+    e *= scale;
     e += Point(ofx, ofy);
+  }
+  for (auto& e:res) {
+    e += Point(x, y);
   }
   res.pop_back();
   clips.pop_back();
-  for (auto e:clips) {
-    cout << "clips: " << e.x << ' ' << e.y << endl;
-  }
   for (int i=0;i<clips.size();++i) {
     int k = (i+3)%4;
-    Point x = clips[i], y = clips[k];
-    clip(res, x, y);
-    cout << i << endl;
-    for (auto e:res) {
-      cout << "points: " << e.x << ' ' << e.y << endl;
-    }
+    clip(res, clips[i], clips[k]);
   }
   for (auto& e:res) e += Point(x, y);
   Line scanline, edge;
@@ -179,11 +175,6 @@ void Buffer::drawClippedShape(const string& id, int x, int y, const string& cli,
     }
     for (int k=1;k<intersection.size();k+=2) {
       int start = intersection[k-1].x, end = intersection[k].x;
-      if (start > end) {
-        int temp = start;
-        start = end;
-        end = temp;
-      }
       for (int i=start;i<=end;++i) {
         drawPoint(i, j, cl);
       }

@@ -133,10 +133,6 @@ int main() {
     checkbox[i] = true;
   }
 
-  buff.translateShape("menu2", xMenu2, yMenu2);
-  buff.translateShape("gedung1", xSmall-50, ySmall-50);
-  buff.translateShape("small-box", xSmall, ySmall);
-
   // Scale config
   int scale = 1,
     minScale = 1,
@@ -235,17 +231,15 @@ int main() {
         default:
           break;
       }
-    }
-    buff.drawClippedShape("gedung1", xBig, yBig, "small-box", 0, 0, scale, Color::YELLOW);
-    buff.drawShape("gedung1", 0, 0, Color::RED);
+    }    
     
     buff.drawShape("menu1", xMenu1, yMenu1, Color(100,100,100));
-    buff.drawShape("menu2", 0, 0, Color(100,100,100));
-    buff.drawShape("gedung1", 0, 0, Color::RED);
+    buff.drawShape("menu2", xMenu2, yMenu2, Color(100,100,100));
+    buff.drawShape("gedung1", xMenu2, yMenu2, Color::RED);
     if (selectedMenu == 1)
       buff.drawShapeBorder("menu1", xMenu1, yMenu1, Color::WHITE);
     else
-      buff.drawShapeBorder("menu2", 0, 0, Color::WHITE);
+      buff.drawShapeBorder("menu2", xMenu2, yMenu2, Color::WHITE);
 
     for (int i=0; i<nItem; i++) {
       buff.drawShape("item", xItem, yItem+diffItem*i, Color(50,50,50));
@@ -256,8 +250,10 @@ int main() {
     }
     buff.drawShapeBorder("item", xItem, yItem+diffItem*selectedItem, Color::WHITE);
 
-    buff.drawScaleShapeBorder("small-box", 0, 0, Color::WHITE, scale);
+    buff.drawScaleShapeBorder("small-box", xSmall, ySmall, Color::WHITE, scale);
     buff.drawShapeBorder("big-box", xBig, yBig, Color::WHITE);
+
+    buff.drawClippedShape("gedung1", xMenu2, yMenu2, "small-box", xSmall, ySmall, scale, Color::RED);
 
     buff.apply();
   } while (input != 'q');
