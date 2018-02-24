@@ -28,7 +28,7 @@ public:
   void addShape(const string&, const Drawable&);
   void delShape(const string&);
   void clip(vector<Point>& v, const Point& p1, const Point& p2);
-  void drawClippedShape(const string& id, int x, int y, const string& clip, int ofx, int ofy, double scale, Color cl);
+  void drawClippedShape(const string& id, int x, int y, const string& clip, int ofx, int ofy, double scale, int posx, int posy, Color cl);
   void drawShape(const string&, int, int, Color cl = Color::WHITE);
   void drawShapeBorder(const string&, int, int, Color cl = Color::WHITE);
   void drawScaleShape(const string&, int, int, Color cl = Color::WHITE, double scale = 1, int a = 0, int b = 0);

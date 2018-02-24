@@ -101,7 +101,15 @@ int main() {
   buff.addShape("small-box", readFromFile("chars/6/Small.txt"));
   buff.addShape("big-box", readFromFile("chars/6/Big.txt"));
   buff.addShape("gedung1", readFromFile("chars/6/DummyGedung1.txt"));
-
+  
+  buff.addShape("gedung2", readFromFile("chars/6/DummyGedung2.txt"));
+  
+  
+  // Scale config
+  int scale = 2,
+    minScale = 1,
+    maxScale = 5;
+  
   // Position config
   int xMenu1 = 50,
     yMenu1 = 50;
@@ -120,12 +128,12 @@ int main() {
     yBig = yMenu1;
   int move = 20,
     xminMove = xMenu2 + buff.getShape("menu2").points[0].x,
-    xmaxMove = xMenu2 + buff.getShape("menu2").points[2].x - buff.getShape("small-box").points[2].x,
+    xmaxMove = xMenu2 + buff.getShape("menu2").points[2].x - buff.getShape("small-box").points[2].x*scale,
     yminMove = yMenu2 + buff.getShape("menu2").points[0].y,
-    ymaxMove = yMenu2 + buff.getShape("menu2").points[2].y - buff.getShape("small-box").points[2].y;
+    ymaxMove = yMenu2 + buff.getShape("menu2").points[2].y - buff.getShape("small-box").points[2].y*scale;
 
   // Select menu config
-  int selectedMenu = 1;
+  int selectedMenu = 2;
   int selectedItem = 0; // 0..nItem-1
   int nItem = 4; // total layer i.e tree, building, street, water  -->  4 layers
   bool checkbox[nItem];
@@ -133,15 +141,39 @@ int main() {
     checkbox[i] = true;
   }
 
-  // Scale config
-  int scale = 1,
-    minScale = 1,
-    maxScale = 8;
-
   char input = '0';
   do {
     buff.reset();
-    if (kbhit()) {
+    /////// MENU 2
+    buff.drawShape("menu1", xMenu1, yMenu1, Color(100,100,100));
+	buff.drawShape("menu2", xMenu2, yMenu2, Color(100,100,100));
+    buff.drawShape("gedung1", xMenu2, yMenu2, Color::RED);
+    buff.drawShape("gedung2", xMenu2, yMenu2, Color::YELLOW);
+    if (selectedMenu == 1)
+      buff.drawShapeBorder("menu1", xMenu1, yMenu1, Color::WHITE);
+    else
+      buff.drawShapeBorder("menu2", xMenu2, yMenu2, Color::WHITE);
+
+
+
+	/////// BIG
+    buff.drawClippedShape("gedung1", xMenu2, yMenu2, "small-box", xSmall, ySmall, scale, xBig, yBig, Color::RED);
+    buff.drawClippedShape("gedung2", xMenu2, yMenu2, "small-box", xSmall, ySmall, scale, xBig, yBig, Color::YELLOW);
+    
+    for (int i=0; i<nItem; i++) {
+      buff.drawShape("item", xItem, yItem+diffItem*i, Color(50,50,50));
+      buff.drawShapeBorder("checkbox", xCheckbox, yCheckbox+diffItem*i, Color::WHITE);
+      if (checkbox[i]) {
+        buff.drawShapeBorder("checked", 5+xCheckbox, 5+yCheckbox+diffItem*i, Color::WHITE);
+      }
+    }
+    buff.drawShapeBorder("item", xItem, yItem+diffItem*selectedItem, Color::WHITE);
+    buff.drawScaleShapeBorder("small-box", xSmall, ySmall, Color::WHITE, scale);
+    buff.drawShapeBorder("big-box", xBig, yBig, Color::WHITE);
+	
+
+    buff.apply();			
+    while (!kbhit()) {};
       read(0, &input, sizeof(input));
       switch (input) {
         case '1':
@@ -231,31 +263,6 @@ int main() {
         default:
           break;
       }
-    }    
-    
-    buff.drawShape("menu1", xMenu1, yMenu1, Color(100,100,100));
-    buff.drawShape("menu2", xMenu2, yMenu2, Color(100,100,100));
-    buff.drawShape("gedung1", xMenu2, yMenu2, Color::RED);
-    if (selectedMenu == 1)
-      buff.drawShapeBorder("menu1", xMenu1, yMenu1, Color::WHITE);
-    else
-      buff.drawShapeBorder("menu2", xMenu2, yMenu2, Color::WHITE);
-
-    for (int i=0; i<nItem; i++) {
-      buff.drawShape("item", xItem, yItem+diffItem*i, Color(50,50,50));
-      buff.drawShapeBorder("checkbox", xCheckbox, yCheckbox+diffItem*i, Color::WHITE);
-      if (checkbox[i]) {
-        buff.drawShapeBorder("checked", 5+xCheckbox, 5+yCheckbox+diffItem*i, Color::WHITE);
-      }
-    }
-    buff.drawShapeBorder("item", xItem, yItem+diffItem*selectedItem, Color::WHITE);
-
-    buff.drawScaleShapeBorder("small-box", xSmall, ySmall, Color::WHITE, scale);
-    buff.drawShapeBorder("big-box", xBig, yBig, Color::WHITE);
-
-    buff.drawClippedShape("gedung1", xMenu2, yMenu2, "small-box", xSmall, ySmall, scale, Color::RED);
-
-    buff.apply();
   } while (input != 'q');
 
   return 0;

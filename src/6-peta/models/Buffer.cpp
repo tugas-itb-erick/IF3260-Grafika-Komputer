@@ -130,7 +130,7 @@ void Buffer::clip(vector<Point>& v, const Point& p1, const Point& p2) {
   }
 }
 
-void Buffer::drawClippedShape(const string& id, int x, int y, const string& cli, int ofx, int ofy, double scale, Color cl) {
+void Buffer::drawClippedShape(const string& id, int x, int y, const string& cli, int ofx, int ofy, double scale, int posx, int posy, Color cl) {
   vector<Point> res = shapes[id].points;
   vector<Point> clips = shapes[cli].points;
   for (auto& e:clips) {
@@ -146,39 +146,20 @@ void Buffer::drawClippedShape(const string& id, int x, int y, const string& cli,
     int k = (i+3)%4;
     clip(res, clips[i], clips[k]);
   }
-  for (auto& e:res) e += Point(x, y);
-  Line scanline, edge;
-  Point intersect;
-  vector<Point> intersection;
-  for (int j=0;j<height; ++j) {
-    intersection.clear();
-    scanline = Line(Point(0, j), Point(width, j));
-    for (int i=0;i<res.size();++i) {
-      if (i+1<res.size()) {
-        edge = Line(res[i], res[i+1]);
-        intersect = scanline.intersection(edge);
-        if (edge.contains(intersect)) {
-          intersection.push_back(intersect);
-          if (intersect.y >= edge.first.y && intersect.y >= edge.second.y) {
-            intersection.push_back(intersect);
-          }
-        }
-      }
-    }
-    edge = Line(shapes[id].points[0], res.back());
-    intersect = scanline.intersection(edge);
-    if (edge.contains(intersect)) {
-      intersection.push_back(intersect);
-      if (intersect.y >= edge.first.y && intersect.y >= edge.second.y) {
-        intersection.push_back(intersect);
-      }
-    }
-    for (int k=1;k<intersection.size();k+=2) {
-      int start = intersection[k-1].x, end = intersection[k].x;
-      for (int i=start;i<=end;++i) {
-        drawPoint(i, j, cl);
-      }
-    }
+  clips[0].negate();
+  Point center = shapes[id].centroid();
+  for (auto& e:res) {
+	  e += clips[0];
+	  e *= 8/scale;
+	  e += Point(posx, posy);
+  }
+  if (res.size()) {
+	  shapes["tmp"].points.clear();
+	  for (auto e:res) {
+		  shapes["tmp"].points.push_back(e);
+	  }
+	  shapes["tmp"].points.push_back(shapes[id].centroid());
+	  drawShape("tmp", 0, 0, cl);
   }
 }
 
