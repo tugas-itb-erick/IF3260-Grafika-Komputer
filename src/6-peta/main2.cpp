@@ -120,7 +120,7 @@ int main() {
   buff.addShape("checked", readFromFile("chars/6/Checked.txt"));
   buff.addShape("small-box", readFromFile("chars/6/Small.txt"));
   buff.addShape("big-box", readFromFile("chars/6/Big.txt"));
-  buff.addShape("jalan", readFromFile("chars/6/DummyJalan1.txt"));
+  buff.addShape("jalan", readFromFile("chars/6/jalan.txt"));
   readFile("chars/6/gedung.txt");
   
   
@@ -154,7 +154,11 @@ int main() {
   // Select menu config
   int selectedMenu = 2;
   int selectedItem = 0; // 0..nItem-1
-  int nItem = 3; // total layer i.e tree, building, street  -->  3 layers
+  int nItem = 3; // total layer 0: building, 1: street, 2: tree  -->  3 layers
+  Color treeColor = Color(0,55,0);
+  Color streetColor = Color(100,100,100);
+  Color buildingColor = Color::ORANGE;
+  
   bool checkbox[nItem];
   for (int i=0; i<nItem; i++) {
     checkbox[i] = true;
@@ -165,26 +169,25 @@ int main() {
     buff.reset();
 
 	if (checkbox[2]) { //tree
-		buff.drawShape("menu2", xMenu2, yMenu2, Color(0,55,0));
-		buff.drawClippedShape("menu2", xMenu2, yMenu2, "small-box", xSmall, ySmall, scale, xBig, yBig, Color(0,55,0));  
+		buff.drawShape("menu2", xMenu2, yMenu2, treeColor);
+		buff.drawClippedShape("menu2", xMenu2, yMenu2, "small-box", xSmall, ySmall, scale, xBig, yBig, treeColor);  
 	}
 	
-	if (checkbox[1]) { //gedung
-		buff.drawAll(xMenu2+20, yMenu2+100, Color::ORANGE);
-		buff.drawClippedAll(xMenu2+20, yMenu2+100, "small-box", xSmall, ySmall, scale, xBig, yBig, Color::ORANGE);
-	}
-
-	if (checkbox[0]) { //jalan
-		buff.drawShape("jalan", xMenu2, yMenu2, Color(100,100,100));
-		buff.drawClippedShape("jalan", xMenu2, yMenu2, "small-box", xSmall, ySmall, scale, xBig, yBig, Color(100,100,100));  
+	if (checkbox[1]) { //street
+		buff.drawShape("jalan", xMenu2, yMenu2, streetColor);
+		buff.drawClippedShape("jalan", xMenu2, yMenu2, "small-box", xSmall, ySmall, scale, xBig, yBig, streetColor);  
 	}	
-    
+
+	if (checkbox[0]) { //building
+		buff.drawAll(xMenu2+20, yMenu2+100, buildingColor);
+		buff.drawClippedAll(xMenu2+20, yMenu2+100, "small-box", xSmall, ySmall, scale, xBig, yBig, buildingColor);
+	}    
 
     /////// MENU 1
     buff.drawShape("menu1", xMenu1, yMenu1, Color(50,50,50));
-    buff.drawShape("item", xItem, yItem+diffItem*0, Color(100,100,100)); //jalan
-    buff.drawShape("item", xItem, yItem+diffItem*1, Color::ORANGE); //gedung
-    buff.drawShape("item", xItem, yItem+diffItem*2, Color(0,55,0)); //tree
+    buff.drawShape("item", xItem, yItem+diffItem*0, buildingColor); //checkbox building
+    buff.drawShape("item", xItem, yItem+diffItem*1, streetColor); //checkbox street
+    buff.drawShape("item", xItem, yItem+diffItem*2, treeColor); //checkbox tree
     for (int i=0; i<nItem; i++) {
       buff.drawShapeBorder("checkbox", xCheckbox, yCheckbox+diffItem*i, Color::WHITE);
       if (checkbox[i]) {
@@ -195,7 +198,12 @@ int main() {
 	////// DIGAMBAR DIATAS SEGALA GALANYA
     if (selectedMenu == 1) {
 		buff.drawShapeBorder("item", xItem, yItem+diffItem*selectedItem, Color::YELLOW);
+		buff.drawShapeBorder("checkbox", xCheckbox, yCheckbox+diffItem*selectedItem, Color::YELLOW);
+		if (checkbox[selectedItem]) {
+			buff.drawShapeBorder("checked", 5+xCheckbox, 5+yCheckbox+diffItem*selectedItem, Color::YELLOW);
+		}
 		buff.drawScaleShapeBorder("small-box", xSmall, ySmall, Color::WHITE, scale);
+      
 	}    else  {
 		buff.drawShapeBorder("item", xItem, yItem+diffItem*selectedItem, Color::WHITE);
 		buff.drawScaleShapeBorder("small-box", xSmall, ySmall, Color::YELLOW, scale);
