@@ -123,6 +123,7 @@ int main() {
   buff.addShape("jalan", readFromFile("chars/6/jalan.txt"));
   readFile("gedung", "chars/6/gedung.txt");
   readFile("jalan", "chars/6/jalan.txt");
+  readFile("jalan", "chars/6/lapangan.txt");
   
   
   // Scale config
@@ -155,10 +156,11 @@ int main() {
   // Select menu config
   int selectedMenu = 2;
   int selectedItem = 0; // 0..nItem-1
-  int nItem = 3; // total layer 0: building, 1: street, 2: tree  -->  3 layers
+  int nItem = 4; // total layer 0: building, 1: street, 2: tree  3: lapangan-->  4 layers
   Color treeColor = Color(0,55,0);
   Color streetColor = Color(100,100,100);
   Color buildingColor = Color::ORANGE;
+  Color lapanganColor = Color::GREEN;
   
   bool checkbox[nItem];
   for (int i=0; i<nItem; i++) {
@@ -175,14 +177,19 @@ int main() {
 	}
 	
 	if (checkbox[1]) { //street
-		buff.drawAll("jalan", xMenu2+20, yMenu2+100, buildingColor);
-    buff.drawClippedAll("jalan", xMenu2+20, yMenu2+100, "small-box", xSmall, ySmall, scale, xBig, yBig, buildingColor);
+		buff.drawAll("jalan", xMenu2+20, yMenu2+100, streetColor);
+    buff.drawClippedAll("jalan", xMenu2+20, yMenu2+100, "small-box", xSmall, ySmall, scale, xBig, yBig, streetColor);
 	}	
 
 	if (checkbox[0]) { //building
 		buff.drawAll("gedung", xMenu2+20, yMenu2+100, buildingColor);
 		buff.drawClippedAll("gedung", xMenu2+20, yMenu2+100, "small-box", xSmall, ySmall, scale, xBig, yBig, buildingColor);
 	}    
+
+  if (checkbox[3]) { // lapangan
+    buff.drawAll("lapangan", xMenu2+20, yMenu2+100, lapanganColor);
+    buff.drawClippedAll("lapangan", xMenu2+20, yMenu2+100, "small-box", xSmall, ySmall, scale, xBig, yBig, lapanganColor);
+  }
 
     /////// MENU 1
     buff.drawShape("menu1", xMenu1, yMenu1, Color(50,50,50));
