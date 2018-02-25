@@ -212,8 +212,8 @@ void Buffer::drawShape(const string& id, int x, int y, Color cl) {
   }
 }
 
-void Buffer::drawAll(int x, int y, Color cl) {
-  for (auto e:itb) {
+void Buffer::drawAll(const string& id, int x, int y, Color cl) {
+  for (auto e:itb[id]) {
     shapes["tmp"].points.clear();
     for (auto f:e.points) {
       shapes["tmp"].points.push_back(f);
@@ -222,8 +222,8 @@ void Buffer::drawAll(int x, int y, Color cl) {
   }
 }
 
-void Buffer::drawClippedAll(int x, int y, const string& clip, int ofx, int ofy, double scale, int posx, int posy, Color cl) {
-  for (auto e:itb) {
+void Buffer::drawClippedAll(const string& id, int x, int y, const string& clip, int ofx, int ofy, double scale, int posx, int posy, Color cl) {
+  for (auto e:itb[id]) {
     shapes["tmp"].points.clear();
     for (auto f:e.points) {
       shapes["tmp"].points.push_back(f);

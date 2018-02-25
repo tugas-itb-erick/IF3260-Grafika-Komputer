@@ -88,7 +88,7 @@ Drawable readFromFile(const string& filename) {
 
 Buffer buff;
 
-void readFile(const string& filename) {
+void readFile(const string& id, const string& filename) {
   ifstream infile(filename);
   if (!infile.fail()) {
     int nPoint, x ,y;
@@ -102,7 +102,7 @@ void readFile(const string& filename) {
         infile >> x >> y;
         vp.push_back(Point(x, y));
       }
-      buff.itb.push_back(Drawable(vp));
+      buff.itb[id].push_back(Drawable(vp));
     }
     infile.close();
   }
@@ -121,7 +121,8 @@ int main() {
   buff.addShape("small-box", readFromFile("chars/6/Small.txt"));
   buff.addShape("big-box", readFromFile("chars/6/Big.txt"));
   buff.addShape("jalan", readFromFile("chars/6/jalan.txt"));
-  readFile("chars/6/gedung.txt");
+  readFile("gedung", "chars/6/gedung.txt");
+  readFile("jalan", "chars/6/jalan.txt");
   
   
   // Scale config
@@ -174,13 +175,13 @@ int main() {
 	}
 	
 	if (checkbox[1]) { //street
-		buff.drawShape("jalan", xMenu2, yMenu2, streetColor);
-		buff.drawClippedShape("jalan", xMenu2, yMenu2, "small-box", xSmall, ySmall, scale, xBig, yBig, streetColor);  
+		buff.drawAll("jalan", xMenu2+20, yMenu2+100, buildingColor);
+    buff.drawClippedAll("jalan", xMenu2+20, yMenu2+100, "small-box", xSmall, ySmall, scale, xBig, yBig, buildingColor);
 	}	
 
 	if (checkbox[0]) { //building
-		buff.drawAll(xMenu2+20, yMenu2+100, buildingColor);
-		buff.drawClippedAll(xMenu2+20, yMenu2+100, "small-box", xSmall, ySmall, scale, xBig, yBig, buildingColor);
+		buff.drawAll("gedung", xMenu2+20, yMenu2+100, buildingColor);
+		buff.drawClippedAll("gedung", xMenu2+20, yMenu2+100, "small-box", xSmall, ySmall, scale, xBig, yBig, buildingColor);
 	}    
 
     /////// MENU 1
