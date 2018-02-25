@@ -123,7 +123,7 @@ int main() {
   buff.addShape("jalan", readFromFile("chars/6/jalan.txt"));
   readFile("gedung", "chars/6/gedung.txt");
   readFile("jalan", "chars/6/jalan.txt");
-  readFile("jalan", "chars/6/lapangan.txt");
+  readFile("lapangan", "chars/6/lapangan.txt");
   
   
   // Scale config
@@ -178,7 +178,7 @@ int main() {
 	
 	if (checkbox[1]) { //street
 		buff.drawAll("jalan", xMenu2+20, yMenu2+100, streetColor);
-    buff.drawClippedAll("jalan", xMenu2+20, yMenu2+100, "small-box", xSmall, ySmall, scale, xBig, yBig, streetColor);
+		buff.drawClippedAll("jalan", xMenu2+20, yMenu2+100, "small-box", xSmall, ySmall, scale, xBig, yBig, streetColor);
 	}	
 
 	if (checkbox[0]) { //building
@@ -186,16 +186,17 @@ int main() {
 		buff.drawClippedAll("gedung", xMenu2+20, yMenu2+100, "small-box", xSmall, ySmall, scale, xBig, yBig, buildingColor);
 	}    
 
-  if (checkbox[3]) { // lapangan
-    buff.drawAll("lapangan", xMenu2+20, yMenu2+100, lapanganColor);
-    buff.drawClippedAll("lapangan", xMenu2+20, yMenu2+100, "small-box", xSmall, ySmall, scale, xBig, yBig, lapanganColor);
-  }
+	if (checkbox[3]) { // lapangan
+		buff.drawAll("lapangan", xMenu2+20, yMenu2+100, lapanganColor);
+		buff.drawClippedAll("lapangan", xMenu2+20, yMenu2+100, "small-box", xSmall, ySmall, scale, xBig, yBig, lapanganColor);
+	}
 
     /////// MENU 1
     buff.drawShape("menu1", xMenu1, yMenu1, Color(50,50,50));
     buff.drawShape("item", xItem, yItem+diffItem*0, buildingColor); //checkbox building
     buff.drawShape("item", xItem, yItem+diffItem*1, streetColor); //checkbox street
     buff.drawShape("item", xItem, yItem+diffItem*2, treeColor); //checkbox tree
+    buff.drawShape("item", xItem, yItem+diffItem*3, lapanganColor); //checkbox tree
     for (int i=0; i<nItem; i++) {
       buff.drawShapeBorder("checkbox", xCheckbox, yCheckbox+diffItem*i, Color::WHITE);
       if (checkbox[i]) {
