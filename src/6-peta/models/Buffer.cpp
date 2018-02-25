@@ -234,10 +234,10 @@ void Buffer::drawClippedAll(int x, int y, const string& clip, int ofx, int ofy, 
 
 void Buffer::drawShapeBorder(const string& id, int x, int y, Color cl) {
   for(int i=0; i<shapes[id].points.size() - 2; i++) {
-    drawLine(Line(shapes[id].points[i] + Point(x,y), shapes[id].points[i+1] + Point(x,y), cl));
+    drawLine(Line(shapes[id].points[i] + Point(x,y), shapes[id].points[i+1] + Point(x,y), cl),cl);
   }
   int i = shapes[id].points.size() - 2;
-  drawLine(Line(shapes[id].points[i] + Point(x,y), shapes[id].points[0] + Point(x,y), cl));
+  drawLine(Line(shapes[id].points[i] + Point(x,y), shapes[id].points[0] + Point(x,y), cl),cl);
 }
 
 void Buffer::drawScaleShape(const string& id, int x, int y, Color cl, double scale, int a, int b) {
