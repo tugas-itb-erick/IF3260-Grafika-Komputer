@@ -212,6 +212,26 @@ void Buffer::drawShape(const string& id, int x, int y, Color cl) {
   }
 }
 
+void Buffer::drawAll(int x, int y, Color cl) {
+  for (auto e:itb) {
+    shapes["tmp"].points.clear();
+    for (auto f:e.points) {
+      shapes["tmp"].points.push_back(f);
+    }
+    drawShape("tmp", x, y, cl);
+  }
+}
+
+void Buffer::drawClippedAll(int x, int y, const string& clip, int ofx, int ofy, double scale, int posx, int posy, Color cl) {
+  for (auto e:itb) {
+    shapes["tmp"].points.clear();
+    for (auto f:e.points) {
+      shapes["tmp"].points.push_back(f);
+    }
+    drawClippedShape("tmp", x, y, clip, ofx, ofy, scale, posx, posy, cl);
+  }
+}
+
 void Buffer::drawShapeBorder(const string& id, int x, int y, Color cl) {
   for(int i=0; i<shapes[id].points.size() - 2; i++) {
     drawLine(Line(shapes[id].points[i] + Point(x,y), shapes[id].points[i+1] + Point(x,y), cl));

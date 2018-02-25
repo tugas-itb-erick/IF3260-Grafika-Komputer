@@ -86,10 +86,30 @@ Drawable readFromFile(const string& filename) {
   return Drawable();
 }
 
+Buffer buff;
+
+void readFile(const string& filename) {
+  ifstream infile(filename);
+  if (!infile.fail()) {
+    int nPoint, x ,y;
+    vector<Point> vp;
+    while (1) {
+      infile >> nPoint;
+      if (nPoint==0) break;
+      ++nPoint;
+      vp.clear();
+      while (nPoint--) {
+        infile >> x >> y;
+        vp.push_back(Point(x, y));
+      }
+      buff.itb.push_back(Drawable(vp));
+    }
+    infile.close();
+  }
+}
 
 //----- MAIN PROGRAM -----//
 int main() {
-  Buffer buff;
   buff.reset();
   setConioTerminalNode();
   
@@ -100,9 +120,7 @@ int main() {
   buff.addShape("checked", readFromFile("chars/6/Checked.txt"));
   buff.addShape("small-box", readFromFile("chars/6/Small.txt"));
   buff.addShape("big-box", readFromFile("chars/6/Big.txt"));
-  buff.addShape("gedung1", readFromFile("chars/6/DummyGedung1.txt"));
-  
-  buff.addShape("gedung2", readFromFile("chars/6/DummyGedung2.txt"));
+  readFile("chars/6/gedung.txt");
   
   
   // Scale config
@@ -146,20 +164,19 @@ int main() {
     buff.reset();
     /////// MENU 2
     buff.drawShape("menu1", xMenu1, yMenu1, Color(100,100,100));
-	buff.drawShape("menu2", xMenu2, yMenu2, Color(100,100,100));
-    buff.drawShape("gedung1", xMenu2, yMenu2, Color::RED);
-    buff.drawShape("gedung2", xMenu2, yMenu2, Color::YELLOW);
+	  buff.drawShape("menu2", xMenu2, yMenu2, Color(100,100,100));
     if (selectedMenu == 1)
       buff.drawShapeBorder("menu1", xMenu1, yMenu1, Color::WHITE);
     else
       buff.drawShapeBorder("menu2", xMenu2, yMenu2, Color::WHITE);
 
+    buff.drawAll(xMenu2+20, yMenu2+100, Color::BLUE);
 
-
-	/////// BIG
-    buff.drawClippedShape("gedung1", xMenu2, yMenu2, "small-box", xSmall, ySmall, scale, xBig, yBig, Color::RED);
-    buff.drawClippedShape("gedung2", xMenu2, yMenu2, "small-box", xSmall, ySmall, scale, xBig, yBig, Color::YELLOW);
+	  /////// BIG
+    buff.drawClippedAll(xMenu2+20, yMenu2+100, "small-box", xSmall, ySmall, scale, xBig, yBig, Color::BLUE);
     
+    
+    /////// MENU 1
     for (int i=0; i<nItem; i++) {
       buff.drawShape("item", xItem, yItem+diffItem*i, Color(50,50,50));
       buff.drawShapeBorder("checkbox", xCheckbox, yCheckbox+diffItem*i, Color::WHITE);

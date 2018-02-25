@@ -29,10 +29,12 @@ public:
   void delShape(const string&);
   void clip(vector<Point>& v, const Point& p1, const Point& p2);
   void drawClippedShape(const string& id, int x, int y, const string& clip, int ofx, int ofy, double scale, int posx, int posy, Color cl);
+  void drawClippedAll(int x, int y, const string& clip, int ofx, int ofy, double scale, int posx, int posy, Color cl);
   void drawShape(const string&, int, int, Color cl = Color::WHITE);
   void drawShapeBorder(const string&, int, int, Color cl = Color::WHITE);
   void drawScaleShape(const string&, int, int, Color cl = Color::WHITE, double scale = 1, int a = 0, int b = 0);
   void drawScaleShapeBorder(const string&, int, int, Color cl = Color::WHITE, double scale = 1, int a = 0, int b = 0);
+  void drawAll(int x, int y, Color cl);
   
   // void scanLineShape(const string& id, double gradient, Color* pattern);
   void reset();
@@ -71,6 +73,7 @@ public:
   }
 
   static const Point CENTER;
+  vector<Drawable> itb;
 
 private:
   // Private Methods
