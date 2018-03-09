@@ -9,6 +9,7 @@ const Color Color::GREEN  = Color(0, 255, 0);
 const Color Color::BLUE   = Color(0, 0, 255);
 const Color Color::PINK   = Color(255, 105, 180);
 const Color Color::PURPLE = Color(128, 0, 256);
+const Color Color::GRAY = Color(100,100,100);
 
 Color::Color() {
   r = g = b = 0;

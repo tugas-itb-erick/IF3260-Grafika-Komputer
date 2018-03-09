@@ -23,4 +23,5 @@ public:
   static const Color BLUE;
   static const Color PINK;
   static const Color PURPLE;
+  static const Color GRAY;
 };
