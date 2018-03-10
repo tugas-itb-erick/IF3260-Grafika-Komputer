@@ -517,7 +517,7 @@ int main() {
     }
   } while (input != 'q');
 
-
+  cout << " " << endl;
   // CREDIT 1
   /** BACA A s..d. Z **/
     FILE *fp;
@@ -539,21 +539,19 @@ int main() {
             fclose(fp);
         }
     }
-
     
     /** Baca pesawat **/
     fp = fopen("chars/2/pesawat.txt", "r");
-  if (fp != NULL) {
-    int x1, x2, y1, y2;
-    while (fscanf(fp, "%d", &x1) == 1) {
-      fscanf(fp, "%d", &y1);
-      fscanf(fp, "%d", &x2);
-      fscanf(fp, "%d", &y2);
-      pesawat.push_back({{x1,y1},{x2, y2}});
-    }
-    fclose(fp);
-  }
-
+    if (fp != NULL) {
+	int x1, x2, y1, y2;
+	while (fscanf(fp, "%d", &x1) == 1) {
+	  fscanf(fp, "%d", &y1);
+	  fscanf(fp, "%d", &x2);
+	  fscanf(fp, "%d", &y2);
+	  pesawat.push_back({{x1,y1},{x2, y2}});
+	}
+	  fclose(fp);
+	}
 
 /** LOCAL VARIABEL **/   
     int r, g, b, trans;
@@ -561,12 +559,12 @@ int main() {
     trans = 0;
   
     int x,y,location;
-  int garis1 = 0; int inc1 = 0;
-  int garis2 = 0; int inc2 = 0;
-  int garis3 = 0; int inc3 = 0;
-  int countpeluru = 0;
-  int durasipeluru = 200;
-  int magicnumber = 5;
+	int garis1 = 0; int inc1 = 0;
+	int garis2 = 0; int inc2 = 0;
+	int garis3 = 0; int inc3 = 0;
+	int countpeluru = 0;
+	int durasipeluru = 50;
+	int magicnumber = 5;
     for (time = 0; time < 1500; time+=magicnumber) {
       /* do some work */
       int counter = 0;
@@ -575,7 +573,7 @@ int main() {
       int startX;        
       
       buff.reset();
-
+	  
       // Cetak nama
       while (name[counter] != '\0') {
         if (name[counter]=='#') {
@@ -601,6 +599,7 @@ int main() {
       }
       if (hit == 0) {
         printPesawat(5+time, 255, 255, 255);
+
       } else if (hit == 1) {
         //meletup
         drawLine(tail,height,head,height-75,35,255,0,0,0);
