@@ -108,6 +108,15 @@ vector<Drawable> readLayerFromFile(const string& filename) {
   return vd;
 }
 
+bool isEmpty(unsigned char *c, int s) {
+  for (int i=0;i<s;++i) {
+    if (c[i]) {
+      return false;
+    }
+  }
+  return true;
+}
+
 //----- MAIN PROGRAM -----//
 int main() {
   Buffer buff;
@@ -164,6 +173,18 @@ int main() {
   Color streetColor = Color::GRAY;
   Color buildingColor = Color::ORANGE;
   Color lapanganColor = Color::GREEN;
+
+  // Mouse setup
+  const char *pDevice = "/dev/input/mice"
+  int fmouse = open(pDevice, O_RDONLY | O_NONBLOCK);
+  if (fd == -1) {
+    printf("Error opening %s\n", pDevice);
+    return -1;
+  }
+  unsigned char event[3];
+  int clickLeft, clickRight;
+  signed char relx, rely;
+  int mousex = 700, mousey = 350;
   
 
   // Setup layer checkboxes
@@ -228,8 +249,21 @@ int main() {
 
     buff.apply();
 
+    bool detectInput = false;
+
+    // Detect input from mouse or keyboard
+    while (!detectInput) {
+      if (kbhit()) {
+        detectInput = true;
+        read(0, &input, sizeof(input));
+      }
+      if (read(fmouse, event, sizeof(event))) {
+        detectInput = 1;
+      }
+    }
+
     // Keyboard input
-    while (!kbhit()) {};
+    if (input) {
       read(0, &input, sizeof(input));
       switch (input) {
         case '1': // Switch to menu layer checkboxes
@@ -319,6 +353,18 @@ int main() {
         default:
           break;
       }
+      input = 0;
+    }
+    if (!isEmpty(event, sizeof(event))) {
+      clickLeft = event[0] & 0x1;
+      clickRight = event[0] & 0x4;
+      relx = event[1];
+      rely = event[2];
+      
+      for (int i=0;i<sizeof(event);++i) {
+        event[i] = 0;
+      }
+    }
   } while (input != 'q');
 
   return 0;
