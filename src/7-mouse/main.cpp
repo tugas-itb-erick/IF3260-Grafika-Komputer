@@ -124,19 +124,20 @@ int main() {
   setConioTerminalNode();
   
   // Setup shapes
-  buff.addShape("menu1", readShapeFromFile("chars/6/Menu1.txt"));
-  buff.addShape("menu2", readShapeFromFile("chars/6/Menu2.txt"));
-  buff.addShape("item", readShapeFromFile("chars/6/MenuItem.txt"));
-  buff.addShape("checkbox", readShapeFromFile("chars/6/Checkbox.txt"));
-  buff.addShape("checked", readShapeFromFile("chars/6/Checked.txt"));
-  buff.addShape("small-box", readShapeFromFile("chars/6/Small.txt"));
-  buff.addShape("big-box", readShapeFromFile("chars/6/Big.txt"));
-  buff.addShape("jalan", readShapeFromFile("chars/6/jalan.txt"));
+  buff.addShape("menu1", readShapeFromFile("chars/7/Menu1.txt"));
+  buff.addShape("menu2", readShapeFromFile("chars/7/Menu2.txt"));
+  buff.addShape("item", readShapeFromFile("chars/7/MenuItem.txt"));
+  buff.addShape("checkbox", readShapeFromFile("chars/7/Checkbox.txt"));
+  buff.addShape("checked", readShapeFromFile("chars/7/Checked.txt"));
+  buff.addShape("small-box", readShapeFromFile("chars/7/Small.txt"));
+  buff.addShape("big-box", readShapeFromFile("chars/7/Big.txt"));
+  buff.addShape("jalan", readShapeFromFile("chars/7/jalan.txt"));
+  buff.addShape("mouse", readShapeFromFile("chars/7/mouse.txt"));
 
   // Setup layers
-  buff.addLayer("gedung", readLayerFromFile("chars/6/gedung.txt"));
-  buff.addLayer("jalan", readLayerFromFile("chars/6/jalan.txt"));
-  buff.addLayer("lapangan", readLayerFromFile("chars/6/lapangan.txt"));
+  buff.addLayer("gedung", readLayerFromFile("chars/7/gedung.txt"));
+  buff.addLayer("jalan", readLayerFromFile("chars/7/jalan.txt"));
+  buff.addLayer("lapangan", readLayerFromFile("chars/7/lapangan.txt"));
   
   // Scale config
   int scale = 2,
@@ -245,7 +246,9 @@ int main() {
 	  buff.drawShapeBorder("menu1", xMenu1, yMenu1, Color::WHITE);
     buff.drawShapeBorder("menu2", xMenu2, yMenu2, Color::WHITE);    
     buff.drawShapeBorder("big-box", xBig, yBig, Color::WHITE);
-	
+
+    // Draw mouse
+    buff.drawShape("mouse", mousex, mousey, Color::WHITE);
 
     buff.apply();
 
@@ -360,7 +363,8 @@ int main() {
       clickRight = event[0] & 0x4;
       relx = event[1];
       rely = event[2];
-      
+      mousex += relx;
+      mousey += rely;
       for (int i=0;i<sizeof(event);++i) {
         event[i] = 0;
       }
