@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include <time.h>
 #include <string.h>
 #include <termios.h>
@@ -132,7 +133,7 @@ int main() {
   buff.addShape("small-box", readShapeFromFile("chars/7/Small.txt"));
   buff.addShape("big-box", readShapeFromFile("chars/7/Big.txt"));
   buff.addShape("jalan", readShapeFromFile("chars/7/jalan.txt"));
-  buff.addShape("mouse", readShapeFromFile("chars/7/mouse.txt"));
+  buff.addShape("mouse", readShapeFromFile("chars/7/crosshair.txt"));
 
   // Setup layers
   buff.addLayer("gedung", readLayerFromFile("chars/7/gedung.txt"));
@@ -176,9 +177,9 @@ int main() {
   Color lapanganColor = Color::GREEN;
 
   // Mouse setup
-  const char *pDevice = "/dev/input/mice"
+  const char *pDevice = "/dev/input/mice";
   int fmouse = open(pDevice, O_RDONLY | O_NONBLOCK);
-  if (fd == -1) {
+  if (fmouse == -1) {
     printf("Error opening %s\n", pDevice);
     return -1;
   }
@@ -267,7 +268,7 @@ int main() {
 
     // Keyboard input
     if (input) {
-      read(0, &input, sizeof(input));
+      //read(0, &input, sizeof(input));
       switch (input) {
         case '1': // Switch to menu layer checkboxes
           selectedMenu = 1;
@@ -356,7 +357,8 @@ int main() {
         default:
           break;
       }
-      input = 0;
+		if (input !='q') 
+			input = 0;
     }
     if (!isEmpty(event, sizeof(event))) {
       clickLeft = event[0] & 0x1;
@@ -364,7 +366,11 @@ int main() {
       relx = event[1];
       rely = event[2];
       mousex += relx;
-      mousey += rely;
+      mousey -= rely;
+      mousex %= buff.getWidth();
+      if (mousex < 0) mousex += buff.getWidth();
+      mousey %= buff.getHeight();
+      if (mousey < 0) mousey += buff.getHeight();
       for (int i=0;i<sizeof(event);++i) {
         event[i] = 0;
       }
