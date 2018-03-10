@@ -31,7 +31,9 @@ public:
   void clip(vector<Point>& v, const Point& p1, const Point& p2);
   void drawClippedShape(const string& id, int x, int y, const string& clip, int ofx, int ofy, double scale, int posx, int posy, Color cl);
   void drawClippedLayer(const string& id, int x, int y, const string& clip, int ofx, int ofy, double scale, int posx, int posy, Color cl);
-  void drawShape(const string&, int, int, Color cl = Color::WHITE);
+  void drawShapeFloodFill(const string&, int, int, Color cl = Color::WHITE);
+  void drawShapeScanline(const string&, int, int, Color cl = Color::WHITE);
+  void floodFill(const string&, Color cl);
   void drawShapeBorder(const string&, int, int, Color cl = Color::WHITE);
   void drawScaleShape(const string&, int, int, Color cl = Color::WHITE, double scale = 1, int a = 0, int b = 0);
   void drawScaleShapeBorder(const string&, int, int, Color cl = Color::WHITE, double scale = 1, int a = 0, int b = 0);

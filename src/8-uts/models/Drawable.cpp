@@ -28,5 +28,11 @@ void Drawable::useColor(Color c) {
 }
 
 Point Drawable::centroid() {
-  return points.back();
+  Point cen = Point(0, 0);
+  for (int i=0;i<points.size()-1;++i) {
+  	cen += points[i];
+  }
+  cen.x /= points.size()-1;
+  cen.y /= points.size()-1;
+  return cen;
 }

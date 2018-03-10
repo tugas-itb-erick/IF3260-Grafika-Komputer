@@ -209,8 +209,9 @@ int main() {
   bool checkbox[nItem];
   for (int i=0; i<nItem; i++) {
     checkbox[i] = true;
-  }
+  }  
   const int TREE = 2, JALAN = 1, GEDUNG = 0, LAPANGAN = 3;
+  checkbox[GEDUNG] = false;
   char input = '0';
 
   do {
@@ -218,7 +219,7 @@ int main() {
 
     // Checkboxes
   	if (checkbox[TREE]) {
-  		buff.drawShape("menu2", xMenu2, yMenu2, treeColor);
+  		buff.drawShapeScanline("menu2", xMenu2, yMenu2, treeColor);
   		buff.drawClippedShape("menu2", xMenu2, yMenu2, "small-box", xSmall, ySmall, scale, xBig, yBig, treeColor);  
   	}
   	if (checkbox[JALAN]) {
@@ -235,11 +236,11 @@ int main() {
   	}
 
     // Draw menu 1, layer checkboxes
-    buff.drawShape("menu1", xMenu1, yMenu1, Color(50,50,50));
-    buff.drawShape("item", xItem, yItem+diffItem*0, buildingColor); //checkbox building
-    buff.drawShape("item", xItem, yItem+diffItem*1, streetColor); //checkbox street
-    buff.drawShape("item", xItem, yItem+diffItem*2, treeColor); //checkbox tree
-    buff.drawShape("item", xItem, yItem+diffItem*3, lapanganColor); //checkbox tree
+    buff.drawShapeScanline("menu1", xMenu1, yMenu1, Color(50,50,50));
+    buff.drawShapeScanline("item", xItem, yItem+diffItem*0, buildingColor); //checkbox building
+    buff.drawShapeScanline("item", xItem, yItem+diffItem*1, streetColor); //checkbox street
+    buff.drawShapeScanline("item", xItem, yItem+diffItem*2, treeColor); //checkbox tree
+    buff.drawShapeScanline("item", xItem, yItem+diffItem*3, lapanganColor); //checkbox tree
     for (int i=0; i<nItem; i++) {
       buff.drawShapeBorder("checkbox", xCheckbox, yCheckbox+diffItem*i, Color::WHITE);
       if (checkbox[i]) {
@@ -265,9 +266,9 @@ int main() {
     buff.drawShapeBorder("big-box", xBig, yBig, Color::WHITE);
 
     // Draw mouse
-    buff.drawShape("mouse", mousex, mousey, Color::WHITE);
+    buff.drawShapeFloodFill("mouse", mousex, mousey, Color::WHITE);
 	if (clickLeft) {
-		buff.drawShape("mouse-click", mousex, mousey, Color::RED);
+		buff.drawShapeFloodFill("mouse-click", mousex, mousey, Color::RED);
 	}
 	
     buff.apply();
@@ -411,6 +412,8 @@ int main() {
       }
     }
   } while (input != 'q');
+
+  // CREDIT 1
 
   return 0;
 }

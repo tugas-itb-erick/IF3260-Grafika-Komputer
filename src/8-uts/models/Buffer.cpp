@@ -159,11 +159,22 @@ void Buffer::drawClippedShape(const string& id, int x, int y, const string& cli,
 		  shapes["tmp"].points.push_back(e);
 	  }
 	  shapes["tmp"].points.push_back(shapes[id].centroid());
-	  drawShape("tmp", 0, 0, cl);
+	  drawShapeScanline("tmp", 0, 0, cl);
   }
 }
 
-void Buffer::drawShape(const string& id, int x, int y, Color cl) {
+void Buffer::drawShapeFloodFill(const string& id, int x, int y, Color cl) {
+  for (auto& e:shapes[id].points) {
+    e += Point(x, y);
+  }
+  drawShapeBorder(id, 0, 0, cl);
+  floodFill(id, cl);
+  for (auto& e:shapes[id].points) {
+    e -= Point(x, y);
+  }
+}
+
+void Buffer::drawShapeScanline(const string& id, int x, int y, Color cl) {
   for (auto& e:shapes[id].points) {
     e += Point(x, y);
   }
@@ -212,13 +223,36 @@ void Buffer::drawShape(const string& id, int x, int y, Color cl) {
   }
 }
 
+void Buffer::floodFill(const string& id, Color cl) {
+  Point center = shapes[id].centroid();
+  center.x = min(center.x, width-1);
+  center.y = min(center.y, height-1);
+  queue<Point> q;
+  q.push(center);
+
+  drawPoint(center, cl);
+
+  while (!q.empty()) {
+      Point c = q.front();
+      q.pop();
+
+      for (int i = 0; i < 4; ++i) {
+          Point next = c + dp[i];
+          if (next.x && next.x<width && next.y && next.y<height && !(arr[next.x][next.y] == cl)) {
+              drawPoint(next, cl);
+              q.push(next);
+          }
+      }
+  }
+}
+
 void Buffer::drawLayer(const string& id, int x, int y, Color cl) {
   for (auto e:layer[id]) {
     shapes["tmp"].points.clear();
     for (auto f:e.points) {
       shapes["tmp"].points.push_back(f);
     }
-    drawShape("tmp", x, y, cl);
+    drawShapeScanline("tmp", x, y, cl);
   }
 }
 
@@ -246,7 +280,7 @@ void Buffer::drawScaleShape(const string& id, int x, int y, Color cl, double sca
     shapes["tmp"].points.push_back(po);
   }
   scaleShape("tmp", scale, a, b);
-  drawShape("tmp", x, y, cl);
+  drawShapeScanline("tmp", x, y, cl);
 }
 
 void Buffer::drawScaleShapeBorder(const string& id, int x, int y, Color cl, double scale, int a, int b) {
