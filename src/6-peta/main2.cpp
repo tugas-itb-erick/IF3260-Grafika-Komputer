@@ -171,7 +171,7 @@ int main() {
   for (int i=0; i<nItem; i++) {
     checkbox[i] = true;
   }
-  const int TREE = 2, JALAN = 1, GEDUNG = 0, LAPANGAN = 0;
+  const int TREE = 2, JALAN = 1, GEDUNG = 0, LAPANGAN = 3;
   char input = '0';
 
   do {

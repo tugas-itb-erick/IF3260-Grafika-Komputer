@@ -213,7 +213,7 @@ void Buffer::drawShape(const string& id, int x, int y, Color cl) {
 }
 
 void Buffer::drawLayer(const string& id, int x, int y, Color cl) {
-  for (auto e:itb[id]) {
+  for (auto e:layer[id]) {
     shapes["tmp"].points.clear();
     for (auto f:e.points) {
       shapes["tmp"].points.push_back(f);
@@ -223,7 +223,7 @@ void Buffer::drawLayer(const string& id, int x, int y, Color cl) {
 }
 
 void Buffer::drawClippedLayer(const string& id, int x, int y, const string& clip, int ofx, int ofy, double scale, int posx, int posy, Color cl) {
-  for (auto e:itb[id]) {
+  for (auto e:layer[id]) {
     shapes["tmp"].points.clear();
     for (auto f:e.points) {
       shapes["tmp"].points.push_back(f);
@@ -275,7 +275,7 @@ map<string, Drawable>& Buffer::getShapes() {
 }
 
 void Buffer::addLayer(const string& id, const vector<Drawable>& vd) {
-  shapes[id] = vd;
+  layer[id] = vd;
 }
 
 void Buffer::addShape(const string& id, const Drawable& dr) {
