@@ -305,7 +305,7 @@ int main() {
     return -1;
   }
   unsigned char event[3];
-  int clickLeft, clickRight;
+  int clickLeft = 0, clickRight;
   signed char relx, rely;
   int mousex = 700, mousey = 350;
   
@@ -316,7 +316,6 @@ int main() {
     checkbox[i] = true;
   }  
   const int TREE = 2, JALAN = 1, GEDUNG = 0, LAPANGAN = 3;
-  checkbox[GEDUNG] = false;
   char input = '0';
 
   do {
@@ -324,7 +323,7 @@ int main() {
 
     // Checkboxes
   	if (checkbox[TREE]) {
-  		buff.drawShapeScanline("menu2", xMenu2, yMenu2, treeColor);
+  		buff.drawShapeFloodFill("menu2", xMenu2, yMenu2, treeColor);
   		buff.drawClippedShape("menu2", xMenu2, yMenu2, "small-box", xSmall, ySmall, scale, xBig, yBig, treeColor);  
   	}
   	if (checkbox[JALAN]) {
@@ -341,11 +340,11 @@ int main() {
   	}
 
     // Draw menu 1, layer checkboxes
-    buff.drawShapeScanline("menu1", xMenu1, yMenu1, Color(50,50,50));
-    buff.drawShapeScanline("item", xItem, yItem+diffItem*0, buildingColor); //checkbox building
-    buff.drawShapeScanline("item", xItem, yItem+diffItem*1, streetColor); //checkbox street
-    buff.drawShapeScanline("item", xItem, yItem+diffItem*2, treeColor); //checkbox tree
-    buff.drawShapeScanline("item", xItem, yItem+diffItem*3, lapanganColor); //checkbox tree
+    buff.drawShapeFloodFill("menu1", xMenu1, yMenu1, Color(50,50,50));
+    buff.drawShapeFloodFill("item", xItem, yItem+diffItem*0, buildingColor); //checkbox building
+    buff.drawShapeFloodFill("item", xItem, yItem+diffItem*1, streetColor); //checkbox street
+    buff.drawShapeFloodFill("item", xItem, yItem+diffItem*2, treeColor); //checkbox tree
+    buff.drawShapeFloodFill("item", xItem, yItem+diffItem*3, lapanganColor); //checkbox tree
     for (int i=0; i<nItem; i++) {
       buff.drawShapeBorder("checkbox", xCheckbox, yCheckbox+diffItem*i, Color::WHITE);
       if (checkbox[i]) {
@@ -371,12 +370,12 @@ int main() {
     buff.drawShapeBorder("big-box", xBig, yBig, Color::WHITE);
 
     // Draw mouse
-    buff.drawShapeFloodFill("mouse", mousex, mousey, Color::WHITE);
+    buff.drawShapeScanline("mouse", mousex, mousey, Color::WHITE);
 	if (clickLeft) {
-		buff.drawShapeFloodFill("mouse-click", mousex, mousey, Color::RED);
+		buff.drawShapeScanline("mouse-click", mousex, mousey, Color::RED);
 	}
 	
-    buff.apply();
+    buff.apply();	
 
     bool detectInput = false;
     for (int i=0;i<sizeof(event);++i) {
@@ -518,7 +517,6 @@ int main() {
     }
   } while (input != 'q');
 
-  cout << "hai" << endl;
 
   // CREDIT 1
   /** BACA A s..d. Z **/
@@ -542,7 +540,6 @@ int main() {
         }
     }
 
-    cout << "char" << endl;
     
     /** Baca pesawat **/
     fp = fopen("chars/2/pesawat.txt", "r");
@@ -557,7 +554,6 @@ int main() {
     fclose(fp);
   }
 
-  cout << "pesawat" << endl;
 
 /** LOCAL VARIABEL **/   
     int r, g, b, trans;
@@ -570,8 +566,8 @@ int main() {
   int garis3 = 0; int inc3 = 0;
   int countpeluru = 0;
   int durasipeluru = 200;
-  
-    for (time = 0; time < 1500; time++) {
+  int magicnumber = 5;
+    for (time = 0; time < 1500; time+=magicnumber) {
       /* do some work */
       int counter = 0;
       int baris = 1;
@@ -609,13 +605,10 @@ int main() {
         //meletup
         drawLine(tail,height,head,height-75,35,255,0,0,0);
         drawLine(tail,height-75,head,height,35,255,0,0,0);
-        delay(100);
         drawLine(tail,height,head,height-75,25,255,127,0,0);
         drawLine(tail,height-75,head,height,25,255,127,0,0);
-        delay(100);
         drawLine(tail,height,head,height-75,15,255,255,0,0);
         drawLine(tail,height-75,head,height,15,255,255,0,0);
-        delay(100);
         printPesawat(5+time, 255, 225, 0);
       }
 
@@ -634,7 +627,7 @@ int main() {
           }
         }
         garis1--;
-        inc1+=5;
+        inc1+=magicnumber+5;
       } else {
         inc1 = 0;
       }
@@ -652,7 +645,7 @@ int main() {
           }
         }
         garis2--;
-        inc2+=5;
+        inc2+=magicnumber+5;
       } else {
         inc2 = 0;
       }
@@ -670,7 +663,7 @@ int main() {
           }
         }
         garis3--;
-        inc3+=5;
+        inc3+=magicnumber+5;
       } else {
         inc3 = 0;
       }
@@ -711,7 +704,8 @@ int main() {
           }
         }
       }
-    }       
+    }  
+        buff.apply();     
     }
 
   return 0;
