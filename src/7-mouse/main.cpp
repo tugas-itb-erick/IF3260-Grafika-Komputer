@@ -365,12 +365,56 @@ int main() {
       clickRight = event[0] & 0x4;
       relx = event[1];
       rely = event[2];
+
+      // Position
       mousex += relx;
       mousey -= rely;
       mousex %= buff.getWidth();
       if (mousex < 0) mousex += buff.getWidth();
       mousey %= buff.getHeight();
       if (mousey < 0) mousey += buff.getHeight();
+
+      // Zoom in
+      if (clickLeft) {
+        if (selectedMenu == 2) {
+          scale--;
+          if (scale < minScale)
+            scale = minScale;
+          
+          xminMove = xMenu2 + buff.getShape("menu2").points[0].x,
+          xmaxMove = xMenu2 + buff.getShape("menu2").points[2].x - buff.getShape("small-box").points[2].x*scale,
+          yminMove = yMenu2 + buff.getShape("menu2").points[0].y*scale,
+          ymaxMove = yMenu2 + buff.getShape("menu2").points[2].y - buff.getShape("small-box").points[2].y*scale;
+
+          if (xSmall >= xmaxMove) {
+            xSmall = xmaxMove;
+          }
+          if (ySmall >= ymaxMove) {
+            ySmall = ymaxMove;
+          }
+        }
+      }
+
+      // Zoom out
+      if (clickRight) {
+        if (selectedMenu == 2) {
+          scale++;
+          if (scale > maxScale)
+            scale = maxScale;
+          
+          xminMove = xMenu2 + buff.getShape("menu2").points[0].x,
+          xmaxMove = xMenu2 + buff.getShape("menu2").points[2].x - buff.getShape("small-box").points[2].x*scale,
+          yminMove = yMenu2 + buff.getShape("menu2").points[0].y*scale,
+          ymaxMove = yMenu2 + buff.getShape("menu2").points[2].y - buff.getShape("small-box").points[2].y*scale;
+
+          if (xSmall >= xmaxMove) {
+            xSmall = xmaxMove;
+          }
+          if (ySmall >= ymaxMove) {
+            ySmall = ymaxMove;
+          }
+        }
+      }
       for (int i=0;i<sizeof(event);++i) {
         event[i] = 0;
       }
