@@ -22,14 +22,23 @@
 #include <fstream>
 #include "models/Color.h"
 #include "models/Buffer.h"
+#include "models/CharDrawable.h"
 using namespace std;
 
 
 //----- CONSTANTS -----//
+#define N_ALPHABETS 26
+#define UNDEF 99999.99
 
 
 //----- GLOBAL VARIABLES -----//
 struct termios origTermios;
+char name[] = "# AUDRY NYONATA#CATHERINE ALMIRA# DEWITA SONYA T.#  ERICK WIJAYA# KEZIA SUHENDRA# VEREN ILIANA K.#    WILLIAM####   THANK YOU...";
+vector<pair<pair<int,int>,pair<int,int> > > line[30], pesawat;
+int head, tail, height;
+int hit = 0;
+CharDrawable chars[N_ALPHABETS];
+Buffer buff;
 
 
 //----- FUNCTION DECLARATIONS -----//
@@ -78,6 +87,103 @@ int kbhit() {
   FD_ZERO(&fds);
   FD_SET(0, &fds);
   return select(1, &fds, NULL, NULL, &tv);
+}
+
+double gradient(int x1, int y1, int x2, int y2) {
+    if (x1 - x2 == 0)
+        return UNDEF;
+    return (double) (y1-y2) / (x1-x2);
+}
+
+void drawPoint(int x, int y, int thickness, int red, int green, int blue, int a) {
+    for (int i=x; i<x+thickness; i++) {
+        for (int j=y; j<y+thickness; j++) {
+            buff.drawPoint(i, j, Color(red, green, blue));
+        }
+    }
+}
+
+void drawLine(int x1, int y1, int x2, int y2, int thickness, int red, int green, int blue, int a = 1) {
+    double m = gradient(x1, y1, x2, y2);
+    int sign = (m < 0) ? -1 : 1;
+    //cout << "gradient = " << m << endl;
+
+    int dx, dy, e = 0;
+
+  if (m >= -1 && m <= 1) {
+        if (x1 > x2) {
+            swap(x1, x2);
+            swap(y1, y2);
+        }
+        dx = x2 - x1;
+        dy = y2 - y1;
+        int y = y1;
+
+        for (int x = x1; x <= x2; x++) {
+            drawPoint(x, y, thickness, red, green, blue, a);
+            e += dy*sign;
+            if (2*e >= dx) {
+                y += sign;
+                e -= dx;
+            }
+        }
+    } else {
+        if (y1 > y2) {
+            swap(x1, x2);
+            swap(y1, y2);
+        }
+        dx = x2 - x1;
+        dy = y2 - y1;
+        int x = x1;
+
+        for (int y = y1; y <= y2; ++y) {
+            drawPoint(x, y, thickness, red, green, blue, a);
+            e += dx*sign;
+            if (2*e >= dy) {
+                x += sign;
+                e -= dy;
+            }
+        }
+    }
+}
+
+void printChar(char c, int hurufKe, int baris, int red, int green, int blue, int time) {
+    int scale = 8, thickness = 4, top = 600, left = 300;
+    int x1, y1, x2, y2;
+    for (int i = 0; i < (int)line[c - 'A'].size(); ++i) {
+    x1 = left + scale*line[c-'A'][i].first.first + (scale+1)*5*(hurufKe-1);
+    y1 = top + scale*line[c-'A'][i].first.second + (scale+1)*7*(baris-1) - time;
+    x2 = left + scale*line[c-'A'][i].second.first + (scale+1)*5*(hurufKe-1);
+    y2 = top + scale*line[c-'A'][i].second.second + (scale+1)*7*(baris-1) - time;
+    x1 = max(x1, 0); x1 = min(x1, (int)buff.getWidth());
+    x2 = max(x2, 0); x2 = min(x2, (int)buff.getWidth());
+    y1 = max(y1, 0); y1 = min(y1, (int)buff.getHeight());
+    y2 = max(y2, 0); y2 = min(y2, (int)buff.getHeight());
+    if (!(y1==0 && y2==0) && !(y1>buff.getHeight() && y2>y1>buff.getHeight())) drawLine(x1, y1, x2, y2, thickness, red, green, blue);
+    }
+}
+
+void printPesawat(int time, int red, int green, int blue) {
+  int scale = 5,thickness = 2,top = 300,left = 0;
+  int x1, x2, y1, y2;
+  tail = left + scale*pesawat[0].first.first + time;
+  head = left + scale*pesawat[8].first.first + time;
+  height = top + scale*19;
+  for (int i=0;i<(int)pesawat.size();++i) {
+    x1 = left + scale*pesawat[i].first.first + time;
+    y1 = top + scale*pesawat[i].first.second;
+    x2 = left + scale*pesawat[i].second.first + time;
+    y2 = top + scale*pesawat[i].second.second;
+    x1 = max(x1, 0); x1 = min(x1, (int)buff.getWidth());
+    x2 = max(x2, 0); x2 = min(x2, (int)buff.getWidth());
+    y1 = max(y1, 0); y1 = min(y1, (int)buff.getHeight());
+    y2 = max(y2, 0); y2 = min(y2, (int)buff.getHeight());
+    tail = min(tail,x1);
+    head = max(head,x2);    
+    if (!(x1==0 && x2==0) && !(x1>buff.getWidth() && x2>buff.getWidth())) {
+      drawLine(x1, y1, x2, y2, thickness, red, green, blue);
+    }
+  }
 }
 
 Drawable readShapeFromFile(const string& filename) {
@@ -134,8 +240,7 @@ bool isEmpty(unsigned char *c, int s) {
 }
 
 //----- MAIN PROGRAM -----//
-int main() {
-  Buffer buff;
+int main() {  
   buff.reset();
   setConioTerminalNode();
   
@@ -413,7 +518,201 @@ int main() {
     }
   } while (input != 'q');
 
+  cout << "hai" << endl;
+
   // CREDIT 1
+  /** BACA A s..d. Z **/
+    FILE *fp;
+    char c;
+
+    for (c = 'A'; c <= 'Z'; c++) {
+        char filename1[] = "chars/2/x.txt";
+        filename1[8] = c;
+        
+        fp = fopen(filename1, "r");
+        if (fp != NULL) {
+            int x1, x2, y1, y2;
+            while (fscanf(fp, "%d", &x1) == 1) {
+        fscanf(fp, "%d", &y1);
+        fscanf(fp, "%d", &x2);
+        fscanf(fp, "%d", &y2);
+                line[c - 'A'].push_back({{x1,y1},{x2, y2}});
+            }
+            fclose(fp);
+        }
+    }
+
+    cout << "char" << endl;
+    
+    /** Baca pesawat **/
+    fp = fopen("chars/2/pesawat.txt", "r");
+  if (fp != NULL) {
+    int x1, x2, y1, y2;
+    while (fscanf(fp, "%d", &x1) == 1) {
+      fscanf(fp, "%d", &y1);
+      fscanf(fp, "%d", &x2);
+      fscanf(fp, "%d", &y2);
+      pesawat.push_back({{x1,y1},{x2, y2}});
+    }
+    fclose(fp);
+  }
+
+  cout << "pesawat" << endl;
+
+/** LOCAL VARIABEL **/   
+    int r, g, b, trans;
+    int time;
+    trans = 0;
+  
+    int x,y,location;
+  int garis1 = 0; int inc1 = 0;
+  int garis2 = 0; int inc2 = 0;
+  int garis3 = 0; int inc3 = 0;
+  int countpeluru = 0;
+  int durasipeluru = 200;
+  
+    for (time = 0; time < 1500; time++) {
+      /* do some work */
+      int counter = 0;
+      int baris = 1;
+      int hurufKe = 1;
+      int startX;        
+      
+      buff.reset();
+
+      // Cetak nama
+      while (name[counter] != '\0') {
+        if (name[counter]=='#') {
+          hurufKe = 1;
+          switch (baris) {
+            case 1 : r=255; g=0; b=0; break;
+            case 2 : r=255; g=127; b=0; break;
+            case 3 : r=255; g=255; b=0; break;
+            case 4 : r=0; g=255; b=0; break;
+            case 5 : r=0; g=0; b=255; break;
+            case 6 : r=127; g=0; b=255; break;
+            case 7 : r=255; g=0; b=127; break;
+            default : r=255; g=0; b=0; break;
+          }
+          baris++;
+        } else {
+          if (name[counter] != ' ') { 
+            printChar(name[counter],hurufKe,baris,r,g,b,time);
+          }
+          hurufKe++;
+        }
+        counter++;
+      }
+      if (hit == 0) {
+        printPesawat(5+time, 255, 255, 255);
+      } else if (hit == 1) {
+        //meletup
+        drawLine(tail,height,head,height-75,35,255,0,0,0);
+        drawLine(tail,height-75,head,height,35,255,0,0,0);
+        delay(100);
+        drawLine(tail,height,head,height-75,25,255,127,0,0);
+        drawLine(tail,height-75,head,height,25,255,127,0,0);
+        delay(100);
+        drawLine(tail,height,head,height-75,15,255,255,0,0);
+        drawLine(tail,height-75,head,height,15,255,255,0,0);
+        delay(100);
+        printPesawat(5+time, 255, 225, 0);
+      }
+
+      //peluruu
+      if (garis1 > 0) {
+        int x1 = 700-inc1;
+        int y1 = 750-inc1; 
+        int x2 = 650-inc1;
+        int y2 = 700-inc1;
+        if (x1>15 && x1<buff.getWidth() & x2>15 && x2<buff.getWidth() && y1>15 && y1<buff.getHeight() && y2>15 && y2<buff.getHeight()){
+          if ((x1>=tail && x1 <= head) && (y1<height || y2<height)) {
+            hit++;
+          } else {
+            drawLine(x1,y1,x2,y2,3,255,255,255);
+            drawLine(x1-15,y1-15,x2+15,y2+15,3,0,0,0,100);
+          }
+        }
+        garis1--;
+        inc1+=5;
+      } else {
+        inc1 = 0;
+      }
+      if (garis2 > 0) {
+        int x1 = 700;
+        int y1 = 750-inc2;
+        int x2 = 700;
+        int y2 = 700-inc2;
+        if (x1>15 && x1<buff.getWidth() & x2>15 && x2<buff.getWidth() && y1>15 && y1<buff.getHeight() && y2>15 && y2<buff.getHeight()){
+          if ((x1>=tail && x1 <= head) && (y1<height || y2<height)) {
+            hit++;
+          } else {
+            drawLine(x1,y1,x2,y2,3,255,255,255);
+            drawLine(x1,y1-15,x2,y2+15,3,0,0,0,100);
+          }
+        }
+        garis2--;
+        inc2+=5;
+      } else {
+        inc2 = 0;
+      }
+      if (garis3 > 0) {
+        int x1 = 700+inc3;
+        int y1 = 750-inc3; 
+        int x2 = 750+inc3;
+        int y2 = 700-inc3;
+        if (x1>15 && x1<buff.getWidth() & x2>15 && x2<buff.getWidth() && y1>15 && y1<buff.getHeight() && y2>15 && y2<buff.getHeight()){
+          if ((x1>=tail && x1 <= head) && (y1<height || y2<height)) {
+            hit++;
+          } else {
+            drawLine(x1,y1,x2,y2,3,255,255,255);
+            drawLine(x1+15,y1-15,x2-15,y2+15,3,0,0,0,100);
+          }
+        }
+        garis3--;
+        inc3+=5;
+      } else {
+        inc3 = 0;
+      }
+      delay(5);
+//peluru22
+    if (kbhit()){
+      countpeluru++;
+      int r;
+      unsigned char c;
+      if (r = read(0, &c, sizeof(c)) < 0) { //ngecek apakah tombol 0 s.d. 9 dipencet
+        //do nothing
+      } else { //selain 0 s.d. 9
+        if (c == ' ') {
+          if (countpeluru%3 == 1) {
+            if (garis1>0){
+              //do nothing
+              //ga boleh muncul peluru lagi, tunggu sampe peluru ilang
+            } else {
+              garis1=durasipeluru;
+              inc1 = 0;
+            }
+          } else if (countpeluru%3 == 2) {
+            if (garis2>0){
+              //do nothing
+              //ga boleh muncul peluru lagi, tunggu sampe peluru ilang
+            } else {
+              garis2=durasipeluru;
+              inc2 = 0;
+            }
+          } else if (countpeluru%3 == 0) {
+            if (garis3>0){
+              //do nothing
+              //ga boleh muncul peluru lagi, tunggu sampe peluru ilang
+            } else {
+              garis3=durasipeluru;
+              inc3 = 0;
+            }
+          }
+        }
+      }
+    }       
+    }
 
   return 0;
 }

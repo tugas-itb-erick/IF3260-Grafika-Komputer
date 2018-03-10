@@ -9,7 +9,7 @@ all: src/1-titik/main.c src/2-garis/main.cpp src/2-garis/models/Color.cpp src/2-
 	g++ src/6-peta/main.cpp src/6-peta/models/Color.cpp src/6-peta/models/Point.cpp src/6-peta/models/Line.cpp src/6-peta/models/Triangle.cpp src/6-peta/models/Drawable.cpp src/6-peta/models/Buffer.cpp -o bin/6 -std=c++11
 	g++ src/6-peta/main2.cpp src/6-peta/models/Color.cpp src/6-peta/models/Point.cpp src/6-peta/models/Line.cpp src/6-peta/models/Triangle.cpp src/6-peta/models/Drawable.cpp src/6-peta/models/Buffer.cpp -o bin/62 -std=c++11
 	g++ src/7-mouse/main.cpp src/7-mouse/models/Color.cpp src/7-mouse/models/Point.cpp src/7-mouse/models/Line.cpp src/7-mouse/models/Triangle.cpp src/7-mouse/models/Drawable.cpp src/7-mouse/models/Buffer.cpp -o bin/7 -std=c++11
-	g++ src/8-uts/main.cpp src/8-uts/models/Color.cpp src/8-uts/models/Point.cpp src/8-uts/models/Line.cpp src/8-uts/models/Triangle.cpp src/8-uts/models/Drawable.cpp src/8-uts/models/Buffer.cpp -o bin/8 -std=c++11
+	g++ src/8-uts/main.cpp src/8-uts/models/Color.cpp src/8-uts/models/Point.cpp src/8-uts/models/Line.cpp src/8-uts/models/Triangle.cpp src/8-uts/models/Drawable.cpp src/8-uts/models/Buffer.cpp src/8-uts/models/CharDrawable.cpp -o bin/8 -std=c++11
 
 1: src/1-titik/main.c
 	[ -d bin ] || mkdir -p bin
@@ -47,9 +47,9 @@ all: src/1-titik/main.c src/2-garis/main.cpp src/2-garis/models/Color.cpp src/2-
 	[ -d bin ] || mkdir -p bin
 	g++ src/7-mouse/main.cpp src/7-mouse/models/Color.cpp src/7-mouse/models/Point.cpp src/7-mouse/models/Line.cpp src/7-mouse/models/Triangle.cpp src/7-mouse/models/Drawable.cpp src/7-mouse/models/Buffer.cpp -o bin/7 -std=c++11
 
-8: src/8-uts/main.cpp src/8-uts/models/Color.cpp src/8-uts/models/Point.cpp src/8-uts/models/Line.cpp src/8-uts/models/Triangle.cpp src/8-uts/models/Drawable.cpp src/8-uts/models/Buffer.cpp
+8: src/8-uts/main.cpp src/8-uts/models/Color.cpp src/8-uts/models/Point.cpp src/8-uts/models/Line.cpp src/8-uts/models/Triangle.cpp src/8-uts/models/Drawable.cpp src/8-uts/models/Buffer.cpp src/8-uts/models/CharDrawable.cpp
 	[ -d bin ] || mkdir -p bin
-	g++ src/8-uts/main.cpp src/8-uts/models/Color.cpp src/8-uts/models/Point.cpp src/8-uts/models/Line.cpp src/8-uts/models/Triangle.cpp src/8-uts/models/Drawable.cpp src/8-uts/models/Buffer.cpp -o bin/8 -std=c++11
+	g++ src/8-uts/main.cpp src/8-uts/models/Color.cpp src/8-uts/models/Point.cpp src/8-uts/models/Line.cpp src/8-uts/models/Triangle.cpp src/8-uts/models/Drawable.cpp src/8-uts/models/Buffer.cpp src/8-uts/models/CharDrawable.cpp -o bin/8 -std=c++11
 
 run:
 	clear

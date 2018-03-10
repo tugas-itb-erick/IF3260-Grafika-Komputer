@@ -25,6 +25,7 @@ public:
   map<string, Drawable>& getShapes();
 
   // Methods
+  void drawPoint(int, int, Color cl = Color::WHITE);
   void addLayer(const string&, const vector<Drawable>&);
   void addShape(const string&, const Drawable&);
   void delShape(const string&);
@@ -80,7 +81,6 @@ public:
 private:
   // Private Methods
   void initFramebuffer();
-  void drawPoint(int, int, Color cl = Color::WHITE);
   void drawPoint(const Point&, Color cl = Color::WHITE);
   void drawLine(const Line&, Color cl = Color::WHITE);
 

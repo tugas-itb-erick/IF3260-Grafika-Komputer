@@ -303,9 +303,6 @@ int main()
 	int countpeluru = 0;
 	int durasipeluru = 200;
 	
-	//KEY INTTERUPT
-	set_conio_terminal_mode();
-	
     for (time = 0; time < 1500; time++) {
 			/* do some work */
 			int counter = 0;
