@@ -10,8 +10,8 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <fcntl.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include <time.h>
 #include <string.h>
 #include <termios.h>
@@ -109,6 +109,15 @@ vector<Drawable> readLayerFromFile(const string& filename) {
   return vd;
 }
 
+bool isEmpty(unsigned char *c, int s) {
+  for (int i=0;i<s;++i) {
+    if (c[i]) {
+      return false;
+    }
+  }
+  return true;
+}
+
 //----- MAIN PROGRAM -----//
 int main() {
   Buffer buff;
@@ -116,19 +125,20 @@ int main() {
   setConioTerminalNode();
   
   // Setup shapes
-  buff.addShape("menu1", readShapeFromFile("chars/6/Menu1.txt"));
-  buff.addShape("menu2", readShapeFromFile("chars/6/Menu2.txt"));
-  buff.addShape("item", readShapeFromFile("chars/6/MenuItem.txt"));
-  buff.addShape("checkbox", readShapeFromFile("chars/6/Checkbox.txt"));
-  buff.addShape("checked", readShapeFromFile("chars/6/Checked.txt"));
-  buff.addShape("small-box", readShapeFromFile("chars/6/Small.txt"));
-  buff.addShape("big-box", readShapeFromFile("chars/6/Big.txt"));
-  buff.addShape("jalan", readShapeFromFile("chars/6/jalan.txt"));
+  buff.addShape("menu1", readShapeFromFile("chars/7/Menu1.txt"));
+  buff.addShape("menu2", readShapeFromFile("chars/7/Menu2.txt"));
+  buff.addShape("item", readShapeFromFile("chars/7/MenuItem.txt"));
+  buff.addShape("checkbox", readShapeFromFile("chars/7/Checkbox.txt"));
+  buff.addShape("checked", readShapeFromFile("chars/7/Checked.txt"));
+  buff.addShape("small-box", readShapeFromFile("chars/7/Small.txt"));
+  buff.addShape("big-box", readShapeFromFile("chars/7/Big.txt"));
+  buff.addShape("jalan", readShapeFromFile("chars/7/jalan.txt"));
+  buff.addShape("mouse", readShapeFromFile("chars/7/crosshair.txt"));
 
   // Setup layers
-  buff.addLayer("gedung", readLayerFromFile("chars/6/gedung.txt"));
-  buff.addLayer("jalan", readLayerFromFile("chars/6/jalan.txt"));
-  buff.addLayer("lapangan", readLayerFromFile("chars/6/lapangan.txt"));
+  buff.addLayer("gedung", readLayerFromFile("chars/7/gedung.txt"));
+  buff.addLayer("jalan", readLayerFromFile("chars/7/jalan.txt"));
+  buff.addLayer("lapangan", readLayerFromFile("chars/7/lapangan.txt"));
   
   // Scale config
   int scale = 2,
@@ -165,6 +175,18 @@ int main() {
   Color streetColor = Color::GRAY;
   Color buildingColor = Color::ORANGE;
   Color lapanganColor = Color::GREEN;
+
+  // Mouse setup
+  const char *pDevice = "/dev/input/mice";
+  int fmouse = open(pDevice, O_RDONLY | O_NONBLOCK);
+  if (fmouse == -1) {
+    printf("Error opening %s\n", pDevice);
+    return -1;
+  }
+  unsigned char event[3];
+  int clickLeft, clickRight;
+  signed char relx, rely;
+  int mousex = 700, mousey = 350;
   
 
   // Setup layer checkboxes
@@ -225,13 +247,28 @@ int main() {
 	  buff.drawShapeBorder("menu1", xMenu1, yMenu1, Color::WHITE);
     buff.drawShapeBorder("menu2", xMenu2, yMenu2, Color::WHITE);    
     buff.drawShapeBorder("big-box", xBig, yBig, Color::WHITE);
-	
+
+    // Draw mouse
+    buff.drawShape("mouse", mousex, mousey, Color::WHITE);
 
     buff.apply();
 
+    bool detectInput = false;
+
+    // Detect input from mouse or keyboard
+    while (!detectInput) {
+      if (kbhit()) {
+        detectInput = true;
+        read(0, &input, sizeof(input));
+      }
+      if (read(fmouse, event, sizeof(event))) {
+        detectInput = 1;
+      }
+    }
+
     // Keyboard input
-    while (!kbhit()) {};
-      read(0, &input, sizeof(input));
+    if (input) {
+      //read(0, &input, sizeof(input));
       switch (input) {
         case '1': // Switch to menu layer checkboxes
           selectedMenu = 1;
@@ -320,6 +357,68 @@ int main() {
         default:
           break;
       }
+		if (input !='q') 
+			input = 0;
+    }
+    if (!isEmpty(event, sizeof(event))) {
+      clickLeft = event[0] & 0x1;
+      clickRight = event[0] & 0x4;
+      relx = event[1];
+      rely = event[2];
+
+      // Position
+      mousex += relx;
+      mousey -= rely;
+      mousex %= buff.getWidth();
+      if (mousex < 0) mousex += buff.getWidth();
+      mousey %= buff.getHeight();
+      if (mousey < 0) mousey += buff.getHeight();
+
+      // Zoom in
+      if (clickLeft) {
+        if (selectedMenu == 2) {
+          scale--;
+          if (scale < minScale)
+            scale = minScale;
+          
+          xminMove = xMenu2 + buff.getShape("menu2").points[0].x,
+          xmaxMove = xMenu2 + buff.getShape("menu2").points[2].x - buff.getShape("small-box").points[2].x*scale,
+          yminMove = yMenu2 + buff.getShape("menu2").points[0].y*scale,
+          ymaxMove = yMenu2 + buff.getShape("menu2").points[2].y - buff.getShape("small-box").points[2].y*scale;
+
+          if (xSmall >= xmaxMove) {
+            xSmall = xmaxMove;
+          }
+          if (ySmall >= ymaxMove) {
+            ySmall = ymaxMove;
+          }
+        }
+      }
+
+      // Zoom out
+      if (clickRight) {
+        if (selectedMenu == 2) {
+          scale++;
+          if (scale > maxScale)
+            scale = maxScale;
+          
+          xminMove = xMenu2 + buff.getShape("menu2").points[0].x,
+          xmaxMove = xMenu2 + buff.getShape("menu2").points[2].x - buff.getShape("small-box").points[2].x*scale,
+          yminMove = yMenu2 + buff.getShape("menu2").points[0].y*scale,
+          ymaxMove = yMenu2 + buff.getShape("menu2").points[2].y - buff.getShape("small-box").points[2].y*scale;
+
+          if (xSmall >= xmaxMove) {
+            xSmall = xmaxMove;
+          }
+          if (ySmall >= ymaxMove) {
+            ySmall = ymaxMove;
+          }
+        }
+      }
+      for (int i=0;i<sizeof(event);++i) {
+        event[i] = 0;
+      }
+    }
   } while (input != 'q');
 
   return 0;
