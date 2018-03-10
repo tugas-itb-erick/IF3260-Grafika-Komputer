@@ -37,7 +37,22 @@ Drawable readFromFile(const string& filename);
 void resetTerminalMode();
 void setConioTerminalNode();
 int kbhit();
+void delay(int number_of_seconds);
 
+
+void delay(int number_of_seconds)
+{
+    // Converting time into milli_seconds
+    int milli_seconds = 1000 * number_of_seconds;
+ 
+    // Stroing start time
+    clock_t start_time = clock();
+ 
+    // looping till required time is not acheived
+    while (clock() < start_time + milli_seconds) {
+        
+	}
+}
 
 //----- FUNCTION IMPLEMENTATIONS -----//
 void resetTerminalMode() {
@@ -134,6 +149,7 @@ int main() {
   buff.addShape("big-box", readShapeFromFile("chars/7/Big.txt"));
   buff.addShape("jalan", readShapeFromFile("chars/7/jalan.txt"));
   buff.addShape("mouse", readShapeFromFile("chars/7/crosshair.txt"));
+  buff.addShape("mouse-click", readShapeFromFile("chars/7/crosshair-click.txt"));
 
   // Setup layers
   buff.addLayer("gedung", readLayerFromFile("chars/7/gedung.txt"));
@@ -250,10 +266,17 @@ int main() {
 
     // Draw mouse
     buff.drawShape("mouse", mousex, mousey, Color::WHITE);
-
+	if (clickLeft) {
+		buff.drawShape("mouse-click", mousex, mousey, Color::RED);
+	}
+	
     buff.apply();
 
     bool detectInput = false;
+    for (int i=0;i<sizeof(event);++i) {
+	  event[i] = 0;
+    }
+    input = 0;
 
     // Detect input from mouse or keyboard
     while (!detectInput) {
@@ -357,15 +380,14 @@ int main() {
         default:
           break;
       }
-		if (input !='q') 
-			input = 0;
     }
+
     if (!isEmpty(event, sizeof(event))) {
       clickLeft = event[0] & 0x1;
-      clickRight = event[0] & 0x4;
+      clickRight = event[0] & 0x2;
       relx = event[1];
       rely = event[2];
-
+	
       // Position
       mousex += relx;
       mousey -= rely;
@@ -373,50 +395,19 @@ int main() {
       if (mousex < 0) mousex += buff.getWidth();
       mousey %= buff.getHeight();
       if (mousey < 0) mousey += buff.getHeight();
-
-      // Zoom in
+	
       if (clickLeft) {
-        if (selectedMenu == 2) {
-          scale--;
-          if (scale < minScale)
-            scale = minScale;
-          
-          xminMove = xMenu2 + buff.getShape("menu2").points[0].x,
-          xmaxMove = xMenu2 + buff.getShape("menu2").points[2].x - buff.getShape("small-box").points[2].x*scale,
-          yminMove = yMenu2 + buff.getShape("menu2").points[0].y*scale,
-          ymaxMove = yMenu2 + buff.getShape("menu2").points[2].y - buff.getShape("small-box").points[2].y*scale;
-
-          if (xSmall >= xmaxMove) {
-            xSmall = xmaxMove;
-          }
-          if (ySmall >= ymaxMove) {
-            ySmall = ymaxMove;
-          }
-        }
-      }
-
-      // Zoom out
-      if (clickRight) {
-        if (selectedMenu == 2) {
-          scale++;
-          if (scale > maxScale)
-            scale = maxScale;
-          
-          xminMove = xMenu2 + buff.getShape("menu2").points[0].x,
-          xmaxMove = xMenu2 + buff.getShape("menu2").points[2].x - buff.getShape("small-box").points[2].x*scale,
-          yminMove = yMenu2 + buff.getShape("menu2").points[0].y*scale,
-          ymaxMove = yMenu2 + buff.getShape("menu2").points[2].y - buff.getShape("small-box").points[2].y*scale;
-
-          if (xSmall >= xmaxMove) {
-            xSmall = xmaxMove;
-          }
-          if (ySmall >= ymaxMove) {
-            ySmall = ymaxMove;
-          }
-        }
-      }
-      for (int i=0;i<sizeof(event);++i) {
-        event[i] = 0;
+		selectedMenu = 2;
+		xSmall = mousex;
+	    ySmall = mousey;
+		if (xSmall < xminMove)
+		  xSmall = xminMove;
+		if (xSmall > xmaxMove)
+		  xSmall = xmaxMove;
+	    if (ySmall < yminMove)
+		  ySmall = yminMove;
+		if (ySmall > ymaxMove)
+		  ySmall = ymaxMove;
       }
     }
   } while (input != 'q');
