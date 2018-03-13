@@ -4,11 +4,13 @@ IF3260 Grafika Komputer
 
 ### Setup
 
-Clone atau download zip dari repositori ini lalu ketik perintah ```make``` untuk melakukan kompilasi seluruh kode program. 
+Clone atau download zip dari repositori ini lalu ketik perintah ```make``` untuk melakukan kompilasi seluruh kode program termasuk program untuk UTS. 
 
 Untuk melakukan kompilasi salah satu program saja, ketik ```make x``` dengan x adalah nomor program yang ingin dikompilasi. 
 
 Untuk mengeksekusi program, ketik ```./bin/x``` dengan x adalah nomor program yang akan dieksekusi.
+
+Untuk mengeksekusi program UTS, ketik ```./bin/uts```
 
 ### Anggota Kelompok:
 
