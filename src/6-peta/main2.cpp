@@ -321,8 +321,5 @@ int main() {
           break;
       }
   } while (input != 'q');
-
-  system("clear");
-	system("./bin/nub");
   return 0;
 }

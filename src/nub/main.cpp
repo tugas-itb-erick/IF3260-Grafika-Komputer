@@ -149,6 +149,12 @@ int main() {
   buff.addShape("mouse", readShapeFromFile("chars/7/crosshair.txt"));
   buff.addShape("mouse-click", readShapeFromFile("chars/7/crosshair-click.txt"));
 
+  buff.addShape("eye", readShapeFromFile("chars/4/Alien_Eye.txt"));
+  buff.addShape("face", readShapeFromFile("chars/4/Alien_Face.txt"));
+  buff.addShape("neck", readShapeFromFile("chars/4/Ufo_Neck.txt"));
+  buff.addShape("upperbody", readShapeFromFile("chars/4/Ufo_UpperBody.txt"));
+  buff.addShape("lowerbody", readShapeFromFile("chars/4/Ufo_LowerBody.txt"));
+
   // Mouse setup
   const char *pDevice = "/dev/input/mice";
   int fmouse = open(pDevice, O_RDONLY | O_NONBLOCK);
@@ -156,7 +162,7 @@ int main() {
     printf("Error opening %s\n", pDevice);
     return -1;
   }
-  int mousex = 700, mousey = 350;
+  int mousex = 700, mousey = 500;
 
   char input = '0';
   unsigned char event[3];
@@ -165,10 +171,6 @@ int main() {
   
   do {
     buff.reset();
-    buff.drawShape("mouse", mousex, mousey, Color::WHITE);
-    if (clickLeft) {
-      buff.drawShape("mouse-click", mousex, mousey, Color::RED);
-    }
 
     int startX = 100, startY = 300;
     int delta = 175;
@@ -186,7 +188,21 @@ int main() {
     buff.drawShape("sys5", sys5X, sys5Y, Color::BLUE);
     buff.drawShape("sys6", sys6X, sys6Y, Color::PINK);
     buff.drawShape("sys7", sys7X, sys7Y, Color::PURPLE);
-    buff.drawShapeBorder("monika", 50, 50, Color::WHITE);
+    
+    {
+      int alien1X = 0;
+      buff.drawShape("eye", alien1X, 0, Color::BLUE);
+      buff.drawShape("face", alien1X, 0, Color::GREEN);
+      buff.drawShape("neck", alien1X, 0, Color::PURPLE);
+      buff.drawShape("upperbody", alien1X, 0, Color::PINK);
+      buff.drawShape("lowerbody", alien1X, 0, Color::PURPLE);
+    }
+
+
+    buff.drawShape("mouse", mousex, mousey, Color::WHITE);
+    if (clickLeft) {
+      buff.drawShape("mouse-click", mousex, mousey, Color::RED);
+    }
 
     bool detectInput = false;
     for (int i=0;i<sizeof(event);++i) {
@@ -222,31 +238,24 @@ int main() {
       if (clickLeft) {
         if (mousex > sys1X && mousex < sys1X+delta && mousey > sys1Y && mousey < sys1Y+delta) {
           system("./bin/1");
-          clickRight = true;
         }
         if (mousex > sys2X && mousex < sys2X+delta && mousey > sys2Y && mousey < sys2Y+delta) {
           system("./bin/2");
-          clickRight = true;
         }
         if (mousex > sys3X && mousex < sys3X+delta && mousey > sys3Y && mousey < sys3Y+delta) {
           system("./bin/3");
-          clickRight = true;
         }
         if (mousex > sys4X && mousex < sys4X+delta && mousey > sys4Y && mousey < sys4Y+delta) {
           system("./bin/4");
-          clickRight = true;
         }
         if (mousex > sys5X && mousex < sys5X+delta && mousey > sys5Y && mousey < sys5Y+delta) {
           system("./bin/5");
-          clickRight = true;
         }
         if (mousex > sys6X && mousex < sys6X+delta && mousey > sys6Y && mousey < sys6Y+delta) {
           system("./bin/6");
-          clickRight = true;
         }
         if (mousex > sys7X && mousex < sys7X+delta && mousey > sys7Y && mousey < sys7Y+delta) {
           system("./bin/7");
-          clickRight = true;
         }
       }
     }

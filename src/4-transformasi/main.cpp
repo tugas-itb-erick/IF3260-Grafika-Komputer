@@ -258,8 +258,5 @@ int main() {
     buff.apply();
     ++loopCount;
   }
-
-  system("clear");
-	system("./bin/nub");
   return 0;
 }

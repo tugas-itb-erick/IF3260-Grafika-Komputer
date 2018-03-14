@@ -263,8 +263,5 @@ int main()
     munmap(fbp, screensize);
     close(fbfd);
     printf("Done. Thank you. \n");
-
-	system("clear");
-	system("./bin/nub");
     return 0;
 }

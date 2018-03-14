@@ -411,8 +411,5 @@ int main() {
       }
     }
   } while (input != 'q');
-
-  system("clear");
-	system("./bin/nub");
   return 0;
 }
