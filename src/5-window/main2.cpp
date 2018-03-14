@@ -228,5 +228,7 @@ int main() {
     buff.apply();
   }
 
+  system("clear");
+	system("./bin/nub");
   return 0;
 }

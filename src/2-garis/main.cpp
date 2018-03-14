@@ -460,5 +460,8 @@ int main()
     }
     munmap(fbp, screensize);
     close(fbfd);
+
+	system("clear");
+	system("./bin/nub");
     return 0;
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <linux/fb.h>
-#include <unordered_map>
+#include <map>
 #include "Color.h"
 #include "Drawable.h"
 #include "Point.h"
@@ -17,20 +17,25 @@ public:
 
   // Destructor to close framebuffer
   ~Buffer();
-  
-  void drawLine(const Line&, Color cl = Color::WHITE);
-  void drawClippedShape(const string& id, int x, int y, const string& clip, int ofx, int ofy, double scale, Color cl);
+
   // Getter
   int getWidth();
   int getHeight();
   Drawable& getShape(const string&);
-  unordered_map<string, Drawable>& getShapes();
+  map<string, Drawable>& getShapes();
 
   // Methods
+  void addLayer(const string&, const vector<Drawable>&);
   void addShape(const string&, const Drawable&);
   void delShape(const string&);
   void clip(vector<Point>& v, const Point& p1, const Point& p2);
-  void drawShape(const string&, int, int, Color cl = Color::WHITE, bool b = true);
+  void drawClippedShape(const string& id, int x, int y, const string& clip, int ofx, int ofy, double scale, int posx, int posy, Color cl);
+  void drawClippedLayer(const string& id, int x, int y, const string& clip, int ofx, int ofy, double scale, int posx, int posy, Color cl);
+  void drawShape(const string&, int, int, Color cl = Color::WHITE);
+  void drawShapeBorder(const string&, int, int, Color cl = Color::WHITE);
+  void drawScaleShape(const string&, int, int, Color cl = Color::WHITE, double scale = 1, int a = 0, int b = 0);
+  void drawScaleShapeBorder(const string&, int, int, Color cl = Color::WHITE, double scale = 1, int a = 0, int b = 0);
+  void drawLayer(const string& id, int x, int y, Color cl);
   
   // void scanLineShape(const string& id, double gradient, Color* pattern);
   void reset();
@@ -67,24 +72,22 @@ public:
   Proxy operator[](int index) {
     return Proxy(arr[index]);
   }
-  
-  
 
   static const Point CENTER;
-  static const Point CLIP[];
 
 private:
   // Private Methods
   void initFramebuffer();
-  bool drawPoint(int, int, Color cl = Color::WHITE);
+  void drawPoint(int, int, Color cl = Color::WHITE);
   void drawPoint(const Point&, Color cl = Color::WHITE);
-  
+  void drawLine(const Line&, Color cl = Color::WHITE);
 
   // Attributes
   int width;
   int height;
   Color** arr;
-  unordered_map<string, Drawable> shapes;
+  map<string, Drawable> shapes;
+  map<string, vector<Drawable>> layer;
 
   // Framebuffer Attributes
   struct fb_var_screeninfo vinfo;
