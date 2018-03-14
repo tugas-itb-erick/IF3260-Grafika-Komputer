@@ -73,13 +73,14 @@ public:
     return Proxy(arr[index]);
   }
 
+  void drawPoint(int, int, Color cl = Color::WHITE);
+  void drawPoint(const Point&, Color cl = Color::WHITE);
+
   static const Point CENTER;
 
 private:
   // Private Methods
   void initFramebuffer();
-  void drawPoint(int, int, Color cl = Color::WHITE);
-  void drawPoint(const Point&, Color cl = Color::WHITE);
   void drawLine(const Line&, Color cl = Color::WHITE);
 
   // Attributes

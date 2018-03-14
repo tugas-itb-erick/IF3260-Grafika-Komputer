@@ -87,7 +87,7 @@ Buffer::~Buffer() {
 void Buffer::reset() {
   for (int i=0; i<width; i++) {
     for (int j=0; j<height; j++) {
-      arr[i][j] = Color::BLACK;
+      arr[i][j] = Color::NAVY;
     }
   }
 }

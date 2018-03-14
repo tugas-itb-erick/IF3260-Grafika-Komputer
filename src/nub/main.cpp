@@ -138,18 +138,15 @@ int main() {
   Buffer buff;
   buff.reset();
 
-  buff.addShape("sys1", readShapeFromFile("chars/7/monika"));
-  buff.addShape("sys2", readShapeFromFile("chars/7/monika"));
-  buff.addShape("sys3", readShapeFromFile("chars/7/monika"));
-  buff.addShape("sys4", readShapeFromFile("chars/7/monika"));
-  buff.addShape("sys5", readShapeFromFile("chars/7/monika"));
-  buff.addShape("sys6", readShapeFromFile("chars/7/monika"));
-  buff.addShape("sys7", readShapeFromFile("chars/7/monika"));
+  buff.addShape("sys", readShapeFromFile("chars/7/monika"));
+  buff.addShape("kirikanan", readShapeFromFile("chars/7/monikamm"));
+  buff.addShape("atasbawah", readShapeFromFile("chars/7/monikammm"));
   buff.addShape("border", readShapeFromFile("chars/7/justmonika"));
   buff.addShape("mouse", readShapeFromFile("chars/7/crosshair.txt"));
   buff.addShape("mouse-click", readShapeFromFile("chars/7/crosshair-click.txt"));
 
   buff.addShape("eye", readShapeFromFile("chars/4/Alien_Eye.txt"));
+  buff.addShape("cockpit" , readShapeFromFile("chars/4/Ufo_Cockpit.txt"));
   buff.addShape("face", readShapeFromFile("chars/4/Alien_Face.txt"));
   buff.addShape("neck", readShapeFromFile("chars/4/Ufo_Neck.txt"));
   buff.addShape("upperbody", readShapeFromFile("chars/4/Ufo_UpperBody.txt"));
@@ -167,7 +164,21 @@ int main() {
   char input = '0';
   unsigned char event[3];
   signed char relx, rely;
-  int clickLeft = false, clickRight = false;
+  int clickLeft = 0, clickRight;
+  bool stop = false;
+  
+  int alien1X = 100;
+  int alien1Y = 100;
+  int alien2X = 1200;
+  int alien2Y = 100;
+  int alien3X = 300;
+  int alien3Y = 300;
+  int alien4X = 500;
+  int alien4Y = 500;
+  int alien5X = 250;
+  int alien5Y = 250;
+  int alien6X = 600;
+  int alien6Y = 600;
   
   do {
     buff.reset();
@@ -181,22 +192,108 @@ int main() {
     int sys5X = startX+delta*4, sys5Y = startY;
     int sys6X = startX+delta*5, sys6Y = startY;
     int sys7X = startX+delta*6, sys7Y = startY;
-    buff.drawShape("sys1", sys1X, sys1Y, Color::RED);
-    buff.drawShape("sys2", sys2X, sys2Y, Color::ORANGE);
-    buff.drawShape("sys3", sys3X, sys3Y, Color::YELLOW);
-    buff.drawShape("sys4", sys4X, sys4Y, Color::GREEN);
-    buff.drawShape("sys5", sys5X, sys5Y, Color::BLUE);
-    buff.drawShape("sys6", sys6X, sys6Y, Color::PINK);
-    buff.drawShape("sys7", sys7X, sys7Y, Color::PURPLE);
+    buff.drawShape("border", 50, 50, Color::BLACK);
     
     {
-      int alien1X = 0;
-      buff.drawShape("eye", alien1X, 0, Color::BLUE);
-      buff.drawShape("face", alien1X, 0, Color::GREEN);
-      buff.drawShape("neck", alien1X, 0, Color::PURPLE);
-      buff.drawShape("upperbody", alien1X, 0, Color::PINK);
-      buff.drawShape("lowerbody", alien1X, 0, Color::PURPLE);
+      for (int i=0; i<75; i++) {
+        buff.drawPoint(rand()%1300+50, rand()%650+50, Color::RED);
+        buff.drawPoint(rand()%1300+50, rand()%650+50, Color::WHITE);
+        buff.drawPoint(rand()%1300+50, rand()%650+50, Color::YELLOW);
+        buff.drawPoint(rand()%1300+50, rand()%650+50, Color::BLUE);
+      }
     }
+
+    {
+      int alienXmin = 25;
+      int alienYmin = 25;
+      int alienXmax = 1300;
+      int alienYmax = 650;
+
+      alien1X += 20;
+      alien1X = (alien1X >= alienXmin)? (alien1X <= alienXmax)? alien1X : alienXmin : alienXmax;
+      buff.drawScaleShape("cockpit", alien1X, alien1Y, Color::WHITE, 1.5);
+      buff.drawScaleShape("face", alien1X, alien1Y, Color::GREEN, 1.5);
+      buff.drawScaleShape("neck", alien1X, alien1Y, Color::PURPLE, 1.5);
+      buff.drawScaleShape("upperbody", alien1X, alien1Y, Color::PINK, 1.5);
+      buff.drawScaleShape("lowerbody", alien1X, alien1Y, Color::PURPLE, 1.5);
+      buff.drawScaleShape("eye", alien1X, alien1Y, Color::BLUE, 1.5);
+
+      alien2X += 15;
+      alien2X = (alien2X >= alienXmin)? (alien2X <= alienXmax)? alien2X : alienXmin : alienXmax;
+      alien2Y += 15;
+      alien2Y = (alien2Y >= alienYmin)? (alien2Y <= alienYmax)? alien2Y : alienYmin : alienYmax;
+      buff.drawShape("cockpit", alien2X, alien2Y, Color::WHITE);
+      buff.drawShape("face", alien2X, alien2Y, Color::GREEN);
+      buff.drawShape("neck", alien2X, alien2Y, Color::PURPLE);
+      buff.drawShape("upperbody", alien2X, alien2Y, Color::PINK);
+      buff.drawShape("lowerbody", alien2X, alien2Y, Color::PURPLE);
+      buff.drawShape("eye", alien2X, alien2Y, Color::BLUE);
+      
+
+      alien3X -= 25;
+      alien3X = (alien3X >= alienXmin)? (alien3X <= alienXmax)? alien3X : alienXmin : alienXmax;
+      alien3Y -= 15;
+      alien3Y = (alien3Y >= alienYmin)? (alien3Y <= alienYmax)? alien3Y : alienYmin : alienYmax;
+      buff.drawShape("cockpit", alien3X, alien3Y, Color::WHITE);
+      buff.drawShape("face", alien3X, alien3Y, Color::GREEN);
+      buff.drawShape("neck", alien3X, alien3Y, Color::PURPLE);
+      buff.drawShape("upperbody", alien3X, alien3Y, Color::PINK);
+      buff.drawShape("lowerbody", alien3X, alien3Y, Color::PURPLE);
+      buff.drawShape("eye", alien3X, alien3Y, Color::BLUE);
+      
+
+      alien4X += 5;
+      alien4X = (alien4X >= alienXmin)? (alien4X <= alienXmax)? alien4X : alienXmin : alienXmax;
+      alien4Y += 45;
+      alien4Y = (alien4Y >= alienYmin)? (alien4Y <= alienYmax)? alien4Y : alienYmin : alienYmax;
+      buff.drawScaleShape("cockpit", alien4X, alien4Y, Color::WHITE, 2.3);
+      buff.drawScaleShape("face", alien4X, alien4Y, Color::GREEN, 2.3);
+      buff.drawScaleShape("neck", alien4X, alien4Y, Color::PURPLE, 2.3);
+      buff.drawScaleShape("upperbody", alien4X, alien4Y, Color::PINK, 2.3);
+      buff.drawScaleShape("lowerbody", alien4X, alien4Y, Color::PURPLE, 2.3);
+      buff.drawScaleShape("eye", alien4X, alien4Y, Color::BLUE, 2.3);      
+
+      alien5X -= 30;
+      alien5X = (alien5X >= alienXmin)? (alien5X <= alienXmax)? alien5X : alienXmin : alienXmax;
+      alien5Y += 20;
+      alien5Y = (alien5Y >= alienYmin)? (alien5Y <= alienYmax)? alien5Y : alienYmin : alienYmax;
+      buff.drawScaleShape("cockpit", alien5X, alien5Y, Color::WHITE, 2);
+      buff.drawScaleShape("face", alien5X, alien5Y, Color::GREEN, 2);
+      buff.drawScaleShape("neck", alien5X, alien5Y, Color::PURPLE, 2);
+      buff.drawScaleShape("upperbody", alien5X, alien5Y, Color::PINK, 2);
+      buff.drawScaleShape("lowerbody", alien5X, alien5Y, Color::PURPLE, 2);
+      buff.drawScaleShape("eye", alien5X, alien5Y, Color::BLUE, 2);
+      
+
+      alien6X += 30;
+      alien6X = (alien6X >= alienXmin)? (alien6X <= alienXmax)? alien6X : alienXmin : alienXmax;
+      alien6Y -= 20;
+      alien6Y = (alien6Y >= alienYmin)? (alien6Y <= alienYmax)? alien6Y : alienYmin : alienYmax;
+      buff.drawScaleShape("cockpit", alien6X, alien6Y, Color::WHITE, 3);
+      buff.drawScaleShape("face", alien6X, alien6Y, Color::GREEN, 3);
+      buff.drawScaleShape("neck", alien6X, alien6Y, Color::PURPLE, 3);
+      buff.drawScaleShape("upperbody", alien6X, alien6Y, Color::PINK, 3);
+      buff.drawScaleShape("lowerbody", alien6X, alien6Y, Color::PURPLE, 3);
+      buff.drawScaleShape("eye", alien6X, alien6Y, Color::BLUE, 3);
+      
+    }
+
+    buff.drawShape("sys", sys1X, sys1Y, Color::RED);
+    buff.drawShape("sys", sys2X, sys2Y, Color::ORANGE);
+    buff.drawShape("sys", sys3X, sys3Y, Color::YELLOW);
+    buff.drawShape("sys", sys4X, sys4Y, Color::GREEN);
+    buff.drawShape("sys", sys5X, sys5Y, Color::BLUE);
+    buff.drawShape("sys", sys6X, sys6Y, Color::PINK);
+    buff.drawShape("sys", sys7X, sys7Y, Color::PURPLE);
+    buff.drawScaleShape("sys", 1200, 550, Color::GRAY, 0.5);
+
+    buff.drawShape("kirikanan", 0, 0, Color::NAVY);
+    buff.drawShape("kirikanan", 1300, 0, Color::NAVY);
+    buff.drawShape("kirikanan", 1350, 0, Color::NAVY);
+    buff.drawShape("atasbawah", 0, 0, Color::NAVY);
+    buff.drawShape("atasbawah", 0, 650, Color::NAVY);
+    buff.drawShape("atasbawah", 0, 700, Color::NAVY);
+    buff.drawShapeBorder("border", 50, 50, Color::WHITE);
 
 
     buff.drawShape("mouse", mousex, mousey, Color::WHITE);
@@ -235,32 +332,51 @@ int main() {
       mousey %= buff.getHeight();
       if (mousey < 0) mousey += buff.getHeight();
 	
-      if (clickLeft) {
-        if (mousex > sys1X && mousex < sys1X+delta && mousey > sys1Y && mousey < sys1Y+delta) {
+      if (true) {
+        if (mousex > sys1X && mousex < sys1X+100 && mousey > sys1Y && mousey < sys1Y+100) {
+          buff.drawShapeBorder("sys", sys1X, sys1Y, Color::WHITE);
+          if (clickLeft)
           system("./bin/1");
         }
-        if (mousex > sys2X && mousex < sys2X+delta && mousey > sys2Y && mousey < sys2Y+delta) {
+        else if (mousex > sys2X && mousex < sys2X+100 && mousey > sys2Y && mousey < sys2Y+100) {
+          buff.drawShapeBorder("sys", sys2X, sys2Y, Color::WHITE);
+          if (clickLeft)
           system("./bin/2");
         }
-        if (mousex > sys3X && mousex < sys3X+delta && mousey > sys3Y && mousey < sys3Y+delta) {
+        else if (mousex > sys3X && mousex < sys3X+100 && mousey > sys3Y && mousey < sys3Y+100) {
+          buff.drawShapeBorder("sys", sys3X, sys3Y, Color::WHITE);
+          if (clickLeft)
           system("./bin/3");
         }
-        if (mousex > sys4X && mousex < sys4X+delta && mousey > sys4Y && mousey < sys4Y+delta) {
+        else if (mousex > sys4X && mousex < sys4X+100 && mousey > sys4Y && mousey < sys4Y+100) {
+          buff.drawShapeBorder("sys", sys4X, sys4Y, Color::WHITE);
+          if (clickLeft)
           system("./bin/4");
         }
-        if (mousex > sys5X && mousex < sys5X+delta && mousey > sys5Y && mousey < sys5Y+delta) {
+        else if (mousex > sys5X && mousex < sys5X+100 && mousey > sys5Y && mousey < sys5Y+100) {
+          buff.drawShapeBorder("sys", sys5X, sys5Y, Color::WHITE);
+          if (clickLeft)
           system("./bin/5");
         }
-        if (mousex > sys6X && mousex < sys6X+delta && mousey > sys6Y && mousey < sys6Y+delta) {
+        else if (mousex > sys6X && mousex < sys6X+100 && mousey > sys6Y && mousey < sys6Y+100) {
+          buff.drawShapeBorder("sys", sys6X, sys6Y, Color::WHITE);
+          if (clickLeft)
           system("./bin/6");
         }
-        if (mousex > sys7X && mousex < sys7X+delta && mousey > sys7Y && mousey < sys7Y+delta) {
+        else if (mousex > sys7X && mousex < sys7X+100 && mousey > sys7Y && mousey < sys7Y+100) {
+          buff.drawShapeBorder("sys", sys7X, sys7Y, Color::WHITE);
+          if (clickLeft)
           system("./bin/7");
+        }
+        else {
+          buff.drawScaleShapeBorder("sys", 1200, 550, Color::GRAY, 0.5);
+          if (clickLeft)
+          stop = true;
         }
       }
     }
     buff.apply();
-  } while (!clickRight);
+  } while (!stop);
 
   return 0;
 }

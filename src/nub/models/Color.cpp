@@ -10,6 +10,7 @@ const Color Color::BLUE   = Color(0, 0, 255);
 const Color Color::PINK   = Color(255, 105, 180);
 const Color Color::PURPLE = Color(128, 0, 256);
 const Color Color::GRAY = Color(100,100,100);
+const Color Color::NAVY = Color(0,0,80);
 
 Color::Color() {
   r = g = b = 0;
