@@ -368,8 +368,8 @@ int main() {
           if (clickLeft)
           system("./bin/7");
         }
-        else {
-          buff.drawScaleShapeBorder("sys", 1200, 550, Color::GRAY, 0.5);
+        else if (mousex > 1200 && mousex < 1250 && mousey > 550 && mousey < 600) {
+          buff.drawScaleShapeBorder("sys", 1200, 550, Color::WHITE, 0.5);
           if (clickLeft)
           stop = true;
         }

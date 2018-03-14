@@ -28,7 +28,8 @@ using namespace std;
 #define PI 3.14159265
 #define DOUBLE2INT_CORRECTION_VAL 0.5
 #define UNDEFINED -1
-#define SCALECONSTANT 1.2
+#define SCALECONSTANT 2
+#define SCALECONSTANT2 0.5
 #define LOOP 2
 
 
@@ -117,22 +118,19 @@ int main() {
   
   Drawable plane = readFromFile("chars/4/pesawat.txt");
   // 
-  buff.addShape("plane", plane);
-  buff.addShape("leftWindow", readFromFile("chars/4/jendela_pesawat_kiri.txt"));
-  buff.addShape("rightWindow", readFromFile("chars/4/jendela_pesawat_kanan.txt"));
-  buff.addShape("leftBlade" , readFromFile("chars/4/BalingBaling_Kiri.txt"));
-  buff.addShape("rightBlade" , readFromFile("chars/4/BalingBaling_Kanan.txt"));
-  buff.addShape("leftBladeLine" , readFromFile("chars/4/LineBaling_Kiri.txt"));
-  buff.addShape("rightBladeLine" , readFromFile("chars/4/LineBaling_Kanan.txt"));
-  buff.addShape("person", readFromFile("chars/4/Orang.txt"));
-  buff.addShape("parachute", readFromFile("chars/4/Parasut.txt"));
-  buff.addShape("leftWheel", readFromFile("chars/4/Roda_Kiri.txt"));
-  buff.addShape("rightWheel", readFromFile("chars/4/Roda_Kanan.txt"));
-
-  // Plane Initiation
-  Point center = plane.centroid();
-  center.negate();
-  buff.translateAllShape(center + Buffer::CENTER);
+  //buff.addShape("ear", readFromFile("chars/4/Alien_Ear.txt"));
+  //buff.addShape("scratch" , readFromFile("chars/4/Alien_Scratch.txt"));
+  buff.addShape("eye", readFromFile("chars/4/Alien_Eye.txt"));
+  buff.addShape("face", readFromFile("chars/4/Alien_Face.txt"));
+  //buff.addShape("lip", readFromFile("chars/4/Alien_Lip.txt"));
+  buff.addShape("cockpit" , readFromFile("chars/4/Ufo_Cockpit.txt"));
+  buff.addShape("wheel3" , readFromFile("chars/4/Ufo_Wheel3.txt"));
+  buff.addShape("wheel2" , readFromFile("chars/4/Ufo_Wheel2.txt"));
+  buff.addShape("wheel1", readFromFile("chars/4/Ufo_Wheel1.txt"));
+  buff.addShape("neck", readFromFile("chars/4/Ufo_Neck.txt"));
+  buff.addShape("upperbody", readFromFile("chars/4/Ufo_UpperBody.txt"));
+  buff.addShape("lowerbody", readFromFile("chars/4/Ufo_LowerBody.txt"));
+  buff.translateAllShape(Point(400, 300));
 
   buff.addShape("platform", readFromFile("chars/4/Platform.txt"));
   buff.addShape("wall", readFromFile("chars/4/Tembok.txt"));
@@ -141,50 +139,46 @@ int main() {
   buff.addShape("upButton", readFromFile("chars/4/Tombol_Atas.txt"));
   buff.addShape("downButton", readFromFile("chars/4/Tombol_Bawah.txt"));
 
-  int initBulletX = 131;
-  int initBulletY = 600;
-  int deltaX, deltaY;
-  int startNabrak = UNDEFINED, startPressed = UNDEFINED;
-  int loopCount = 0;
-	double speedX = 60, speedY = 100;
-	double timecol = 0;
-  bool nabrak = false;
   int zoomIn = 0;
   int zoomOut = 0;
 
-  for (double time = 0; time < 50; time += 0.5) {
+  for (int time = 0; time < 1000; time += 5) {
     buff.reset();
     
     // GAMBAR TEMBOK DAN TOMBOL
   if (zoomIn) {
-		buff.drawShape("upButton", 1, 1, Color::RED, false);
-    buff.scaleShape("leftBlade", SCALECONSTANT, Buffer::CENTER);
-    buff.scaleShape("rightBlade", SCALECONSTANT, Buffer::CENTER);
-    buff.scaleShape("leftBladeLine", SCALECONSTANT, Buffer::CENTER);
-    buff.scaleShape("rightBladeLine", SCALECONSTANT, Buffer::CENTER);
-    buff.scaleShape("leftWheel", SCALECONSTANT, Buffer::CENTER);
-    buff.scaleShape("rightWheel", SCALECONSTANT, Buffer::CENTER);
-    buff.scaleShape("leftWindow", SCALECONSTANT, Buffer::CENTER);
-    buff.scaleShape("rightWindow", SCALECONSTANT, Buffer::CENTER);
-    buff.scaleShape("plane", SCALECONSTANT, Buffer::CENTER);
-    buff.centerShape("plane");
+    buff.drawShape("upButton", 1, 1, Color::RED, false);
+	//buff.scaleShape("ear", SCALECONSTANT);
+	//buff.scaleShape("scratch" , SCALECONSTANT);
+    buff.scaleShape("eye", SCALECONSTANT);
+    //buff.scaleShape("lip", SCALECONSTANT);
+    buff.scaleShape("face", SCALECONSTANT);
+    buff.scaleShape("cockpit" , SCALECONSTANT);
+    buff.scaleShape("wheel3" , SCALECONSTANT);
+    buff.scaleShape("wheel2" , SCALECONSTANT);
+    buff.scaleShape("wheel1", SCALECONSTANT);
+    buff.scaleShape("upperbody", SCALECONSTANT);
+    buff.scaleShape("neck", SCALECONSTANT);
+    buff.scaleShape("lowerbody", SCALECONSTANT);
 	}
 	
 	if (zoomOut) {
-		buff.drawShape("downButton", 1, 1, Color::RED, false);
-    buff.scaleShape("leftBlade", 1/SCALECONSTANT, Buffer::CENTER);
-    buff.scaleShape("rightBlade", 1/SCALECONSTANT, Buffer::CENTER);
-    buff.scaleShape("leftBladeLine", 1/SCALECONSTANT, Buffer::CENTER);
-    buff.scaleShape("rightBladeLine", 1/SCALECONSTANT, Buffer::CENTER);
-    buff.scaleShape("leftWheel", 1/SCALECONSTANT, Buffer::CENTER);
-    buff.scaleShape("rightWheel", 1/SCALECONSTANT, Buffer::CENTER);
-    buff.scaleShape("leftWindow", 1/SCALECONSTANT, Buffer::CENTER);
-    buff.scaleShape("rightWindow", 1/SCALECONSTANT, Buffer::CENTER);
-    buff.scaleShape("plane", 1/SCALECONSTANT, Buffer::CENTER);
-    buff.centerShape("plane");
+    buff.drawShape("downButton", 1, 1, Color::RED, false);
+	//buff.scaleShape("ear", 1/SCALECONSTANT);
+    //buff.scaleShape("scratch" , 1/SCALECONSTANT);
+    buff.scaleShape("eye", SCALECONSTANT2);
+    //buff.scaleShape("lip", 1/SCALECONSTANT);
+    buff.scaleShape("face", SCALECONSTANT2);
+    buff.scaleShape("cockpit" , SCALECONSTANT2);
+    buff.scaleShape("wheel3" , SCALECONSTANT2);
+    buff.scaleShape("wheel2" , SCALECONSTANT2);
+    buff.scaleShape("wheel1", SCALECONSTANT2);
+    buff.scaleShape("upperbody", SCALECONSTANT2);
+    buff.scaleShape("neck", SCALECONSTANT2);
+    buff.scaleShape("lowerbody", SCALECONSTANT2);
 	}	
 	
-	if ((int)time % 2 > 0) {
+	if (time % 20 == 10) {
 		buff.drawShape("panel", 1, 1, Color::GREEN, false);	
 		buff.drawShape("upButton", 1, 1, Color::YELLOW, false);
 		buff.drawShape("downButton", 1, 1, Color::YELLOW, false);
@@ -195,56 +189,21 @@ int main() {
 	}
 	buff.drawShape("desk", 1, 1, Color::DARK_GREEN, false);
 	buff.drawShape("wall", 1, 1, Color::GREY, false);	
-		
-		
-    if (time < 30) {
-      // Atur baling baling
-      buff.drawShape("leftBlade", 0, 0, Color::RED);
-      buff.drawShape("rightBlade", 0, 0, Color::RED);
-      buff.drawShape("leftBladeLine", 0, 0, Color::YELLOW);
-      buff.drawShape("rightBladeLine", 0, 0, Color::YELLOW);
-      if (loopCount % LOOP == 0) {
-        buff.scaleShape("leftBlade", SCALECONSTANT, Buffer::CENTER);
-        buff.scaleShape("rightBlade", SCALECONSTANT, Buffer::CENTER);
-        buff.scaleShape("leftBladeLine", SCALECONSTANT, Buffer::CENTER);
-        buff.scaleShape("rightBladeLine", SCALECONSTANT, Buffer::CENTER);
-        buff.rotateShape("leftBlade", PI/3);
-        buff.rotateShape("rightBlade", PI/3);
-        buff.rotateShape("leftBladeLine", PI/3);
-        buff.rotateShape("rightBladeLine", PI/3);
-      }
 
-      // Atur roda
-      buff.drawShape("leftWheel",0,0, Color::GREEN);
-      if (loopCount % LOOP == 0) {
-        buff.scaleShape("leftWheel", SCALECONSTANT, Buffer::CENTER);
-      }
-      if (!nabrak) {
-        buff.drawShape("rightWheel",0,0, Color::GREEN);
-        if (loopCount % LOOP == 0) {
-          buff.scaleShape("rightWheel", SCALECONSTANT, Buffer::CENTER);
-        }
-      } else {
-        deltaX = parabolaX(speedX, 60, time);
-        deltaY = parabolaY(speedY, 60, time - timecol, 10);
-        // if (deltaY >= 300) {
-        //   speedY /= 2;
-        //   timecol = time;
-        // }
-        buff.drawShape("rightWheel",deltaX,deltaY, Color::GREEN);
-      }
-
-      // Atur pesawat    
-      buff.drawShape("leftWindow", 0,0, Color::WHITE);
-      buff.drawShape("rightWindow", 0,0, Color::WHITE);
-      buff.drawShape("plane", 0,0, Color::ORANGE);
-      if (loopCount % LOOP == 0) {
-        buff.scaleShape("leftWindow", SCALECONSTANT, Buffer::CENTER);
-        buff.scaleShape("rightWindow", SCALECONSTANT, Buffer::CENTER);
-        buff.scaleShape("plane", SCALECONSTANT, Buffer::CENTER);
-        buff.centerShape("plane");
-      }
-    }
+  //buff.drawShape("scratch" , time, 0, Color::ORANGE);
+  //buff.drawShape("ear", time, 0, Color::DARK_GREEN);
+  buff.drawShape("eye", time, 0, Color::BLUE);
+  //buff.drawShape("lip", time, 0, Color::RED);
+  buff.drawShape("face", time, 0, Color::GREEN);
+  buff.drawShape("cockpit" , time, 0, Color::WHITE);
+  buff.drawShape("neck", time, 0, Color::PURPLE);
+  buff.drawShape("upperbody", time, 0, Color::PINK);
+  buff.drawShape("lowerbody", time, 0, Color::PURPLE);
+  buff.drawShape("wheel3" , time, 0, Color::YELLOW);
+  buff.drawShape("wheel2" , time, 0, Color::YELLOW);
+  buff.drawShape("wheel1", time, 0, Color::YELLOW);
+  
+      
 	
     // MEMBACA SPACEBAR
     if (kbhit()){
@@ -267,8 +226,6 @@ int main() {
 	}
     
     buff.apply();
-    ++loopCount;
   }
-
   return 0;
 }
