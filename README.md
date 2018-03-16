@@ -1,4 +1,4 @@
-# Repositori Tugas Grafika Komputer
+# Repositori Tugas Framebuffer Grafika Komputer
 
 IF3260 Grafika Komputer
 
