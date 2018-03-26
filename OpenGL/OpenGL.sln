@@ -9,6 +9,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "1-segitiga-glsl", "1-segiti
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "1-segitiga-gradien", "1-segitiga-gradien\1-segitiga-gradien.vcxproj", "{97F230A7-B9A0-42EF-8892-B6F01403E10A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "2-mobil-shader", "2-mobil-shader\2-mobil-shader.vcxproj", "{7CD0018B-1DF1-49C8-8539-92E97876DF2E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "2-mobil-immediate", "2-mobil-immediate\2-mobil-immediate.vcxproj", "{C62126E3-9F5A-4E9E-A769-6F85700D09BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +45,22 @@ Global
 		{97F230A7-B9A0-42EF-8892-B6F01403E10A}.Release|x64.Build.0 = Release|x64
 		{97F230A7-B9A0-42EF-8892-B6F01403E10A}.Release|x86.ActiveCfg = Release|Win32
 		{97F230A7-B9A0-42EF-8892-B6F01403E10A}.Release|x86.Build.0 = Release|Win32
+		{7CD0018B-1DF1-49C8-8539-92E97876DF2E}.Debug|x64.ActiveCfg = Debug|x64
+		{7CD0018B-1DF1-49C8-8539-92E97876DF2E}.Debug|x64.Build.0 = Debug|x64
+		{7CD0018B-1DF1-49C8-8539-92E97876DF2E}.Debug|x86.ActiveCfg = Debug|Win32
+		{7CD0018B-1DF1-49C8-8539-92E97876DF2E}.Debug|x86.Build.0 = Debug|Win32
+		{7CD0018B-1DF1-49C8-8539-92E97876DF2E}.Release|x64.ActiveCfg = Release|x64
+		{7CD0018B-1DF1-49C8-8539-92E97876DF2E}.Release|x64.Build.0 = Release|x64
+		{7CD0018B-1DF1-49C8-8539-92E97876DF2E}.Release|x86.ActiveCfg = Release|Win32
+		{7CD0018B-1DF1-49C8-8539-92E97876DF2E}.Release|x86.Build.0 = Release|Win32
+		{C62126E3-9F5A-4E9E-A769-6F85700D09BC}.Debug|x64.ActiveCfg = Debug|x64
+		{C62126E3-9F5A-4E9E-A769-6F85700D09BC}.Debug|x64.Build.0 = Debug|x64
+		{C62126E3-9F5A-4E9E-A769-6F85700D09BC}.Debug|x86.ActiveCfg = Debug|Win32
+		{C62126E3-9F5A-4E9E-A769-6F85700D09BC}.Debug|x86.Build.0 = Debug|Win32
+		{C62126E3-9F5A-4E9E-A769-6F85700D09BC}.Release|x64.ActiveCfg = Release|x64
+		{C62126E3-9F5A-4E9E-A769-6F85700D09BC}.Release|x64.Build.0 = Release|x64
+		{C62126E3-9F5A-4E9E-A769-6F85700D09BC}.Release|x86.ActiveCfg = Release|Win32
+		{C62126E3-9F5A-4E9E-A769-6F85700D09BC}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
