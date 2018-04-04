@@ -295,8 +295,132 @@ glm::vec3 lamp4[24] = {
     glm::vec3(-0.4f, 0.45f, -2.33f)
 };
 
-glm::vec3 wheel1[1] = {
-    glm::vec3(0.0f, 0.0f, 0.0f)
+glm::vec3 wheel1[24] = {
+	glm::vec3(0.8f, 0.4f, 2.3),
+	glm::vec3(0.8f, -0.8f, 2.3),
+	glm::vec3(0.8f, -0.8f, 3),
+	glm::vec3(0.8f, 0.4f, 3),
+
+	glm::vec3(0.8f, 0.4f, 2.3),
+	glm::vec3(0.8f, -0.8f, 2.3),
+	glm::vec3(0.3f, -0.8f, 2.3),
+	glm::vec3(0.3f, 0.4f, 2.3),
+
+	glm::vec3(0.8f, 0.4f, 2.3),
+	glm::vec3(0.8f, 0.4f, 3),
+	glm::vec3(0.3f, 0.4f, 3),
+	glm::vec3(0.3f, 0.4f, 2.3),
+
+	glm::vec3(0.3f, 0.4f, 2.3),
+	glm::vec3(0.3f, -0.8f, 2.3),
+	glm::vec3(0.3f, -0.8f, 3),
+	glm::vec3(0.3f, 0.4f, 3),
+
+	glm::vec3(0.8f, 0.4f, 3),
+	glm::vec3(0.8f, -0.8f, 3),
+	glm::vec3(0.3f, -0.8f, 3),
+	glm::vec3(0.3f, -0.8f, 3),
+
+	glm::vec3(0.8f, -0.8f, 2.3),
+	glm::vec3(0.8f, -0.8f, 3),
+	glm::vec3(0.3f, -0.8f, 3),
+	glm::vec3(0.3f, -0.8f, 2.3)
+};
+
+glm::vec3 wheel2[24] = {
+	glm::vec3(0.8f, 0.4f, -1.4),
+	glm::vec3(0.8f, -0.8f, -1.4),
+	glm::vec3(0.8f, -0.8f, -2.1),
+	glm::vec3(0.8f, 0.4f, -2.1),
+
+	glm::vec3(0.8f, 0.4f, -1.4),
+	glm::vec3(0.8f, -0.8f, -1.4),
+	glm::vec3(0.3f, -0.8f, -1.4),
+	glm::vec3(0.3f, 0.4f, -1.4),
+
+	glm::vec3(0.8f, 0.4f, -1.4),
+	glm::vec3(0.8f, 0.4f, -2.1),
+	glm::vec3(0.3f, 0.4f, -2.1),
+	glm::vec3(0.3f, 0.4f, -1.4),
+
+	glm::vec3(0.3f, 0.4f, -1.4),
+	glm::vec3(0.3f, -0.8f, -1.4),
+	glm::vec3(0.3f, -0.8f, -2.1),
+	glm::vec3(0.3f, 0.4f, -2.1),
+
+	glm::vec3(0.8f, 0.4f, -2.1),
+	glm::vec3(0.8f, -0.8f, -2.1),
+	glm::vec3(0.3f, -0.8f, -2.1),
+	glm::vec3(0.3f, -0.8f, -2.1),
+
+	glm::vec3(0.8f, -0.8f, -1.4),
+	glm::vec3(0.8f, -0.8f, -2.1),
+	glm::vec3(0.3f, -0.8f, -2.1),
+	glm::vec3(0.3f, -0.8f, -1.4)
+};
+
+glm::vec3 wheel3[24] = {
+	glm::vec3(-0.3, 0.4f, 2.3),
+	glm::vec3(-0.3, -0.8f, 2.3),
+	glm::vec3(-0.3, -0.8f, 3),
+	glm::vec3(-0.3, 0.4f, 3),
+
+	glm::vec3(-0.3, 0.4f, 2.3),
+	glm::vec3(-0.3, -0.8f, 2.3),
+	glm::vec3(-0.8f, -0.8f, 2.3),
+	glm::vec3(-0.8f, 0.4f, 2.3),
+
+	glm::vec3(-0.3, 0.4f, 2.3),
+	glm::vec3(-0.3, 0.4f, 3),
+	glm::vec3(-0.8f, 0.4f, 3),
+	glm::vec3(-0.8f, 0.4f, 2.3),
+
+	glm::vec3(-0.8f, 0.4f, 2.3),
+	glm::vec3(-0.8f, -0.8f, 2.3),
+	glm::vec3(-0.8f, -0.8f, 3),
+	glm::vec3(-0.8f, 0.4f, 3),
+
+	glm::vec3(-0.3, 0.4f, 3),
+	glm::vec3(-0.3, -0.8f, 3),
+	glm::vec3(-0.8f, -0.8f, 3),
+	glm::vec3(-0.8f, -0.8f, 3),
+
+	glm::vec3(-0.3, -0.8f, 2.3),
+	glm::vec3(-0.3, -0.8f, 3),
+	glm::vec3(-0.8f, -0.8f, 3),
+	glm::vec3(-0.8f, -0.8f, 2.3)
+};
+
+glm::vec3 wheel4[24] = {
+	glm::vec3(-0.3, 0.4f, -1.4),
+	glm::vec3(-0.3, -0.8f, -1.4),
+	glm::vec3(-0.3f, -0.8f, -2.1),
+	glm::vec3(-0.3f, 0.4f, -2.1),
+
+	glm::vec3(-0.3f, 0.4f, -1.4),
+	glm::vec3(-0.3f, -0.8f, -1.4),
+	glm::vec3(-0.8f, -0.8f, -1.4),
+	glm::vec3(-0.8f, 0.4f, -1.4),
+
+	glm::vec3(-0.3f, 0.4f, -1.4),
+	glm::vec3(-0.3f, 0.4f, -2.1),
+	glm::vec3(-0.8f, 0.4f, -2.1),
+	glm::vec3(-0.8f, 0.4f, -1.4),
+
+	glm::vec3(-0.8f, 0.4f, -1.4),
+	glm::vec3(-0.8f, -0.8f, -1.4),
+	glm::vec3(-0.8f, -0.8f, -2.1),
+	glm::vec3(-0.8f, 0.4f, -2.1),
+
+	glm::vec3(-0.3f, 0.4f, -2.1),
+	glm::vec3(-0.3f, -0.8f, -2.1),
+	glm::vec3(-0.8f, -0.8f, -2.1),
+	glm::vec3(-0.8f, -0.8f, -2.1),
+
+	glm::vec3(-0.3f, -0.8f, -1.4),
+	glm::vec3(-0.3f, -0.8f, -2.1),
+	glm::vec3(-0.8f, -0.8f, -2.1),
+	glm::vec3(-0.8f, -0.8f, -1.4)
 };
 
 glm::mat3 rx, ry, rz;
@@ -538,15 +662,6 @@ void display() {
     }
     glEnd();  // End of drawing color-cube
 
-    wheel1[1] = rx * wheel1[1];
-    wheel1[1] = ry * wheel1[1];
-    wheel1[1] = rz * wheel1[1];
-    wheel1[1] = dilate * wheel1[1];
-    wheel1[1] = wheel1[1] + translate;
-
-    GLfloat wheelcolor[3] = {0.0f, 0.1f, 0.0f};
-    drawHexagon(wheel1[1].x, wheel1[1].y, wheel1[1].z, 0.3, 0.3, wheelcolor);
-
     glBegin(GL_QUADS);// Define vertices in counter-clockwise (CCW) order with normal pointing out
     
     for (int i = 0; i < 24; i++) {
@@ -787,6 +902,68 @@ void display() {
         handle4[i] = handle4[i] + translate;
     }
     glEnd();  // End of drawing color-cube
+
+	glBegin(GL_QUADS);// Define vertices in counter-clockwise (CCW) order with normal pointing out
+	for (int i = 0; i < 24; i++) {
+		glColor3f(1, 1, 1);
+
+
+		// Gambar
+		glVertex3f(wheel1[i].x, wheel1[i].y, wheel1[i].z);
+
+		// Transformasi
+		wheel1[i] = rx * wheel1[i];
+		wheel1[i] = ry * wheel1[i];
+		wheel1[i] = rz * wheel1[i];
+		wheel1[i] = dilate * wheel1[i];
+		wheel1[i] = wheel1[i] + translate;
+	}
+	glEnd();  // End of drawing color-cube
+
+	glBegin(GL_QUADS);// Define vertices in counter-clockwise (CCW) order with normal pointing out
+	for (int i = 0; i < 24; i++) {
+		glColor3f(1, 1, 1);
+		// Gambar
+		glVertex3f(wheel2[i].x, wheel2[i].y, wheel2[i].z);
+
+		// Transformasi
+		wheel2[i] = rx * wheel2[i];
+		wheel2[i] = ry * wheel2[i];
+		wheel2[i] = rz * wheel2[i];
+		wheel2[i] = dilate * wheel2[i];
+		wheel2[i] = wheel2[i] + translate;
+	}
+	glEnd();  // End of drawing color-cube
+
+	glBegin(GL_QUADS);// Define vertices in counter-clockwise (CCW) order with normal pointing out
+	for (int i = 0; i < 24; i++) {
+		glColor3f(1, 1, 1);
+		// Gambar
+		glVertex3f(wheel3[i].x, wheel3[i].y, wheel3[i].z);
+
+		// Transformasi
+		wheel3[i] = rx * wheel3[i];
+		wheel3[i] = ry * wheel3[i];
+		wheel3[i] = rz * wheel3[i];
+		wheel3[i] = dilate * wheel3[i];
+		wheel3[i] = wheel3[i] + translate;
+	}
+	glEnd();  // End of drawing color-cube
+
+	glBegin(GL_QUADS);// Define vertices in counter-clockwise (CCW) order with normal pointing out
+	for (int i = 0; i < 24; i++) {
+		glColor3f(1, 1, 1);
+		// Gambar
+		glVertex3f(wheel4[i].x, wheel4[i].y, wheel4[i].z);
+
+		// Transformasi
+		wheel4[i] = rx * wheel4[i];
+		wheel4[i] = ry * wheel4[i];
+		wheel4[i] = rz * wheel4[i];
+		wheel4[i] = dilate * wheel4[i];
+		wheel4[i] = wheel4[i] + translate;
+	}
+	glEnd();  // End of drawing color-cube
     
     glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
 }
