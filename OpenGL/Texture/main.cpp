@@ -98,48 +98,540 @@ int main( )
     // Set up our vertex data (and buffer(s)) and attribute pointers
     GLfloat vertices[] =
     {
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-        0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-        
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+        // [Badan mobil bawah]
+        // sisi 1
+        1.0f, -0.33f, -2.33f,  0.0f, 0.0f,
+        1.0f,  1.0f, -2.33f,  1.0f, 0.0f,
+        1.0f,  1.0f, 3.67f,  1.0f, 1.0f,
+        1.0f, -0.33f, -2.33f,  1.0f, 1.0f,
+        1.0f, -0.33f, 3.67f,  0.0f, 1.0f,
+        1.0f,  1.0f,  3.67f,  0.0f, 0.0f,
+        // sisi 2
+        -1.0f, -0.33f, 3.67f,  0.0f, 0.0f,
+        -1.0f, 1.0f, 3.67f,  1.0f, 0.0f,
+        -1.0f, 1.0f, -2.33f,  1.0f, 1.0f,
+        -1.0f, -0.33f, 3.67f,  1.0f, 1.0f,
+        -1.0f, -0.33f, -2.33f,  0.0f, 1.0f,
+        -1.0f, 1.0f, -2.33f,  0.0f, 0.0f,
+        // sisi 3
+        -1.0f, -0.33f, -2.33f,  0.0f, 0.0f,
+        -1.0f, 1.0f, -2.33f,  1.0f, 0.0f,
+        1.0f, 1.0f, -2.33f,  1.0f, 1.0f,
+        -1.0f, -0.33f, -2.33f,  1.0f, 1.0f,
+        1.0f, -0.33f, -2.33f,  0.0f, 1.0f,
+        1.0f, 1.0f, -2.33f,  0.0f, 0.0f,
+        // sisi 4
+        1.0f, -0.33f, 3.67f,  0.0f, 0.0f,
+        1.0f, 1.0f, 3.67f,  1.0f, 0.0f,
+        -1.0f, 1.0f, 3.67f,  1.0f, 1.0f,
+        1.0f, -0.33f, 3.67f,  1.0f, 1.0f,
+        -1.0f, -0.33f, 3.67f,  0.0f, 1.0f,
+        -1.0f, 1.0f, 3.67f,  0.0f, 0.0f,
+        // sisi 5
+        1.0f, -0.33f, 3.67f,  0.0f, 1.0f,
+        -1.0f, -0.33f, 3.67f,  1.0f, 1.0f,
+        -1.0f, -0.33f, -2.33f,  1.0f, 0.0f,
+        1.0f, -0.33f, 3.67f,  1.0f, 0.0f,
+        1.0f, -0.33f, -2.33f,  0.0f, 0.0f,
+        -1.0f, -0.33f, -2.33f,  0.0f, 1.0f,
+        // sisi 6
+        1.0f, 1.0f, 3.67f,  0.0f, 1.0f,
+        -1.0f, 1.0f, 3.67f,  1.0f, 1.0f,
+        -1.0f, 1.0f, -2.33f,  1.0f, 0.0f,
+        1.0f, 1.0f, 3.67f,  1.0f, 0.0f,
+        1.0f, 1.0f, -2.33f,  0.0f, 0.0f,
+        -1.0f, 1.0f, -2.33f,  0.0f, 1.0f,
+
+        // [Badan mobil atas]
+        // sisi 1
+        -1.0f, 1.0f, -1.33f,  0.0f, 1.0f,
+        -1.0f, 2.33f, 0.0f,  1.0f, 1.0f,
+        1.0f, 2.33f, 0.0f,  1.0f, 0.0f,
+        -1.0f, 1.0f, -1.33f,  1.0f, 0.0f,
+        1.0f, 1.0f, -1.33f,  0.0f, 0.0f,
+        1.0f, 2.33f, 0.0f,  0.0f, 1.0f,
+        // sisi 2
+        -1.0f, 1.0f, 3.0f,  0.0f, 1.0f,
+        -1.0f, 2.33f, 2.33f,  1.0f, 1.0f,
+        -1.0f, 2.33f, 0.0f,  1.0f, 0.0f,
+        -1.0f, 1.0f, 3.0f,  1.0f, 0.0f,
+        -1.0f, 1.0f, -1.33f,  0.0f, 0.0f,
+        -1.0f, 2.33f, 0.0f,  0.0f, 1.0f,
+        // sisi 3
+        1.0f, 1.0f, 3.0f,  0.0f, 1.0f,
+        1.0f, 2.33f, 2.33f,  1.0f, 1.0f,
+        -1.0f, 2.33f, 2.33f,  1.0f, 0.0f,
+        1.0f, 1.0f, 3.0f,  1.0f, 0.0f,
+        -1.0f, 1.0f, 3.0f,  0.0f, 0.0f,
+        -1.0f, 2.33f, 2.33f,  0.0f, 1.0f,
+        // sisi 4
+        1.0f, 1.0f, -1.33f,  0.0f, 1.0f,
+        1.0f, 2.33f, 0.0f,  1.0f, 1.0f,
+        1.0f, 2.33f, 2.33f,  1.0f, 0.0f,
+        1.0f, 1.0f, -1.33f,  1.0f, 0.0f,
+        1.0f, 1.0f, 3.0f,  0.0f, 0.0f,
+        1.0f, 2.33f, 2.33f,  0.0f, 1.0f,
+        // sisi 5
+        -1.0f, 2.33f, 0.0f,  0.0f, 1.0f,
+        1.0f, 2.33f, 0.0f,  1.0f, 1.0f,
+        1.0f, 2.33f, 2.33f,  1.0f, 0.0f,
+        -1.0f, 2.33f, 0.0f,  1.0f, 0.0f,
+        -1.0f, 2.33f, 2.33f,  0.0f, 0.0f,
+        1.0f, 2.33f, 2.33f,  0.0f, 1.0f,
+        // sisi 6
+        1.0f, 1.0f, 3.67f,  0.0f, 1.0f,
+        -1.0f, 1.0f, 3.67f,  1.0f, 1.0f,
+        -1.0f, 1.0f, -2.33f,  1.0f, 0.0f,
+        1.0f, 1.0f, 3.67f,  1.0f, 0.0f,
+        1.0f, 1.0f, -2.33f,  0.0f, 0.0f,
+        -1.0f, 1.0f, -2.33f,  0.0f, 1.0f,
+
+        // [Jendela Belakang]
+        0.67f, 1.33f, 2.85f,  0.0f, 1.0f,
+        0.67f, 2.0f, 2.52f,  1.0f, 1.0f,
+        -0.67f, 2.0f, 2.52f,  1.0f, 0.0f,
+        0.67f, 1.33f, 2.85f,  1.0f, 0.0f,
+        -0.67f, 1.33f, 2.85f,  0.0f, 0.0f,
+        -0.67f, 2.0f, 2.52f,  0.0f, 1.0f,
+        // [Jendela Sisi Belakang]
+        1.01f, 1.0f, 1.33f,  0.0f, 1.0f,
+        1.01f, 2.0f, 1.33f,  1.0f, 1.0f,
+        1.01f, 2.0f, 2.0f,  1.0f, 0.0f,
+        1.01f, 1.0f, 1.33f,  1.0f, 0.0f,
+        1.01f, 1.0f, 2.67f,  0.0f, 0.0f,
+        1.01f, 2.0f, 2.0f,  0.0f, 1.0f,
+        // [Jendela Sisi Depan]
+        1.01f, 1.0f, -1.0f,  0.0f, 1.0f,
+        1.01f, 2.0f, 0.0f,  1.0f, 1.0f,
+        1.01f, 2.0f, 0.67f,  1.0f, 0.0f,
+        1.01f, 1.0f, -1.0f,  1.0f, 0.0f,
+        1.01f, 1.0f, 0.67f,  0.0f, 0.0f,
+        1.01f, 2.0f, 0.67f,  0.0f, 1.0f,
+        // [Jendela Depan]
+        -0.67f, 1.33f, -1.01f,  0.0f, 1.0f,
+        -0.67f, 2.0f, -0.34f,  1.0f, 1.0f,
+        0.67f, 2.0f, -0.34f,  1.0f, 0.0f,
+        -0.67f, 1.33f, -1.01f,  1.0f, 0.0f,
+        0.67f, 1.33f, -1.01f,  0.0f, 0.0f,
+        0.67f, 2.0f, -0.34f,  0.0f, 1.0f,
+        // [Jendela Sisi Depan 2]
+        -1.01f, 1.0f, 0.67f,  0.0f, 1.0f,
+        -1.01f, 2.0f, 0.67f,  1.0f, 1.0f,
+        -1.01f, 2.0f, 0.0f,  1.0f, 0.0f,
+        -1.01f, 1.0f, 0.67f,  1.0f, 0.0f,
+        -1.01f, 1.0f, -1.0f,  0.0f, 0.0f,
+        -1.01f, 2.0f, 0.0f,  0.0f, 1.0f,
+        // [Jendela Sisi Belakang 2]
+        -1.01f, 1.0f, 2.67f,  0.0f, 1.0f,
+        -1.01f, 2.0f, 2.0f,  1.0f, 1.0f,
+        -1.01f, 2.0f, 1.33f,  1.0f, 0.0f,
+        -1.01f, 1.0f, 2.67f,  1.0f, 0.0f,
+        -1.01f, 1.0f, 1.33f,  0.0f, 0.0f,
+        -1.01f, 2.0f, 1.33f,  0.0f, 1.0f,
+
+        // [Pintu 1]
+        -1.01f, 2.33f, 1.01f,  0.0f, 1.0f,
+        -1.01f, 2.33f, 0.99f,  1.0f, 1.0f,
+        -1.01f, -0.33f, 0.99f,  1.0f, 0.0f,
+        -1.01f, 2.33f, 1.01f,  1.0f, 0.0f,
+        -1.01f, -0.33f, 1.01f,  0.0f, 0.0f,
+        -1.01f, -0.33f, 0.99f,  0.0f, 1.0f,
+        // [Pintu 2]
+        1.01f, 2.33f, 1.01f,  0.0f, 1.0f,
+        1.01f, 2.33f, 0.99f,  1.0f, 1.0f,
+        1.01f, -0.33f, 0.99f,  1.0f, 0.0f,
+        1.01f, 2.33f, 1.01f,  1.0f, 0.0f,
+        1.01f, -0.33f, 1.01f,  0.0f, 0.0f,
+        1.01f, -0.33f, 0.99f,  0.0f, 1.0f,
+        // [Handle 1]
+        -1.01f, 0.75f, 1.63f,  0.0f, 1.0f,
+        -1.01f, 0.75f, 1.33f,  1.0f, 1.0f,
+        -1.01f, 0.6f, 1.33f,  1.0f, 0.0f,
+        -1.01f, 0.75f, 1.63f,  1.0f, 0.0f,
+        -1.01f, 0.6f, 1.63f,  0.0f, 0.0f,
+        -1.01f, 0.6f, 1.33f,  0.0f, 1.0f,
+        // [Handle 2]
+        1.01f, 0.75f, 1.63f,  0.0f, 1.0f,
+        1.01f, 0.75f, 1.33f,  1.0f, 1.0f,
+        1.01f, 0.6f, 1.33f,  1.0f, 0.0f,
+        1.01f, 0.75f, 1.63f,  1.0f, 0.0f,
+        1.01f, 0.6f, 1.63f,  0.0f, 0.0f,
+        1.01f, 0.6f, 1.33f,  0.0f, 1.0f,
+        // [Handle 3]
+        -1.01f, 0.75f, 0.67f,  0.0f, 1.0f,
+        -1.01f, 0.75f, 0.37f,  1.0f, 1.0f,
+        -1.01f, 0.6f, 0.37f,  1.0f, 0.0f,
+        -1.01f, 0.75f, 0.67f,  1.0f, 0.0f,
+        -1.01f, 0.6f, 0.67f,  0.0f, 0.0f,
+        -1.01f, 0.6f, 0.37f,  0.0f, 1.0f,
+        // [Handle 4]
+        1.01f, 0.75f, 0.67f,  0.0f, 1.0f,
+        1.01f, 0.75f, 0.37f,  1.0f, 1.0f,
+        1.01f, 0.6f, 0.37f,  1.0f, 0.0f,
+        1.01f, 0.75f, 0.67f,  1.0f, 0.0f,
+        1.01f, 0.6f, 0.67f,  0.0f, 0.0f,
+        1.01f, 0.6f, 0.37f,  0.0f, 1.0f,
+
+        // [Lampu 1]
+        // sisi 1
+        0.8f, 0.75f, 3.67f,  0.0f, 1.0f,
+        0.8f, 0.45f, 3.67f,  1.0f, 1.0f,
+        0.8f, 0.45f, 3.8f,  1.0f, 0.0f,
+        0.8f, 0.75f, 3.67f,  1.0f, 0.0f,
+        0.8f, 0.75f, 3.8f,  0.0f, 0.0f,
+        0.8f, 0.45f, 3.8f,  0.0f, 1.0f,
+        // sisi 2
+        0.8f, 0.75f, 3.67f,  0.0f, 1.0f,
+        0.8f, 0.45f, 3.67f,  1.0f, 1.0f,
+        0.4f, 0.45f, 3.67f,  1.0f, 0.0f,
+        0.8f, 0.75f, 3.67f,  1.0f, 0.0f,
+        0.4f, 0.75f, 3.67f,  0.0f, 0.0f,
+        0.4f, 0.45f, 3.67f,  0.0f, 1.0f,
+        // sisi 3
+        0.8f, 0.75f, 3.67f,  0.0f, 1.0f,
+        0.8f, 0.75f, 3.8f,  1.0f, 1.0f,
+        0.4f, 0.75f, 3.8f,  1.0f, 0.0f,
+        0.8f, 0.75f, 3.67f,  1.0f, 0.0f,
+        0.4f, 0.75f, 3.67f,  0.0f, 0.0f,
+        0.4f, 0.75f, 3.8f,  0.0f, 1.0f,
+        // sisi 4
+        0.4f, 0.75f, 3.67f,  0.0f, 1.0f,
+        0.4f, 0.45f, 3.67f,  1.0f, 1.0f,
+        0.4f, 0.45f, 3.8f,  1.0f, 0.0f,
+        0.4f, 0.75f, 3.67f,  1.0f, 0.0f,
+        0.4f, 0.75f, 3.8f,  0.0f, 0.0f,
+        0.4f, 0.45f, 3.8f,  0.0f, 1.0f,
+        // sisi 5
+        0.8f, 0.75f, 3.8f,  0.0f, 1.0f,
+        0.8f, 0.45f, 3.8f,  1.0f, 1.0f,
+        0.4f, 0.45f, 3.8f,  1.0f, 0.0f,
+        0.8f, 0.75f, 3.8f,  1.0f, 0.0f,
+        0.4f, 0.75f, 3.8f,  0.0f, 0.0f,
+        0.4f, 0.45f, 3.8f,  0.0f, 1.0f,
+        // sisi 6
+        0.8f, 0.45f, 3.67f,  0.0f, 1.0f,
+        0.8f, 0.45f, 3.8f,  1.0f, 1.0f,
+        0.4f, 0.45f, 3.8f,  1.0f, 0.0f,
+        0.8f, 0.45f, 3.67f,  1.0f, 0.0f,
+        0.4f, 0.45f, 3.67f,  0.0f, 0.0f,
+        0.4f, 0.45f, 3.8f,  0.0f, 1.0f,
+
+        // [Lampu 2]
+        // sisi 1
+        -0.8f, 0.75f, 3.67f,  0.0f, 1.0f,
+        -0.8f, 0.45f, 3.67f,  1.0f, 1.0f,
+        -0.8f, 0.45f, 3.8f,  1.0f, 0.0f,
+        -0.8f, 0.75f, 3.67f,  1.0f, 0.0f,
+        -0.8f, 0.75f, 3.8f,  0.0f, 0.0f,
+        -0.8f, 0.45f, 3.8f,  0.0f, 1.0f,
+        // sisi 2
+        -0.8f, 0.75f, 3.67f,  0.0f, 1.0f,
+        -0.8f, 0.45f, 3.67f,  1.0f, 1.0f,
+        -0.4f, 0.45f, 3.67f,  1.0f, 0.0f,
+        -0.8f, 0.75f, 3.67f,  1.0f, 0.0f,
+        -0.4f, 0.75f, 3.67f,  0.0f, 0.0f,
+        -0.4f, 0.45f, 3.67f,  0.0f, 1.0f,
+        // sisi 3
+        -0.8f, 0.75f, 3.67f,  0.0f, 1.0f,
+        -0.8f, 0.75f, 3.8f,  1.0f, 1.0f,
+        -0.4f, 0.75f, 3.8f,  1.0f, 0.0f,
+        -0.8f, 0.75f, 3.67f,  1.0f, 0.0f,
+        -0.4f, 0.75f, 3.67f,  0.0f, 0.0f,
+        -0.4f, 0.75f, 3.8f,  0.0f, 1.0f,
+        // sisi 4
+        -0.4f, 0.75f, 3.67f,  0.0f, 1.0f,
+        -0.4f, 0.45f, 3.67f,  1.0f, 1.0f,
+        -0.4f, 0.45f, 3.8f,  1.0f, 0.0f,
+        -0.4f, 0.75f, 3.67f,  1.0f, 0.0f,
+        -0.4f, 0.75f, 3.8f,  0.0f, 0.0f,
+        -0.4f, 0.45f, 3.8f,  0.0f, 1.0f,
+        // sisi 5
+        -0.8f, 0.75f, 3.8f,  0.0f, 1.0f,
+        -0.8f, 0.45f, 3.8f,  1.0f, 1.0f,
+        -0.4f, 0.45f, 3.8f,  1.0f, 0.0f,
+        -0.8f, 0.75f, 3.8f,  1.0f, 0.0f,
+        -0.4f, 0.75f, 3.8f,  0.0f, 0.0f,
+        -0.4f, 0.45f, 3.8f,  0.0f, 1.0f,
+        // sisi 6
+        -0.8f, 0.45f, 3.67f,  0.0f, 1.0f,
+        -0.8f, 0.45f, 3.8f,  1.0f, 1.0f,
+        -0.4f, 0.45f, 3.8f,  1.0f, 0.0f,
+        -0.8f, 0.45f, 3.67f,  1.0f, 0.0f,
+        -0.4f, 0.45f, 3.67f,  0.0f, 0.0f,
+        -0.4f, 0.45f, 3.8f,  0.0f, 1.0f,
+
+        // [Lampu 3]
+        // sisi 1
+        0.8f, 0.75f, -2.33f,  0.0f, 1.0f,
+        0.8f, 0.45f, -2.33f,  1.0f, 1.0f,
+        0.8f, 0.45f, -2.46f,  1.0f, 0.0f,
+        0.8f, 0.75f, -2.33f,  1.0f, 0.0f,
+        0.8f, 0.75f, -2.46f,  0.0f, 0.0f,
+        0.8f, 0.45f, -2.46f,  0.0f, 1.0f,
+        // sisi 2
+        0.8f, 0.75f, -2.33f,  0.0f, 1.0f,
+        0.8f, 0.45f, -2.33f,  1.0f, 1.0f,
+        0.4f, 0.45f, -2.33f,  1.0f, 0.0f,
+        0.8f, 0.75f, -2.33f,  1.0f, 0.0f,
+        0.4f, 0.75f, -2.33f,  0.0f, 0.0f,
+        0.4f, 0.45f, -2.33f,  0.0f, 1.0f,
+        // sisi 3
+        0.8f, 0.75f, -2.33f,  0.0f, 1.0f,
+        0.8f, 0.75f, -2.46f,  1.0f, 1.0f,
+        0.4f, 0.75f, -2.46f,  1.0f, 0.0f,
+        0.8f, 0.75f, -2.33f,  1.0f, 0.0f,
+        0.4f, 0.75f, -2.33f,  0.0f, 0.0f,
+        0.4f, 0.75f, -2.46f,  0.0f, 1.0f,
+        // sisi 4
+        0.4f, 0.75f, -2.33f,  0.0f, 1.0f,
+        0.4f, 0.45f, -2.33f,  1.0f, 1.0f,
+        0.4f, 0.45f, -2.46f,  1.0f, 0.0f,
+        0.4f, 0.75f, -2.33f,  1.0f, 0.0f,
+        0.4f, 0.75f, -2.46f,  0.0f, 0.0f,
+        0.4f, 0.45f, -2.46f,  0.0f, 1.0f,
+        // sisi 5
+        0.8f, 0.75f, -2.46f,  0.0f, 1.0f,
+        0.8f, 0.45f, -2.46f,  1.0f, 1.0f,
+        0.4f, 0.45f, -2.46f,  1.0f, 0.0f,
+        0.8f, 0.75f, -2.46f,  1.0f, 0.0f,
+        0.4f, 0.75f, -2.46f,  0.0f, 0.0f,
+        0.4f, 0.45f, -2.46f,  0.0f, 1.0f,
+        // sisi 6
+        0.8f, 0.45f, -2.33f,  0.0f, 1.0f,
+        0.8f, 0.45f, -2.46f,  1.0f, 1.0f,
+        0.4f, 0.45f, -2.46f,  1.0f, 0.0f,
+        0.8f, 0.45f, -2.33f,  1.0f, 0.0f,
+        0.4f, 0.45f, -2.33f,  0.0f, 0.0f,
+        0.4f, 0.45f, -2.46f,  0.0f, 1.0f,
+
+        // [Lampu 4]
+        // sisi 1
+        // sisi 1
+        -0.8f, 0.75f, -2.33f,  0.0f, 1.0f,
+        -0.8f, 0.45f, -2.33f,  1.0f, 1.0f,
+        -0.8f, 0.45f, -2.46f,  1.0f, 0.0f,
+        -0.8f, 0.75f, -2.33f,  1.0f, 0.0f,
+        -0.8f, 0.75f, -2.46f,  0.0f, 0.0f,
+        -0.8f, 0.45f, -2.46f,  0.0f, 1.0f,
+        // sisi 2
+        -0.8f, 0.75f, -2.33f,  0.0f, 1.0f,
+        -0.8f, 0.45f, -2.33f,  1.0f, 1.0f,
+        -0.4f, 0.45f, -2.33f,  1.0f, 0.0f,
+        -0.8f, 0.75f, -2.33f,  1.0f, 0.0f,
+        -0.4f, 0.75f, -2.33f,  0.0f, 0.0f,
+        -0.4f, 0.45f, -2.33f,  0.0f, 1.0f,
+        // sisi 3
+        -0.8f, 0.75f, -2.33f,  0.0f, 1.0f,
+        -0.8f, 0.75f, -2.46f,  1.0f, 1.0f,
+        -0.4f, 0.75f, -2.46f,  1.0f, 0.0f,
+        -0.8f, 0.75f, -2.33f,  1.0f, 0.0f,
+        -0.4f, 0.75f, -2.33f,  0.0f, 0.0f,
+        -0.4f, 0.75f, -2.46f,  0.0f, 1.0f,
+        // sisi 4
+        -0.4f, 0.75f, -2.33f,  0.0f, 1.0f,
+        -0.4f, 0.45f, -2.33f,  1.0f, 1.0f,
+        -0.4f, 0.45f, -2.46f,  1.0f, 0.0f,
+        -0.4f, 0.75f, -2.33f,  1.0f, 0.0f,
+        -0.4f, 0.75f, -2.46f,  0.0f, 0.0f,
+        -0.4f, 0.45f, -2.46f,  0.0f, 1.0f,
+        // sisi 5
+        -0.8f, 0.75f, -2.46f,  0.0f, 1.0f,
+        -0.8f, 0.45f, -2.46f,  1.0f, 1.0f,
+        -0.4f, 0.45f, -2.46f,  1.0f, 0.0f,
+        -0.8f, 0.75f, -2.46f,  1.0f, 0.0f,
+        -0.4f, 0.75f, -2.46f,  0.0f, 0.0f,
+        -0.4f, 0.45f, -2.46f,  0.0f, 1.0f,
+        // sisi 6
+        -0.8f, 0.45f, -2.33f,  0.0f, 1.0f,
+        -0.8f, 0.45f, -2.46f,  1.0f, 1.0f,
+        -0.4f, 0.45f, -2.46f,  1.0f, 0.0f,
+        -0.8f, 0.45f, -2.33f,  1.0f, 0.0f,
+        -0.4f, 0.45f, -2.33f,  0.0f, 0.0f,
+        -0.4f, 0.45f, -2.46f,  0.0f, 1.0f,
+
+        // [Roda Kotak 1]
+        // sisi 1
+        0.8f, 0.4f, 2.3,  0.0f, 1.0f,
+        0.8f, -0.8f, 2.3,  1.0f, 1.0f,
+        0.8f, -0.8f, 3,  1.0f, 0.0f,
+        0.8f, 0.4f, 2.3,  1.0f, 0.0f,
+        0.8f, 0.4f, 3,  0.0f, 0.0f,
+        0.8f, -0.8f, 3,  0.0f, 1.0f,
+        // sisi 2
+        0.8f, 0.4f, 2.3,  0.0f, 1.0f,
+        0.8f, -0.8f, 2.3,  1.0f, 1.0f,
+        0.3f, -0.8f, 2.3,  1.0f, 0.0f,
+        0.8f, 0.4f, 2.3,  1.0f, 0.0f,
+        0.3f, 0.4f, 2.3,  0.0f, 0.0f,
+        0.3f, -0.8f, 2.3,  0.0f, 1.0f,
+        // sisi 3
+        0.8f, 0.4f, 2.3,  0.0f, 1.0f,
+        0.8f, 0.4f, 3,  1.0f, 1.0f,
+        0.3f, 0.4f, 3,  1.0f, 0.0f,
+        0.8f, 0.4f, 2.3,  1.0f, 0.0f,
+        0.3f, 0.4f, 2.3,  0.0f, 0.0f,
+        0.3f, 0.4f, 3,  0.0f, 1.0f,
+        // sisi 4
+        0.3f, 0.4f, 2.3,  0.0f, 1.0f,
+        0.3f, -0.8f, 2.3,  1.0f, 1.0f,
+        0.3f, -0.8f, 3,  1.0f, 0.0f,
+        0.3f, 0.4f, 2.3,  1.0f, 0.0f,
+        0.3f, 0.4f, 3,  0.0f, 0.0f,
+        0.3f, -0.8f, 3,  0.0f, 1.0f,
+        // sisi 5
+        0.8f, 0.4f, 3,  0.0f, 1.0f,
+        0.8f, -0.8f, 3,  1.0f, 1.0f,
+        0.3f, -0.8f, 3,  1.0f, 0.0f,
+        0.8f, 0.4f, 3,  1.0f, 0.0f,
+        0.3f, -0.8f, 3,  0.0f, 0.0f,
+        0.3f, -0.8f, 3,  0.0f, 1.0f,
+        // sisi 6
+        0.8f, -0.8f, 2.3,  0.0f, 1.0f,
+        0.8f, -0.8f, 3,  1.0f, 1.0f,
+        0.3f, -0.8f, 3,  1.0f, 0.0f,
+        0.8f, -0.8f, 2.3,  1.0f, 0.0f,
+        0.3f, -0.8f, 2.3,  0.0f, 0.0f,
+        0.3f, -0.8f, 3,  0.0f, 1.0f,
+
+        // [Roda Kotak 2]
+        // sisi 1
+        0.8f, 0.4f, -1.4,  0.0f, 1.0f,
+        0.8f, -0.8f, -1.4,  1.0f, 1.0f,
+        0.8f, -0.8f, -2.1,  1.0f, 0.0f,
+        0.8f, 0.4f, -1.4,  1.0f, 0.0f,
+        0.8f, 0.4f, -2.1,  0.0f, 0.0f,
+        0.8f, -0.8f, -2.1,  0.0f, 1.0f,
+        // sisi 2
+        0.8f, 0.4f, -1.4,  0.0f, 1.0f,
+        0.8f, -0.8f, -1.4,  1.0f, 1.0f,
+        0.3f, -0.8f, -1.4,  1.0f, 0.0f,
+        0.8f, 0.4f, -1.4,  1.0f, 0.0f,
+        0.3f, 0.4f, -1.4,  0.0f, 0.0f,
+        0.3f, -0.8f, -1.4,  0.0f, 1.0f,
+        // sisi 3
+        0.8f, 0.4f, -1.4,  0.0f, 1.0f,
+        0.8f, 0.4f, -2.1,  1.0f, 1.0f,
+        0.3f, 0.4f, -2.1,  1.0f, 0.0f,
+        0.8f, 0.4f, -1.4,  1.0f, 0.0f,
+        0.3f, 0.4f, -1.4,  0.0f, 0.0f,
+        0.3f, 0.4f, -2.1,  0.0f, 1.0f,
+        // sisi 4
+        0.3f, 0.4f, -1.4,  0.0f, 1.0f,
+        0.3f, -0.8f, -1.4,  1.0f, 1.0f,
+        0.3f, -0.8f, -2.1,  1.0f, 0.0f,
+        0.3f, 0.4f, -1.4,  1.0f, 0.0f,
+        0.3f, 0.4f, -2.1,  0.0f, 0.0f,
+        0.3f, -0.8f, -2.1,  0.0f, 1.0f,
+        // sisi 5
+        0.8f, 0.4f, -2.1,  0.0f, 1.0f,
+        0.8f, -0.8f, -2.1,  1.0f, 1.0f,
+        0.3f, -0.8f, -2.1,  1.0f, 0.0f,
+        0.8f, 0.4f, -2.1,  1.0f, 0.0f,
+        0.3f, -0.8f, -2.1,  0.0f, 0.0f,
+        0.3f, -0.8f, -2.1,  0.0f, 1.0f,
+        // sisi 6
+        0.8f, -0.8f, -1.4,  0.0f, 1.0f,
+        0.8f, -0.8f, -2.1,  1.0f, 1.0f,
+        0.3f, -0.8f, -2.1,  1.0f, 0.0f,
+        0.8f, -0.8f, -1.4,  1.0f, 0.0f,
+        0.3f, -0.8f, -1.4,  0.0f, 0.0f,
+        0.3f, -0.8f, -2.1,  0.0f, 1.0f,
+
+        // [Roda Kotak 3]
+        // sisi 1
+        -0.3, 0.4f, 2.3,  0.0f, 1.0f,
+        -0.3, -0.8f, 2.3,  1.0f, 1.0f,
+        -0.3, -0.8f, 3,  1.0f, 0.0f,
+        -0.3, 0.4f, 2.3,  1.0f, 0.0f,
+        -0.3, 0.4f, 3,  0.0f, 0.0f,
+        -0.3, -0.8f, 3,  0.0f, 1.0f,
+        // sisi 2
+        -0.3, 0.4f, 2.3,  0.0f, 1.0f,
+        -0.3, -0.8f, 2.3,  1.0f, 1.0f,
+        -0.8f, -0.8f, 2.3,  1.0f, 0.0f,
+        -0.3, 0.4f, 2.3,  1.0f, 0.0f,
+        -0.8f, 0.4f, 2.3,  0.0f, 0.0f,
+        -0.8f, -0.8f, 2.3,  0.0f, 1.0f,
+        // sisi 3
+        -0.3, 0.4f, 2.3,  0.0f, 1.0f,
+        -0.3, 0.4f, 3,  1.0f, 1.0f,
+        -0.8f, 0.4f, 3,  1.0f, 0.0f,
+        -0.3, 0.4f, 2.3,  1.0f, 0.0f,
+        -0.8f, 0.4f, 2.3,  0.0f, 0.0f,
+        -0.8f, 0.4f, 3,  0.0f, 1.0f,
+        // sisi 4
+        -0.8f, 0.4f, 2.3,  0.0f, 1.0f,
+        -0.8f, -0.8f, 2.3,  1.0f, 1.0f,
+        -0.8f, -0.8f, 3,  1.0f, 0.0f,
+        -0.8f, 0.4f, 2.3,  1.0f, 0.0f,
+        -0.8f, 0.4f, 3,  0.0f, 0.0f,
+        -0.8f, -0.8f, 3,  0.0f, 1.0f,
+        // // sisi 5
+        -0.3, 0.4f, 3,  0.0f, 1.0f,
+        -0.3, -0.8f, 3,  1.0f, 1.0f,
+        -0.8f, -0.8f, 3,  1.0f, 0.0f,
+        -0.3, 0.4f, 3,  1.0f, 0.0f,
+        -0.8f, -0.8f, 3,  0.0f, 0.0f,
+        -0.8f, -0.8f, 3,  0.0f, 1.0f,
+        // // sisi 6
+        -0.3, -0.8f, 2.3,  0.0f, 1.0f,
+        -0.3, -0.8f, 3,  1.0f, 1.0f,
+        -0.8f, -0.8f, 3,  1.0f, 0.0f,
+        -0.3, -0.8f, 2.3,  1.0f, 0.0f,
+        -0.8f, -0.8f, 2.3,  0.0f, 0.0f,
+        -0.8f, -0.8f, 3,  0.0f, 1.0f,
+
+        // [Roda Kotak 4]
+        // sisi 1
+        -0.3, 0.4f, -1.4,  0.0f, 1.0f,
+        -0.3, -0.8f, -1.4,  1.0f, 1.0f,
+        -0.3f, -0.8f, -2.1,  1.0f, 0.0f,
+        -0.3, 0.4f, -1.4,  1.0f, 0.0f,
+        -0.3f, 0.4f, -2.1,  0.0f, 0.0f,
+        -0.3f, -0.8f, -2.1 ,  0.0f, 1.0f,
+        // sisi 2
+        -0.3f, 0.4f, -1.4,  0.0f, 1.0f,
+        -0.3f, -0.8f, -1.4,  1.0f, 1.0f,
+        -0.8f, -0.8f, -1.4,  1.0f, 0.0f,
+        -0.3f, 0.4f, -1.4,  1.0f, 0.0f,
+        -0.8f, 0.4f, -1.4,  0.0f, 0.0f,
+        -0.8f, -0.8f, -1.4,  0.0f, 1.0f,
+        // sisi 3
+        -0.3f, 0.4f, -1.4,  0.0f, 1.0f,
+        -0.3f, 0.4f, -2.1,  1.0f, 1.0f,
+        -0.8f, 0.4f, -2.1,  1.0f, 0.0f,
+        -0.3f, 0.4f, -1.4,  1.0f, 0.0f,
+        -0.8f, 0.4f, -1.4,  0.0f, 0.0f,
+        -0.8f, 0.4f, -2.1,  0.0f, 1.0f,
+        // sisi 4
+        -0.8f, 0.4f, -1.4,  0.0f, 1.0f,
+        -0.8f, -0.8f, -1.4,  1.0f, 1.0f,
+        -0.8f, -0.8f, -2.1,  1.0f, 0.0f,
+        -0.8f, 0.4f, -1.4,  1.0f, 0.0f,
+        -0.8f, 0.4f, -2.1,  0.0f, 0.0f,
+        -0.8f, -0.8f, -2.1,  0.0f, 1.0f,
+        // sisi 5
+        -0.3f, 0.4f, -2.1,  0.0f, 1.0f,
+        -0.3f, -0.8f, -2.1,  1.0f, 1.0f,
+        -0.8f, -0.8f, -2.1,  1.0f, 0.0f,
+        -0.3f, 0.4f, -2.1,  1.0f, 0.0f,
+        -0.8f, -0.8f, -2.1,  0.0f, 0.0f,
+        -0.8f, -0.8f, -2.1,  0.0f, 1.0f,
+        // sisi 6
+        -0.3f, -0.8f, -1.4,  0.0f, 1.0f,
+        -0.3f, -0.8f, -2.1,  1.0f, 1.0f,
+        -0.8f, -0.8f, -2.1,  1.0f, 0.0f,
+        -0.3f, -0.8f, -1.4,  1.0f, 0.0f,
+        -0.8f, -0.8f, -1.4,  0.0f, 0.0f,
+        -0.8f, -0.8f, -2.1,  0.0f, 1.0f,    
     };
+
+        // ,  0.0f, 1.0f,
+        // ,  1.0f, 1.0f,
+        // ,  1.0f, 0.0f,
+        // ,  1.0f, 0.0f,
+        // ,  0.0f, 0.0f,
+        // ,  0.0f, 1.0f,
     
     glm::vec3 cubePositions[] =
     {
@@ -174,23 +666,74 @@ int main( )
     glBindVertexArray( 0 ); // Unbind VAO
     
     // Load and create a texture
-    GLuint texture;
+    GLuint texture[5];
+    glGenTextures( 5, texture );
+    int width, height;
+    unsigned char *image;
+   
     // --== TEXTURE == --
-    glGenTextures( 1, &texture );
-    glBindTexture( GL_TEXTURE_2D, texture ); // All upcoming GL_TEXTURE_2D operations now have effect on our texture object
-    // Set our texture parameters
+    glBindTexture( GL_TEXTURE_2D, texture[0] );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
-    // Set texture filtering
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
     // Load, create texture and generate mipmaps
-    int width, height;
-    unsigned char *image = SOIL_load_image( "res/images/image1.jpg", &width, &height, 0, SOIL_LOAD_RGB );
+    image = SOIL_load_image( "res/images/metal.jpg", &width, &height, 0, SOIL_LOAD_RGB );
     glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
     glGenerateMipmap( GL_TEXTURE_2D );
     SOIL_free_image_data( image );
-    glBindTexture( GL_TEXTURE_2D, 0 ); // Unbind texture when done, so we won't accidentily mess up our texture.
+    glBindTexture( GL_TEXTURE_2D, 0 );
+
+    // --== TEXTURE == --
+    glBindTexture( GL_TEXTURE_2D, texture[1] );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+    // Load, create texture and generate mipmaps
+    image = SOIL_load_image( "res/images/mirror.jpg", &width, &height, 0, SOIL_LOAD_RGB );
+    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
+    glGenerateMipmap( GL_TEXTURE_2D );
+    SOIL_free_image_data( image );
+    glBindTexture( GL_TEXTURE_2D, 1 );
+
+    // --== TEXTURE == --
+    glBindTexture( GL_TEXTURE_2D, texture[2] );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+    // Load, create texture and generate mipmaps
+    image = SOIL_load_image( "res/images/black.jpeg", &width, &height, 0, SOIL_LOAD_RGB );
+    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
+    glGenerateMipmap( GL_TEXTURE_2D );
+    SOIL_free_image_data( image );
+    glBindTexture( GL_TEXTURE_2D, 2 );
+
+    // --== TEXTURE == --
+    glBindTexture( GL_TEXTURE_2D, texture[3] );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+    // Load, create texture and generate mipmaps
+    image = SOIL_load_image( "res/images/sun.jpg", &width, &height, 0, SOIL_LOAD_RGB );
+    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
+    glGenerateMipmap( GL_TEXTURE_2D );
+    SOIL_free_image_data( image );
+    glBindTexture( GL_TEXTURE_2D, 3 );
+
+    glBindTexture( GL_TEXTURE_2D, texture[4] );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+    // Load, create texture and generate mipmaps
+    image = SOIL_load_image( "res/images/wheel.jpg", &width, &height, 0, SOIL_LOAD_RGB );
+    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
+    glGenerateMipmap( GL_TEXTURE_2D );
+    SOIL_free_image_data( image );
+    glBindTexture( GL_TEXTURE_2D, 4 );
     
     // Game loop
     while( !glfwWindowShouldClose( window ) )
@@ -211,10 +754,6 @@ int main( )
         // Draw our first triangle
         ourShader.Use( );
         
-        // Bind Textures using texture units
-        glActiveTexture( GL_TEXTURE0 );
-        glBindTexture( GL_TEXTURE_2D, texture );
-        glUniform1i( glGetUniformLocation( ourShader.Program, "ourTexture1" ), 0 );
         
         glm::mat4 projection;
         projection = glm::perspective(camera.GetZoom( ), (GLfloat)SCREEN_WIDTH/(GLfloat)SCREEN_HEIGHT, 0.1f, 1000.0f);
@@ -243,7 +782,30 @@ int main( )
             model = glm::rotate(model, angle, glm::vec3( 1.0f, 0.3f, 0.5f ) );
             glUniformMatrix4fv( modelLoc, 1, GL_FALSE, glm::value_ptr( model ) );
             
-            glDrawArrays( GL_TRIANGLES, 0, 36 );
+            // Bind Textures using texture units
+            glBindTexture( GL_TEXTURE_2D, texture[0] );
+            glUniform1i( glGetUniformLocation( ourShader.Program, "metal" ), 0 );
+            glDrawArrays( GL_TRIANGLES, 0, 36 * 2 );
+            
+            // Bind Textures using texture units
+            glBindTexture( GL_TEXTURE_2D, texture[1] );
+            glUniform1i( glGetUniformLocation( ourShader.Program, "mirror" ), 1 );
+            glDrawArrays( GL_TRIANGLES, 36 * 2, 36 );
+
+            // Bind Textures using texture units
+            glBindTexture( GL_TEXTURE_2D, texture[2] );
+            glUniform1i( glGetUniformLocation( ourShader.Program, "handle and door" ), 2 );
+            glDrawArrays( GL_TRIANGLES, 36 * 3, 36 );
+
+            // Bind Textures using texture units
+            glBindTexture( GL_TEXTURE_2D, texture[3] );
+            glUniform1i( glGetUniformLocation( ourShader.Program, "lamp" ), 3 );
+            glDrawArrays( GL_TRIANGLES, 36 * 4, 36 * 4 );
+
+            // Bind Textures using texture units
+            glBindTexture( GL_TEXTURE_2D, texture[4] );
+            glUniform1i( glGetUniformLocation( ourShader.Program, "lamp" ), 4 );
+            glDrawArrays( GL_TRIANGLES, 36 * 8, 36 * 4 );
         //}
         
         glBindVertexArray( 0 );
