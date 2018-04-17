@@ -97,8 +97,8 @@ int main( )
     
     // Setup and compile our shaders
     Shader ourShader( "res/shaders/core.vs", "res/shaders/core.frag" );
-    Shader lightingShader("res/shaders/basic_lighting.vs", "res/shaders/basic_lighting.fs");
-    Shader lampShader("res/shaders/lamp.vs", "res/shaders/lamp.fs");
+    Shader lightingShader("res/shaders/basic_lighting.vs", "res/shaders/basic_lighting.frag");
+    Shader lampShader("res/shaders/lamp.vs", "res/shaders/lamp.frag");
     
     // Set up our vertex data (and buffer(s)) and attribute pointers
     GLfloat vertices[] =
@@ -670,7 +670,7 @@ int main( )
     
     glBindVertexArray( 0 ); // Unbind VAO
 
-     // second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
+    // second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
     unsigned int lightVAO;
     glGenVertexArrays(1, &lightVAO);
     glBindVertexArray(lightVAO);
@@ -768,11 +768,6 @@ int main( )
         
         // Draw our first triangle
         ourShader.Use( );
-
-        // be sure to activate shader when setting uniforms/drawing objects
-        lightingShader.use();
-        lightingShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-        lightingShader.setVec3("lightPos", lightPos);
         
         
         glm::mat4 projection;
@@ -830,6 +825,11 @@ int main( )
         
         glBindVertexArray( 0 );
 
+        // be sure to activate shader when setting uniforms/drawing objects
+        lightingShader.use();
+        lightingShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+        lightingShader.setVec3("lightPos", lightPos);
+
         // also draw the lamp object
         lampShader.use();
         lampShader.setMat4("projection", projection);
@@ -882,7 +882,8 @@ void DoMovement( )
 // Is called whenever a key is pressed/released via GLFW
 void KeyCallback( GLFWwindow *window, int key, int scancode, int action, int mode )
 {
-     {
+    if( key == GLFW_KEY_ESCAPE && action == GLFW_PRESS )
+    {
         glfwSetWindowShouldClose(window, GL_TRUE);
     }
     
