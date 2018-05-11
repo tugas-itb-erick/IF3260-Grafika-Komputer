@@ -45,6 +45,7 @@ GLfloat lastFrame = 0.0f;
 
 GLfloat middlePoint[] = {0, 0, 0};
 GLfloat rad = 0.00f;
+const int carLastIndex = 36 * 12 * 8; // 3456
 GLfloat vertices[] =
     {
         // [Badan mobil bawah]
@@ -532,47 +533,73 @@ GLfloat vertices[] =
 
         // [Roda Kotak 4]
         // sisi 1
-        -0.3, 0.4f, -1.4,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-        -0.3, -0.8f, -1.4,  0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-        -0.3f, -0.8f, -2.1,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-        -0.3, 0.4f, -1.4,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-        -0.3f, 0.4f, -2.1,  0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-        -0.3f, -0.8f, -2.1 ,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -0.3f, 0.4f, -1.4f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -0.3f, -0.8f, -1.4f,  0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+        -0.3f, -0.8f, -2.1f,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        -0.3f, 0.4f, -1.4f,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        -0.3f, 0.4f, -2.1f,  0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        -0.3f, -0.8f, -2.1f ,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
         // sisi 2
-        -0.3f, 0.4f, -1.4,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-        -0.3f, -0.8f, -1.4,  0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-        -0.8f, -0.8f, -1.4,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-        -0.3f, 0.4f, -1.4,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-        -0.8f, 0.4f, -1.4,  0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-        -0.8f, -0.8f, -1.4,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -0.3f, 0.4f, -1.4f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -0.3f, -0.8f, -1.4f,  0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+        -0.8f, -0.8f, -1.4f,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        -0.3f, 0.4f, -1.4f,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        -0.8f, 0.4f, -1.4f,  0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        -0.8f, -0.8f, -1.4f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
         // sisi 3
-        -0.3f, 0.4f, -1.4,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-        -0.3f, 0.4f, -2.1,  0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-        -0.8f, 0.4f, -2.1,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-        -0.3f, 0.4f, -1.4,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-        -0.8f, 0.4f, -1.4,  0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-        -0.8f, 0.4f, -2.1,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -0.3f, 0.4f, -1.4f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -0.3f, 0.4f, -2.1f,  0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+        -0.8f, 0.4f, -2.1f,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        -0.3f, 0.4f, -1.4f,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        -0.8f, 0.4f, -1.4f,  0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        -0.8f, 0.4f, -2.1f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
         // sisi 4
-        -0.8f, 0.4f, -1.4,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-        -0.8f, -0.8f, -1.4,  0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-        -0.8f, -0.8f, -2.1,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-        -0.8f, 0.4f, -1.4,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-        -0.8f, 0.4f, -2.1,  0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-        -0.8f, -0.8f, -2.1,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -0.8f, 0.4f, -1.4f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -0.8f, -0.8f, -1.4f,  0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+        -0.8f, -0.8f, -2.1f,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        -0.8f, 0.4f, -1.4f,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        -0.8f, 0.4f, -2.1f,  0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        -0.8f, -0.8f, -2.1f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
         // sisi 5
-        -0.3f, 0.4f, -2.1,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-        -0.3f, -0.8f, -2.1,  0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-        -0.8f, -0.8f, -2.1,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-        -0.3f, 0.4f, -2.1,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-        -0.8f, -0.8f, -2.1,  0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-        -0.8f, -0.8f, -2.1,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -0.3f, 0.4f, -2.1f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -0.3f, -0.8f, -2.1f,  0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+        -0.8f, -0.8f, -2.1f,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        -0.3f, 0.4f, -2.1f,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        -0.8f, -0.8f, -2.1f,  0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        -0.8f, -0.8f, -2.1f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
         // sisi 6
-        -0.3f, -0.8f, -1.4,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-        -0.3f, -0.8f, -2.1,  0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-        -0.8f, -0.8f, -2.1,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-        -0.3f, -0.8f, -1.4,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-        -0.8f, -0.8f, -1.4,  0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-        -0.8f, -0.8f, -2.1,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,    
+        -0.3f, -0.8f, -1.4f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -0.3f, -0.8f, -2.1f,  0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+        -0.8f, -0.8f, -2.1f,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        -0.3f, -0.8f, -1.4f,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        -0.8f, -0.8f, -1.4f,  0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        -0.8f, -0.8f, -2.1f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,    
+
+        // Jalanan 1
+        -8.0f, -0.8f, -50.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
+        -8.0f, -0.8f, 50.0f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
+        8.0f, -0.8f, -50.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        8.0f, -0.8f, -50.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        8.0f, -0.8f, 50.0f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
+        -8.0f, -0.8f, 50.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,    
+        // Jalanan 2
+        42.0f, -0.8f, -50.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
+        42.0f, -0.8f, 50.0f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
+        68.0f, -0.8f, -50.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        68.0f, -0.8f, -50.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        68.0f, -0.8f, 50.0f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
+        42.0f, -0.8f, 50.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,    
+        // Jalanan 3
+
+        // Jalanan 4
+
+        // Jalanan 5
+
+        // Jalanan 6
+
+        // Jalanan 7
+
+        // Jalanan 8
     };
 
         // ,  0.0f, 1.0f,
@@ -651,7 +678,7 @@ int main( )
         glm::vec3( -1.3f, 1.0f, -1.5f )
     };
     
-    GLuint diffuseMap[5], specularMap[5], emissionMap[5];
+    GLuint diffuseMap[10], specularMap[10], emissionMap[10];
 
 
     GLuint VBO, VAO;
@@ -815,6 +842,33 @@ int main( )
     SOIL_free_image_data( image );
 
     glBindTexture( GL_TEXTURE_2D, 4 );
+
+    // --== TEXTURE 6 == --
+    glGenTextures(1, &diffuseMap[5]);
+    glGenTextures(1, &specularMap[5]);
+    glGenTextures(1, &emissionMap[5]);
+
+    glBindTexture( GL_TEXTURE_2D, diffuseMap[5] );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+    image = SOIL_load_image( "res/images/road.jpg", &width, &height, 0, SOIL_LOAD_RGB );
+    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
+    glGenerateMipmap( GL_TEXTURE_2D );
+    SOIL_free_image_data( image );
+
+    glBindTexture( GL_TEXTURE_2D, specularMap[5] );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+    image = SOIL_load_image( "res/images/road.jpg", &width, &height, 0, SOIL_LOAD_RGB );
+    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
+    glGenerateMipmap( GL_TEXTURE_2D );
+    SOIL_free_image_data( image );
+
+    glBindTexture( GL_TEXTURE_2D, 5 );
     
     lightShader.Use();
     glUniform1i(glGetUniformLocation(lightShader.Program, "material.diffuse"),  0);
@@ -922,8 +976,16 @@ int main( )
             glActiveTexture(GL_TEXTURE1);
             glBindTexture(GL_TEXTURE_2D, specularMap[4]);
             glBindTexture( GL_TEXTURE_2D, VAO );
-            glUniform1i( glGetUniformLocation( lightShader.Program, "lamp" ), 4 );
+            glUniform1i( glGetUniformLocation( lightShader.Program, "wheel" ), 4 );
             glDrawArrays( GL_TRIANGLES, 36 * 8, 36 * 4 );
+
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, diffuseMap[5]);
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, specularMap[5]);
+            glBindTexture( GL_TEXTURE_2D, VAO );
+            glUniform1i( glGetUniformLocation( lightShader.Program, "road" ), 5 );
+            glDrawArrays( GL_TRIANGLES, 36 * 12, 36 * 4 );
         //}
         
         glBindVertexArray( 0 );
@@ -948,7 +1010,7 @@ void DoMovement( )
     {
         middlePoint[0+2] -= 0.1f * cos(rad);
         middlePoint[0] -= 0.1f * sin(rad);
-        for (int i=0; i<sizeof(vertices)/sizeof(GLfloat); i+=8) {
+        for (int i=0; i<carLastIndex; i+=8) {
             vertices[i+2] -= 0.1f * cos(rad);
             vertices[i] -= 0.1f * sin(rad);
         }
@@ -959,7 +1021,7 @@ void DoMovement( )
     {
         middlePoint[0+2] += 0.1f * cos(rad);
         middlePoint[0] += 0.1f * sin(rad);
-        for (int i=0; i<sizeof(vertices)/sizeof(GLfloat); i+=8) {
+        for (int i=0; i<carLastIndex; i+=8) {
             vertices[i+2] += 0.1f * cos(rad);
             vertices[i] += 0.1f * sin(rad);
         }
@@ -969,7 +1031,7 @@ void DoMovement( )
     if(keys[GLFW_KEY_LEFT] )
     {
         rad += 0.1f;
-        for (int i=0; i<sizeof(vertices)/sizeof(GLfloat); i+=8) {
+        for (int i=0; i<carLastIndex; i+=8) {
             vertices[i+2] = (vertices[i+2]-middlePoint[2])*cos(0.1f) - (vertices[i]-middlePoint[0])*sin(0.1f) + middlePoint[2];
             vertices[i] = (vertices[i+2]-middlePoint[2])*sin(0.1f) + (vertices[i]-middlePoint[0])*cos(0.1f) + middlePoint[0];
         }
@@ -979,7 +1041,7 @@ void DoMovement( )
     if(keys[GLFW_KEY_RIGHT] )
     {
         rad -= 0.1f;
-        for (int i=0; i<sizeof(vertices)/sizeof(GLfloat); i+=8) {
+        for (int i=0; i<carLastIndex; i+=8) {
             vertices[i+2] = (vertices[i+2]-middlePoint[2])*cos(-0.1f) - (vertices[i]-middlePoint[0])*sin(-0.1f) + middlePoint[2];
             vertices[i] = (vertices[i+2]-middlePoint[2])*sin(-0.1f) + (vertices[i]-middlePoint[0])*cos(-0.1f) + middlePoint[0];
         }
