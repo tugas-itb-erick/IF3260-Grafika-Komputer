@@ -96,6 +96,13 @@ GLfloat lastFrame = 0.0f;
 
 int idx_rain = 3456;
 
+GLfloat inc_x_rain[MAX_PARTICLES] = { 0.0f };
+GLfloat inc_y_rain[MAX_PARTICLES] = { 0.0f };
+GLfloat inc_z_rain[MAX_PARTICLES] = { 0.0f };
+
+GLfloat init_x_rain[MAX_PARTICLES] = { 0.0f };
+GLfloat init_z_rain[MAX_PARTICLES] = { 0.0f };
+
 // The MAIN function, from here we start our application and run our Game loop
 int main()
 {
@@ -678,6 +685,9 @@ int main()
             par_sys[i].xpos = (float) (rand() % 21) - 10;
             par_sys[i].ypos = 4.0f;
             par_sys[i].zpos = (float) (rand() % 21) - 10;
+
+            init_x_rain[loop] = par_sys[i].xpos;
+            init_z_rain[loop] = par_sys[i].zpos;
             
             par_sys[i].red = 0.5;
             par_sys[i].green = 0.5;
@@ -699,8 +709,8 @@ int main()
             vertices[idx_rain++] = y1;
             vertices[idx_rain++] = z1;
 
-            vertices[idx_rain++] = 0.0f;
-            vertices[idx_rain++] = 0.0f;
+            vertices[idx_rain++] = 0.5f;
+            vertices[idx_rain++] = 0.5f;
             vertices[idx_rain++] = 1.0f;
 
             vertices[idx_rain++] = 1.0f;
@@ -710,8 +720,8 @@ int main()
             vertices[idx_rain++] = y1 + 0.5f;
             vertices[idx_rain++] = z1;
 
-            vertices[idx_rain++] = 0.0f;
-            vertices[idx_rain++] = 0.0f;
+            vertices[idx_rain++] = 0.5f;
+            vertices[idx_rain++] = 0.5f;
             vertices[idx_rain++] = 1.0f;
 
             vertices[idx_rain++] = 0.0f;
@@ -721,6 +731,7 @@ int main()
             //Move
             // Adjust slowdown for speed!
             par_sys[loop].ypos += par_sys[loop].vel / (slowdown*1000);
+            inc_y_rain[loop] += par_sys[loop].vel / (slowdown*1000);
             par_sys[loop].vel += par_sys[loop].gravity;
             // Decay
             par_sys[loop].life -= par_sys[loop].fade;
@@ -1072,46 +1083,37 @@ int main()
             glUniform1i( glGetUniformLocation( lightShader.Program, "lamp" ), 4 );
             glDrawArrays( GL_TRIANGLES, 36 * 8, 36 * 4 );
 
-            // Bind Textures using texture units
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, diffuseMap[5]);
-            glActiveTexture(GL_TEXTURE1);
-            glBindTexture(GL_TEXTURE_2D, specularMap[5]);
-            glBindTexture( GL_TEXTURE_2D, VAO );
-            glUniform1i( glGetUniformLocation( lightShader.Program, "metal" ), 5 );
-            glDrawArrays( GL_LINES, 36*12, 100 );
         //}
-        
-        // Initialize particles
-        for (int i = 0; i < MAX_PARTICLES; i++) {
-            par_sys[i].alive = true;
-            par_sys[i].life = 1.0;
-            par_sys[i].fade = float(rand()%100)/1000.0f+0.003f;
-            
-            par_sys[i].xpos = (float) (rand() % 21) - 10;
-            par_sys[i].ypos = 4.0f;
-            par_sys[i].zpos = (float) (rand() % 21) - 10;
-            
-            par_sys[i].red = 0.5;
-            par_sys[i].green = 0.5;
-            par_sys[i].blue = 1.0;
-            
-            par_sys[i].vel = velocity;
-            par_sys[i].gravity = -0.8;//-0.8;
-        }
+        int start = 36*12;
 
         float x1, y1, z1;
+
+        lightShader.Use();
 
         for (int loop = 0; loop < MAX_PARTICLES; loop=loop+2) {
         if (par_sys[loop].alive == true) {          
              x1 = par_sys[loop].xpos;
              y1 = par_sys[loop].ypos;
              z1 = par_sys[loop].zpos;
+
+             // Bind Textures using texture units
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, diffuseMap[5]);
+            glBindVertexArray(VAO);
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, specularMap[5]);
+            glBindTexture( GL_TEXTURE_2D, VAO );
+            glUniform3f(glGetUniformLocation(lightShader.Program, "inc_rain"), inc_x_rain[loop], inc_y_rain[loop], inc_z_rain[loop]);
+            glUniform1i(glGetUniformLocation(lightShader.Program, "is_rain"), 1);
+            glUniform1i( glGetUniformLocation( lightShader.Program, "metal" ), 5 );
+            glDrawArrays( GL_LINES, start, start + 2);
+            start += 2;
             
             // Update values
-            //Move
+            //Move 
             // Adjust slowdown for speed!
             par_sys[loop].ypos += par_sys[loop].vel / (slowdown*1000);
+            inc_y_rain[loop] += par_sys[loop].vel / (slowdown*1000);
             par_sys[loop].vel += par_sys[loop].gravity;
             // Decay
             par_sys[loop].life -= par_sys[loop].fade;
@@ -1128,7 +1130,11 @@ int main()
                 par_sys[loop].xpos = (float) (rand() % 21) - 10;
                 par_sys[loop].ypos = 4.0f;
                 par_sys[loop].zpos = (float) (rand() % 21) - 10;
-                
+
+                inc_x_rain[loop] =  par_sys[loop].xpos - init_x_rain[loop];
+                inc_z_rain[loop] = par_sys[loop].zpos - init_z_rain[loop];
+                inc_y_rain[loop] = 0.0f;
+
                 par_sys[loop].red = 0.5;
                 par_sys[loop].green = 0.5;
                 par_sys[loop].blue = 1.0;
