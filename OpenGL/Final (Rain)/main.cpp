@@ -37,14 +37,12 @@ int SCREEN_WIDTH, SCREEN_HEIGHT;
 
 
 float slowdown = 2.0;
-float velocity = 0.0;
-float zoom = -40.0;
-float pan = 0.0;
-float tilt = 0.0;
-float hailsize = 0.1;
+float velocity = 5.0;
+float zoom = 2.5;
 
 int loop;
 int fall = RAIN;
+bool starter = true;
 
 //floor colors
 float r = 0.0;
@@ -52,9 +50,7 @@ float g = 1.0;
 float b = 0.0;
 float ground_points[21][21][3];
 float ground_colors[21][21][4];
-float accum = -0.7f;
-
-GLfloat rain_vertices[16000];
+float accum = -10.0f;
 
 typedef struct {
     // Life
@@ -83,6 +79,9 @@ void KeyCallback( GLFWwindow *window, int key, int scancode, int action, int mod
 void ScrollCallback( GLFWwindow *window, double xOffset, double yOffset );
 void MouseCallback( GLFWwindow *window, double xPos, double yPos );
 void DoMovement( );
+void initParticles(int i, bool starter);
+void init(bool starter);
+void drawRain(bool starter);
 
 // Camera
 Camera  camera(glm::vec3( 0.0f, 2.0f, 8.0f ) );
@@ -93,60 +92,7 @@ bool firstMouse = true;
 
 GLfloat deltaTime = 0.0f;
 GLfloat lastFrame = 0.0f;
-
-int idx_rain = 3456;
-
-GLfloat inc_x_rain[MAX_PARTICLES] = { 0.0f };
-GLfloat inc_y_rain[MAX_PARTICLES] = { 0.0f };
-GLfloat inc_z_rain[MAX_PARTICLES] = { 0.0f };
-
-GLfloat init_x_rain[MAX_PARTICLES] = { 0.0f };
-GLfloat init_z_rain[MAX_PARTICLES] = { 0.0f };
-
-// The MAIN function, from here we start our application and run our Game loop
-int main()
-{
-    // Init GLFW
-    glfwInit();
-    glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 3 );
-    glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 3 );
-    glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
-    glfwWindowHint( GLFW_RESIZABLE, GL_FALSE );
-    glfwWindowHint( GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE );
-    
-    GLFWwindow* window = glfwCreateWindow( WIDTH, HEIGHT, "Final Car with Particle", nullptr, nullptr ); // Windowed
-    
-    if ( nullptr == window )
-    {
-        std::cout << "Failed to create GLFW window" << std::endl;
-        glfwTerminate( );
-        
-        return EXIT_FAILURE;
-    }
-    
-    glfwMakeContextCurrent( window );
-    
-    glfwGetFramebufferSize( window, &SCREEN_WIDTH, &SCREEN_HEIGHT );
-    
-    // Set the required callback functions
-    glfwSetKeyCallback( window, KeyCallback );
-    glfwSetCursorPosCallback( window, MouseCallback );
-    glfwSetScrollCallback( window, ScrollCallback );
-    
-    // Options, removes the mouse cursor for a more immersive experience
-    glfwSetInputMode( window, GLFW_CURSOR, GLFW_CURSOR_DISABLED );
-    
-    // Set this to true so GLEW knows to use a modern approach to retrieving function pointers and extensions
-    glewExperimental = GL_TRUE;
-    // Initialize GLEW to setup the OpenGL Function pointers
-    if ( GLEW_OK != glewInit( ) )
-    {
-        std::cout << "Failed to initialize GLEW" << std::endl;
-        return EXIT_FAILURE;
-    }
-
-    // Set up our vertex data (and buffer(s)) and attribute pointers
-    GLfloat vertices[5000] =
+GLfloat vertices[6000] =
     {
         // [Badan mobil bawah]
         // sisi 1
@@ -676,88 +622,61 @@ int main()
         -0.8f, -0.8f, -2.1,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
     };
 
-    // Initialize particles
-        for (int i = 0; i < MAX_PARTICLES; i++) {
-            par_sys[i].alive = true;
-            par_sys[i].life = 1.0;
-            par_sys[i].fade = float(rand()%100)/1000.0f+0.003f;
-            
-            par_sys[i].xpos = (float) (rand() % 21) - 10;
-            par_sys[i].ypos = 4.0f;
-            par_sys[i].zpos = (float) (rand() % 21) - 10;
+int idx_rain = 3456;
 
-            init_x_rain[loop] = par_sys[i].xpos;
-            init_z_rain[loop] = par_sys[i].zpos;
-            
-            par_sys[i].red = 0.5;
-            par_sys[i].green = 0.5;
-            par_sys[i].blue = 1.0;
-            
-            par_sys[i].vel = velocity;
-            par_sys[i].gravity = -0.8;//-0.8;
-        }
+GLfloat inc_x_rain[MAX_PARTICLES] = { 0.0f };
+GLfloat inc_y_rain[MAX_PARTICLES] = { 0.0f };
+GLfloat inc_z_rain[MAX_PARTICLES] = { 0.0f };
 
-        float x1, y1, z1;
+GLfloat init_x_rain[MAX_PARTICLES] = { 0.0f };
+GLfloat init_z_rain[MAX_PARTICLES] = { 0.0f };
 
-        for (int loop = 0; loop < MAX_PARTICLES; loop=loop+2) {
-        if (par_sys[loop].alive == true) {          
-             x1 = par_sys[loop].xpos;
-             y1 = par_sys[loop].ypos;
-             z1 = par_sys[loop].zpos;
-
-            vertices[idx_rain++] = x1;
-            vertices[idx_rain++] = y1;
-            vertices[idx_rain++] = z1;
-
-            vertices[idx_rain++] = 0.5f;
-            vertices[idx_rain++] = 0.5f;
-            vertices[idx_rain++] = 1.0f;
-
-            vertices[idx_rain++] = 1.0f;
-            vertices[idx_rain++] = 0.0f;
-
-            vertices[idx_rain++] = x1;
-            vertices[idx_rain++] = y1 + 0.5f;
-            vertices[idx_rain++] = z1;
-
-            vertices[idx_rain++] = 0.5f;
-            vertices[idx_rain++] = 0.5f;
-            vertices[idx_rain++] = 1.0f;
-
-            vertices[idx_rain++] = 0.0f;
-            vertices[idx_rain++] = 0.0f;
-            
-            // Update values
-            //Move
-            // Adjust slowdown for speed!
-            par_sys[loop].ypos += par_sys[loop].vel / (slowdown*1000);
-            inc_y_rain[loop] += par_sys[loop].vel / (slowdown*1000);
-            par_sys[loop].vel += par_sys[loop].gravity;
-            // Decay
-            par_sys[loop].life -= par_sys[loop].fade;
-            
-            if (par_sys[loop].ypos <= accum) {
-                par_sys[loop].life = -1.0;
-            }
-            //Revive 
-            if (par_sys[loop].life < 0.0) {
-                par_sys[loop].alive = true;
-                par_sys[loop].life = 1.0;
-                par_sys[loop].fade = float(rand()%100)/1000.0f+0.003f;
-                
-                par_sys[loop].xpos = (float) (rand() % 21) - 10;
-                par_sys[loop].ypos = 4.0f;
-                par_sys[loop].zpos = (float) (rand() % 21) - 10;
-                
-                par_sys[loop].red = 0.5;
-                par_sys[loop].green = 0.5;
-                par_sys[loop].blue = 1.0;
-                
-                par_sys[loop].vel = velocity;
-                par_sys[loop].gravity = -0.8;//-0.8;
-            }
-        }
+// The MAIN function, from here we start our application and run our Game loop
+int main()
+{
+    // Init GLFW
+    glfwInit();
+    glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 3 );
+    glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 3 );
+    glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
+    glfwWindowHint( GLFW_RESIZABLE, GL_FALSE );
+    glfwWindowHint( GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE );
+    
+    GLFWwindow* window = glfwCreateWindow( WIDTH, HEIGHT, "Final Car with Particle", nullptr, nullptr ); // Windowed
+    
+    if ( nullptr == window )
+    {
+        std::cout << "Failed to create GLFW window" << std::endl;
+        glfwTerminate( );
+        
+        return EXIT_FAILURE;
     }
+    
+    glfwMakeContextCurrent( window );
+    
+    glfwGetFramebufferSize( window, &SCREEN_WIDTH, &SCREEN_HEIGHT );
+    
+    // Set the required callback functions
+    glfwSetKeyCallback( window, KeyCallback );
+    glfwSetCursorPosCallback( window, MouseCallback );
+    glfwSetScrollCallback( window, ScrollCallback );
+    
+    // Options, removes the mouse cursor for a more immersive experience
+    glfwSetInputMode( window, GLFW_CURSOR, GLFW_CURSOR_DISABLED );
+    
+    // Set this to true so GLEW knows to use a modern approach to retrieving function pointers and extensions
+    glewExperimental = GL_TRUE;
+    // Initialize GLEW to setup the OpenGL Function pointers
+    if ( GLEW_OK != glewInit( ) )
+    {
+        std::cout << "Failed to initialize GLEW" << std::endl;
+        return EXIT_FAILURE;
+    }
+
+    // Initialize particles
+    init(starter);
+    drawRain(starter);
+    starter = false;
 
     // Define the viewport dimensions
     glViewport( 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT );
@@ -1090,11 +1009,11 @@ int main()
 
         lightShader.Use();
 
-        for (int loop = 0; loop < MAX_PARTICLES; loop=loop+2) {
+        for (loop = 0; loop < MAX_PARTICLES; loop++) {
         if (par_sys[loop].alive == true) {          
              x1 = par_sys[loop].xpos;
              y1 = par_sys[loop].ypos;
-             z1 = par_sys[loop].zpos;
+             z1 = par_sys[loop].zpos + zoom;
 
              // Bind Textures using texture units
             glActiveTexture(GL_TEXTURE0);
@@ -1123,24 +1042,7 @@ int main()
             }
             //Revive 
             if (par_sys[loop].life < 0.0) {
-                par_sys[loop].alive = true;
-                par_sys[loop].life = 1.0;
-                par_sys[loop].fade = float(rand()%100)/1000.0f+0.003f;
-                
-                par_sys[loop].xpos = (float) (rand() % 21) - 10;
-                par_sys[loop].ypos = 4.0f;
-                par_sys[loop].zpos = (float) (rand() % 21) - 10;
-
-                inc_x_rain[loop] =  par_sys[loop].xpos - init_x_rain[loop];
-                inc_z_rain[loop] = par_sys[loop].zpos - init_z_rain[loop];
-                inc_y_rain[loop] = 0.0f;
-
-                par_sys[loop].red = 0.5;
-                par_sys[loop].green = 0.5;
-                par_sys[loop].blue = 1.0;
-                
-                par_sys[loop].vel = velocity;
-                par_sys[loop].gravity = -0.8;//-0.8;
+                initParticles(loop, starter);
             }
         }
     }
@@ -1227,4 +1129,92 @@ void MouseCallback( GLFWwindow *window, double xPos, double yPos )
 void ScrollCallback( GLFWwindow *window, double xOffset, double yOffset )
 {
     camera.ProcessMouseScroll( yOffset );
+}
+
+void initParticles(int idx, bool starter) {
+    par_sys[idx].alive = true;
+    par_sys[idx].life = 1.0;
+    par_sys[idx].fade = float(rand()%100)/1000.0f+0.003f;
+                   
+    par_sys[idx].xpos = (float) (rand() % 21) - 10;
+    par_sys[idx].ypos = 8.0f;
+    par_sys[idx].zpos = (float) (rand() % 21) - 10;
+
+    if (!starter) {
+        inc_x_rain[idx] =  par_sys[idx].xpos - init_x_rain[idx];
+        inc_z_rain[idx] = par_sys[idx].zpos - init_z_rain[idx];
+        inc_y_rain[idx] = 0.0f;
+    } else {
+        init_x_rain[loop] = par_sys[idx].xpos;
+        init_z_rain[loop] = par_sys[idx].zpos;
+    }
+    
+    par_sys[idx].red = 0.5;
+    par_sys[idx].green = 0.5;
+    par_sys[idx].blue = 1.0;
+                    
+    par_sys[idx].vel = velocity;
+    par_sys[idx].gravity = -0.8;//-0.8;
+}
+
+void init(bool starter) {
+    for (loop = 0; loop < MAX_PARTICLES; loop++) {
+        initParticles(loop, starter);
+    }
+}
+
+void drawRain(bool starter) {
+    float x, y, z;
+
+    for (loop = 0; loop < MAX_PARTICLES; loop++) {
+        if (par_sys[loop].alive == true) {          
+             x = par_sys[loop].xpos;
+             y = par_sys[loop].ypos;
+             z = par_sys[loop].zpos + zoom;
+
+             if (starter) {
+                init_x_rain[loop] = x;
+                init_z_rain[loop] = z;
+             }
+
+            vertices[idx_rain++] = x;
+            vertices[idx_rain++] = y;
+            vertices[idx_rain++] = z;
+
+            vertices[idx_rain++] = 1.0f;
+            vertices[idx_rain++] = 1.0f;
+            vertices[idx_rain++] = 1.0f;
+
+            vertices[idx_rain++] = 1.0f;
+            vertices[idx_rain++] = 0.0f;
+
+            vertices[idx_rain++] = x;
+            vertices[idx_rain++] = y + 0.5f;
+            vertices[idx_rain++] = z;
+
+            vertices[idx_rain++] = 1.0f;
+            vertices[idx_rain++] = 1.0f;
+            vertices[idx_rain++] = 1.0f;
+
+            vertices[idx_rain++] = 0.0f;
+            vertices[idx_rain++] = 0.0f;
+            
+            // Update values
+            //Move
+            // Adjust slowdown for speed!
+            par_sys[loop].ypos += par_sys[loop].vel / (slowdown*1000);
+            inc_y_rain[loop] += par_sys[loop].vel / (slowdown*1000);
+            par_sys[loop].vel += par_sys[loop].gravity;
+            // Decay
+            par_sys[loop].life -= par_sys[loop].fade;
+            
+            if (par_sys[loop].ypos <= accum) {
+                par_sys[loop].life = -1.0;
+            }
+            //Revive 
+            if (par_sys[loop].life < 0.0) {
+                initParticles(loop, starter);
+            }
+        }
+    }
 }
