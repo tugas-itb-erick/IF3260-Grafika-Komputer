@@ -50,6 +50,10 @@ GLfloat lastFrame = 0.0f;
 
 GLfloat middlePoint[] = {0, 0, 0};
 GLfloat rad = 0.00f;
+const GLfloat OFFSET_SMOKE = 3.5f;
+const GLfloat CAR_SPEED_FAST = 0.3f;
+const GLfloat CAR_SPEED_MEDIUM = 0.2f;
+const GLfloat CAR_SPEED_SLOW = 0.1f;
 const int carLastIndex = 36 * 12 * 8; // 3456
 GLfloat vertices[] =
     {
@@ -581,30 +585,55 @@ GLfloat vertices[] =
         -0.8f, -0.8f, -2.1f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,    
 
         // Jalanan 1
-        -8.0f, -0.8f, -50.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
-        -8.0f, -0.8f, 50.0f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
-        8.0f, -0.8f, -50.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
-        8.0f, -0.8f, -50.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
-        8.0f, -0.8f, 50.0f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
-        -8.0f, -0.8f, 50.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,    
+        -8.0f, -0.8f, -20.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
+        -8.0f, -0.8f, 20.0f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
+        8.0f, -0.8f, -20.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        8.0f, -0.8f, -20.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        8.0f, -0.8f, 20.0f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
+        -8.0f, -0.8f, 20.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,    
         // Jalanan 2
-        42.0f, -0.8f, -50.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
-        42.0f, -0.8f, 50.0f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
-        68.0f, -0.8f, -50.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
-        68.0f, -0.8f, -50.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
-        68.0f, -0.8f, 50.0f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
-        42.0f, -0.8f, 50.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,    
+        22.0f, -0.8f, -20.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
+        22.0f, -0.8f, 20.0f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
+        38.0f, -0.8f, -20.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        38.0f, -0.8f, -20.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        38.0f, -0.8f, 20.0f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
+        22.0f, -0.8f, 20.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,    
         // Jalanan 3
-
+        8.0f, -0.8f, 20.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
+        8.0f, -0.8f, 10.0f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
+        22.0f, -0.8f, 10.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        8.0f, -0.8f, 20.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
+        22.0f, -0.8f, 20.0f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
+        22.0f, -0.8f, 10.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
         // Jalanan 4
+        8.0f, -0.8f, -20.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
+        8.0f, -0.8f, -10.0f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
+        22.0f, -0.8f, -10.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        8.0f, -0.8f, -20.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
+        22.0f, -0.8f, -20.0f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
+        22.0f, -0.8f, -10.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        // Jalanan placeholder 1
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        // Jalanan placeholder 2
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
 
-        // Jalanan 5
-
-        // Jalanan 6
-
-        // Jalanan 7
-
-        // Jalanan 8
+        // Rumput 1
+        8.0f, -0.8f, -10.0f,  0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+        8.0f, -0.8f, 10.0f,  0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+        22.0f, -0.8f, -10.0f,  0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+        22.0f, -0.8f, -10.0f,  0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+        22.0f, -0.8f, 10.0f,  0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+        8.0f, -0.8f, 10.0f,  0.0f, 0.0f, 0.0f,  1.0f, 0.0f,   
     };
 
         // ,  0.0f, 1.0f,
@@ -916,6 +945,33 @@ int main( )
     SOIL_free_image_data( image );
 
     glBindTexture( GL_TEXTURE_2D, 5 );
+
+    // --== TEXTURE 7 == --
+    glGenTextures(1, &diffuseMap[6]);
+    glGenTextures(1, &specularMap[6]);
+    glGenTextures(1, &emissionMap[6]);
+
+    glBindTexture( GL_TEXTURE_2D, diffuseMap[6] );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+    image = SOIL_load_image( "res/images/sand.jpg", &width, &height, 0, SOIL_LOAD_RGB );
+    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
+    glGenerateMipmap( GL_TEXTURE_2D );
+    SOIL_free_image_data( image );
+
+    glBindTexture( GL_TEXTURE_2D, specularMap[6] );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+    image = SOIL_load_image( "res/images/sand.jpg", &width, &height, 0, SOIL_LOAD_RGB );
+    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
+    glGenerateMipmap( GL_TEXTURE_2D );
+    SOIL_free_image_data( image );
+
+    glBindTexture( GL_TEXTURE_2D, 6 );
     
     lightShader.Use();
     glUniform1i(glGetUniformLocation(lightShader.Program, "material.diffuse"),  0);
@@ -940,11 +996,11 @@ int main( )
         ParticlesContainer[i].cameradistance = -1.0f;
     }
 
-    GLuint Texture = loadDDS("smoke.jpg");
+    GLuint Texture = loadDDS("res/images/smoke.jpg");
 
     // The VBO containing the 4 vertices of the particles.
     // Thanks to instancing, they will be shared by all particles.
-    static const GLfloat g_vertex_buffer_data[] = { 
+    static const GLfloat smoke_vertices[] = { 
          -0.5f, -0.5f, 0.0f,
           0.5f, -0.5f, 0.0f,
          -0.5f,  0.5f, 0.0f,
@@ -953,7 +1009,7 @@ int main( )
     GLuint billboard_vertex_buffer;
     glGenBuffers(1, &billboard_vertex_buffer);
     glBindBuffer(GL_ARRAY_BUFFER, billboard_vertex_buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(smoke_vertices), smoke_vertices, GL_STATIC_DRAW);
 
     // The VBO containing the positions and sizes of the particles
     GLuint particles_position_buffer;
@@ -979,7 +1035,6 @@ int main( )
         
         // Check and call events
         glfwPollEvents( );
-        DoMovement( );
         
         // Clear the colorbuffer
         glClearColor( 0.2f, 0.3f, 0.3f, 1.0f );
@@ -1088,7 +1143,15 @@ int main( )
             glBindTexture(GL_TEXTURE_2D, specularMap[5]);
             glBindTexture( GL_TEXTURE_2D, VAO );
             glUniform1i( glGetUniformLocation( lightShader.Program, "road" ), 5 );
-            glDrawArrays( GL_TRIANGLES, 36 * 12, 36 * 4 );
+            glDrawArrays( GL_TRIANGLES, 36 * 12, 36 );
+
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, diffuseMap[6]);
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, specularMap[6]);
+            glBindTexture( GL_TEXTURE_2D, VAO );
+            glUniform1i( glGetUniformLocation( lightShader.Program, "grass" ), 6 );
+            glDrawArrays( GL_TRIANGLES, 36 * 13, 6 );
         //}
         
         
@@ -1102,14 +1165,11 @@ int main( )
         
         for(int i=0; i<newparticles; i++){
             int particleIndex = FindUnusedParticle();
-            ParticlesContainer[particleIndex].life = 5.0f; // This particle will live 5 seconds.
-            ParticlesContainer[particleIndex].pos = glm::vec3(0,0,-20.0f);
+            ParticlesContainer[particleIndex].life = 2.0f; // This particle will live n seconds.
+            ParticlesContainer[particleIndex].pos = glm::vec3(middlePoint[0]+OFFSET_SMOKE*sin(rad),middlePoint[1],middlePoint[2]+OFFSET_SMOKE*cos(rad)); // spawn location
 
             float spread = 1.5f;
             glm::vec3 maindir = glm::vec3(0.0f, 10.0f, 0.0f);
-            // Very bad way to generate a random direction; 
-            // See for instance http://stackoverflow.com/questions/5408276/python-uniform-spherical-distribution instead,
-            // combined with some user-controlled parameters (main direction, spread, etc)
             glm::vec3 randomdir = glm::vec3(
                 (rand()%2000 - 1000.0f)/1000.0f,
                 (rand()%2000 - 1000.0f)/1000.0f,
@@ -1117,14 +1177,10 @@ int main( )
             );
             
             ParticlesContainer[particleIndex].speed = maindir + randomdir*spread;
-
-
-            // Very bad way to generate a random color
             ParticlesContainer[particleIndex].r = rand() % 256;
             ParticlesContainer[particleIndex].g = rand() % 256;
             ParticlesContainer[particleIndex].b = rand() % 256;
             ParticlesContainer[particleIndex].a = (rand() % 256) / 3;
-
             ParticlesContainer[particleIndex].size = (rand()%1000)/2000.0f + 0.1f;
         }
 
@@ -1164,7 +1220,6 @@ int main( )
                 }
 
                 ParticlesCount++;
-
             }
         }
 
@@ -1174,8 +1229,6 @@ int main( )
         // There are much more sophisticated means to stream data from the CPU to the GPU, 
         // but this is outside the scope of this tutorial.
         // http://www.opengl.org/wiki/Buffer_Object_Streaming
-
-
         glBindBuffer(GL_ARRAY_BUFFER, particles_position_buffer);
         glBufferData(GL_ARRAY_BUFFER, MaxParticles * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details.
         glBufferSubData(GL_ARRAY_BUFFER, 0, ParticlesCount * sizeof(GLfloat) * 4, g_particule_position_size_data);
@@ -1261,6 +1314,9 @@ int main( )
         glBindVertexArray( 0 );
         
         // Swap the buffers
+        glBindBuffer( GL_ARRAY_BUFFER, VBO );
+        glBufferData( GL_ARRAY_BUFFER, sizeof( vertices ), vertices, GL_STATIC_DRAW );
+        DoMovement();
         glfwSwapBuffers( window );
         glfwPollEvents();
     }
@@ -1290,22 +1346,22 @@ void DoMovement( )
     // Camera controls
     if(keys[GLFW_KEY_UP] )
     {
-        middlePoint[0+2] -= 0.1f * cos(rad);
-        middlePoint[0] -= 0.1f * sin(rad);
+        middlePoint[0+2] -= CAR_SPEED_FAST * cos(rad);
+        middlePoint[0] -= CAR_SPEED_FAST * sin(rad);
         for (int i=0; i<carLastIndex; i+=8) {
-            vertices[i+2] -= 0.1f * cos(rad);
-            vertices[i] -= 0.1f * sin(rad);
+            vertices[i+2] -= CAR_SPEED_FAST * cos(rad);
+            vertices[i] -= CAR_SPEED_FAST * sin(rad);
         }
         glBufferData( GL_ARRAY_BUFFER, sizeof( vertices ), vertices, GL_STATIC_DRAW );
     }
     
     if(keys[GLFW_KEY_DOWN] )
     {
-        middlePoint[0+2] += 0.1f * cos(rad);
-        middlePoint[0] += 0.1f * sin(rad);
+        middlePoint[0+2] += CAR_SPEED_FAST * cos(rad);
+        middlePoint[0] += CAR_SPEED_FAST * sin(rad);
         for (int i=0; i<carLastIndex; i+=8) {
-            vertices[i+2] += 0.1f * cos(rad);
-            vertices[i] += 0.1f * sin(rad);
+            vertices[i+2] += CAR_SPEED_FAST * cos(rad);
+            vertices[i] += CAR_SPEED_FAST * sin(rad);
         }
         glBufferData( GL_ARRAY_BUFFER, sizeof( vertices ), vertices, GL_STATIC_DRAW );
     }
@@ -1314,8 +1370,10 @@ void DoMovement( )
     {
         rad += 0.1f;
         for (int i=0; i<carLastIndex; i+=8) {
-            vertices[i+2] = (vertices[i+2]-middlePoint[2])*cos(0.1f) - (vertices[i]-middlePoint[0])*sin(0.1f) + middlePoint[2];
-            vertices[i] = (vertices[i+2]-middlePoint[2])*sin(0.1f) + (vertices[i]-middlePoint[0])*cos(0.1f) + middlePoint[0];
+            GLfloat zi = vertices[i+2];
+            GLfloat xi = vertices[i];
+            vertices[i+2] = (zi-middlePoint[2])*cos(0.1f) - (xi-middlePoint[0])*sin(0.1f) + middlePoint[2];
+            vertices[i] = (zi-middlePoint[2])*sin(0.1f) + (xi-middlePoint[0])*cos(0.1f) + middlePoint[0];
         }
         glBufferData( GL_ARRAY_BUFFER, sizeof( vertices ), vertices, GL_STATIC_DRAW );
     }
@@ -1324,8 +1382,10 @@ void DoMovement( )
     {
         rad -= 0.1f;
         for (int i=0; i<carLastIndex; i+=8) {
-            vertices[i+2] = (vertices[i+2]-middlePoint[2])*cos(-0.1f) - (vertices[i]-middlePoint[0])*sin(-0.1f) + middlePoint[2];
-            vertices[i] = (vertices[i+2]-middlePoint[2])*sin(-0.1f) + (vertices[i]-middlePoint[0])*cos(-0.1f) + middlePoint[0];
+            GLfloat zi = vertices[i+2];
+            GLfloat xi = vertices[i];
+            vertices[i+2] = (zi-middlePoint[2])*cos(-0.1f) - (xi-middlePoint[0])*sin(-0.1f) + middlePoint[2];
+            vertices[i] = (zi-middlePoint[2])*sin(-0.1f) + (xi-middlePoint[0])*cos(-0.1f) + middlePoint[0];
         }
         glBufferData( GL_ARRAY_BUFFER, sizeof( vertices ), vertices, GL_STATIC_DRAW );
     }
@@ -1369,7 +1429,17 @@ void KeyCallback( GLFWwindow *window, int key, int scancode, int action, int mod
         }
         else if( action == GLFW_RELEASE )
         {
+            bool up = keys[GLFW_KEY_UP];
+            bool down = keys[GLFW_KEY_DOWN];
+            
             keys[key] = false;
+
+            if (up && !keys[GLFW_KEY_UP]) {
+                
+            }
+            if (down && !keys[GLFW_KEY_DOWN]) {
+                
+            }
         }
     }
 }
