@@ -1141,7 +1141,7 @@ int main( )
                 if (p.life > 0.0f){
 
                     // Simulate simple physics : gravity only, no collisions
-                    p.speed += glm::vec3(0.0f,-9.81f, 0.0f) * (float)deltaTime * 0.5f;
+                    p.speed += glm::vec3(0.0f,0.05f, 0.0f) * (float)deltaTime * 0.05f;
                     p.pos += p.speed * (float)deltaTime;
                     p.cameradistance = glm::length2( p.pos - CameraPosition );
                     //ParticlesContainer[i].pos += glm::vec3(0.0f,10.0f, 0.0f) * (float)delta;
@@ -1204,10 +1204,10 @@ int main( )
         glUniformMatrix4fv(ViewProjMatrixID, 1, GL_FALSE, &ViewProjectionMatrix[0][0]);
 
         // 1rst attribute buffer : vertices
-        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(3);
         glBindBuffer(GL_ARRAY_BUFFER, billboard_vertex_buffer);
         glVertexAttribPointer(
-            0,                  // attribute. No particular reason for 0, but must match the layout in the shader.
+            3,                  // attribute. No particular reason for 0, but must match the layout in the shader.
             3,                  // size
             GL_FLOAT,           // type
             GL_FALSE,           // normalized?
@@ -1216,10 +1216,10 @@ int main( )
         );
         
         // 2nd attribute buffer : positions of particles' centers
-        glEnableVertexAttribArray(1);
+        glEnableVertexAttribArray(4);
         glBindBuffer(GL_ARRAY_BUFFER, particles_position_buffer);
         glVertexAttribPointer(
-            1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
+            4,                                // attribute. No particular reason for 1, but must match the layout in the shader.
             4,                                // size : x + y + z + size => 4
             GL_FLOAT,                         // type
             GL_FALSE,                         // normalized?
@@ -1228,10 +1228,10 @@ int main( )
         );
 
         // 3rd attribute buffer : particles' colors
-        glEnableVertexAttribArray(2);
+        glEnableVertexAttribArray(5);
         glBindBuffer(GL_ARRAY_BUFFER, particles_color_buffer);
         glVertexAttribPointer(
-            2,                                // attribute. No particular reason for 1, but must match the layout in the shader.
+            5,                                // attribute. No particular reason for 1, but must match the layout in the shader.
             4,                                // size : r + g + b + a => 4
             GL_UNSIGNED_BYTE,                 // type
             GL_TRUE,                          // normalized?    *** YES, this means that the unsigned char[4] will be accessible with a vec4 (floats) in the shader ***
@@ -1243,9 +1243,9 @@ int main( )
         // The first parameter is the attribute buffer we're talking about.
         // The second parameter is the "rate at which generic vertex attributes advance when rendering multiple instances"
         // http://www.opengl.org/sdk/docs/man/xhtml/glVertexAttribDivisor.xml
-        glVertexAttribDivisor(0, 0); // particles vertices : always reuse the same 4 vertices -> 0
-        glVertexAttribDivisor(1, 1); // positions : one per quad (its center)                 -> 1
-        glVertexAttribDivisor(2, 1); // color : one per quad                                  -> 1
+        glVertexAttribDivisor(3, 0); // particles vertices : always reuse the same 4 vertices -> 0
+        glVertexAttribDivisor(4, 1); // positions : one per quad (its center)                 -> 1
+        glVertexAttribDivisor(5, 1); // color : one per quad                                  -> 1
 
         // Draw the particules !
         // This draws many times a small triangle_strip (which looks like a quad).
@@ -1254,9 +1254,9 @@ int main( )
         // but faster.
         glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, ParticlesCount);
 
-        glDisableVertexAttribArray(0);
-        glDisableVertexAttribArray(1);
-        glDisableVertexAttribArray(2);
+        glDisableVertexAttribArray(3);
+        glDisableVertexAttribArray(4);
+        glDisableVertexAttribArray(5);
 
         glBindVertexArray( 0 );
         
@@ -1265,6 +1265,17 @@ int main( )
         glfwPollEvents();
     }
     
+    delete[] g_particule_position_size_data;
+
+    // Cleanup VBO and shader
+    glDeleteBuffers(1, &particles_color_buffer);
+    glDeleteBuffers(1, &particles_position_buffer);
+    glDeleteBuffers(1, &billboard_vertex_buffer);
+    glDeleteProgram(programID);
+    glDeleteTextures(1, &Texture);
+    //glDeleteVertexArrays(1, &VertexArrayID);
+
+
     // Properly de-allocate all resources once they've outlived their purpose
     glDeleteVertexArrays( 1, &VAO );
     glDeleteBuffers( 1, &VBO );
