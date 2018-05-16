@@ -642,28 +642,71 @@ GLfloat vertices[] =
         -500.0f, -0.85f, 500.0f,  0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
         -500.0f, -0.85f, -500.0f,  0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
         500.0f, -0.85f, -500.0f,  0.0f, 0.0f, 0.0f,  1.0f, 0.0f,  
-        // Jalanan placeholder 3
+        // Tanah placeholder 3
         0, 0, 0, 0, 0, 0, 0, 0, 
         0, 0, 0, 0, 0, 0, 0, 0, 
         0, 0, 0, 0, 0, 0, 0, 0, 
         0, 0, 0, 0, 0, 0, 0, 0, 
         0, 0, 0, 0, 0, 0, 0, 0, 
         0, 0, 0, 0, 0, 0, 0, 0, 
-        // Jalanan placeholder 4
+        // Tanah placeholder 4
         0, 0, 0, 0, 0, 0, 0, 0, 
         0, 0, 0, 0, 0, 0, 0, 0, 
         0, 0, 0, 0, 0, 0, 0, 0, 
         0, 0, 0, 0, 0, 0, 0, 0, 
         0, 0, 0, 0, 0, 0, 0, 0, 
         0, 0, 0, 0, 0, 0, 0, 0, 
-        // Jalanan placeholder 5
+        // Tanah placeholder 5
         0, 0, 0, 0, 0, 0, 0, 0, 
         0, 0, 0, 0, 0, 0, 0, 0, 
         0, 0, 0, 0, 0, 0, 0, 0, 
         0, 0, 0, 0, 0, 0, 0, 0, 
         0, 0, 0, 0, 0, 0, 0, 0, 
         0, 0, 0, 0, 0, 0, 0, 0, 
-        // Jalanan placeholder 6
+        // Tanah placeholder 6
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+
+        // Pembatas 1
+        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
+        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
+        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,   
+        // Pembatas 1
+        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
+        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
+        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,   
+        // Pembatas 1
+        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
+        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
+        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,   
+        // Pembatas 1
+        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
+        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
+        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,   
+        // Pembatas placeholder 1
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        // Pembatas placeholder 2
         0, 0, 0, 0, 0, 0, 0, 0, 
         0, 0, 0, 0, 0, 0, 0, 0, 
         0, 0, 0, 0, 0, 0, 0, 0, 
@@ -1008,6 +1051,33 @@ int main( )
     SOIL_free_image_data( image );
 
     glBindTexture( GL_TEXTURE_2D, 6 );
+
+    // --== TEXTURE 8 == --
+    glGenTextures(1, &diffuseMap[7]);
+    glGenTextures(1, &specularMap[7]);
+    glGenTextures(1, &emissionMap[7]);
+
+    glBindTexture( GL_TEXTURE_2D, diffuseMap[7] );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+    image = SOIL_load_image( "res/images/wood.jpg", &width, &height, 0, SOIL_LOAD_RGB );
+    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
+    glGenerateMipmap( GL_TEXTURE_2D );
+    SOIL_free_image_data( image );
+
+    glBindTexture( GL_TEXTURE_2D, specularMap[7] );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+    image = SOIL_load_image( "res/images/wood.jpg", &width, &height, 0, SOIL_LOAD_RGB );
+    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
+    glGenerateMipmap( GL_TEXTURE_2D );
+    SOIL_free_image_data( image );
+
+    glBindTexture( GL_TEXTURE_2D, 7 );
     
     lightShader.Use();
     glUniform1i(glGetUniformLocation(lightShader.Program, "material.diffuse"),  0);
@@ -1188,6 +1258,14 @@ int main( )
             glBindTexture( GL_TEXTURE_2D, VAO );
             glUniform1i( glGetUniformLocation( lightShader.Program, "grass" ), 6 );
             glDrawArrays( GL_TRIANGLES, 36 * 13, 36 );
+
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, diffuseMap[7]);
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, specularMap[7]);
+            glBindTexture( GL_TEXTURE_2D, VAO );
+            glUniform1i( glGetUniformLocation( lightShader.Program, "wood" ), 7 );
+            glDrawArrays( GL_TRIANGLES, 36 * 14, 36 );
         //}
         
         
@@ -1380,8 +1458,11 @@ bool CheckPositionLowerSpeed(GLfloat move) {
     return (middlePoint[0] + move < 22.0f) && (middlePoint[0] - move > 8.0f) && (middlePoint[2] + move < 10.0f) && (middlePoint[2] - move > -10.0f);
 }
 
-bool CheckPositionCanMove(GLfloat move) {
-    return (middlePoint[0] + move < 38.0f) && (middlePoint[0] - move > -8.0f) && (middlePoint[2] + move < 20.0f) && (middlePoint[2] - move > -20.0f);
+bool CheckPositionCanMoveForward(GLfloat move) {
+    return (middlePoint[0] + move * sin(rad) < 38.0f) && (middlePoint[2] + move * cos(rad) < 20.0f) && (middlePoint[0] + move * sin(rad) > -8.0f) && (middlePoint[2] + move * cos(rad) > -20.0f);
+}
+bool CheckPositionCanMoveBackward(GLfloat move) {
+    return (middlePoint[0] - move * sin(rad) < 38.0f) && (middlePoint[2] - move * cos(rad) < 20.0f) && (middlePoint[0] - move * sin(rad) > -8.0f) && (middlePoint[2] - move * cos(rad) > -20.0f);
 }
 
 // Moves/alters the camera positions based on user input
@@ -1390,7 +1471,7 @@ void DoMovement( )
     // Camera controls
     if(keys[GLFW_KEY_UP] )
     {
-        if (CheckPositionCanMove(CAR_SPEED_FAST)) {
+        if (CheckPositionCanMoveBackward(CAR_SPEED_FAST)) {
             GLfloat move = CheckPositionLowerSpeed(CAR_SPEED_FAST) ? CAR_SPEED_SLOW : CAR_SPEED_FAST;
             middlePoint[0+2] -= move * cos(rad);
             middlePoint[0] -= move * sin(rad);
@@ -1404,14 +1485,16 @@ void DoMovement( )
     
     if(keys[GLFW_KEY_DOWN] )
     {
-        GLfloat move = CheckPositionLowerSpeed(CAR_SPEED_FAST) ? CAR_SPEED_SLOW : CAR_SPEED_FAST;
-        middlePoint[0+2] += move * cos(rad);
-        middlePoint[0] += move * sin(rad);
-        for (int i=0; i<carLastIndex; i+=8) {
-            vertices[i+2] += move * cos(rad);
-            vertices[i] += move * sin(rad);
+        if (CheckPositionCanMoveForward(CAR_SPEED_FAST)) {
+            GLfloat move = CheckPositionLowerSpeed(CAR_SPEED_FAST) ? CAR_SPEED_SLOW : CAR_SPEED_FAST;
+            middlePoint[0+2] += move * cos(rad);
+            middlePoint[0] += move * sin(rad);
+            for (int i=0; i<carLastIndex; i+=8) {
+                vertices[i+2] += move * cos(rad);
+                vertices[i] += move * sin(rad);
+            }
+            glBufferData( GL_ARRAY_BUFFER, sizeof( vertices ), vertices, GL_STATIC_DRAW );
         }
-        glBufferData( GL_ARRAY_BUFFER, sizeof( vertices ), vertices, GL_STATIC_DRAW );
     }
     
     if(keys[GLFW_KEY_LEFT] )
