@@ -50,6 +50,7 @@ GLfloat lastFrame = 0.0f;
 
 GLfloat middlePoint[] = {0, 0, 0};
 GLfloat rad = 0.00f;
+const GLfloat CAR_RADIUS_COLLISION = 3.0f;
 const GLfloat OFFSET_SMOKE = 3.5f;
 const GLfloat CAR_SPEED_FAST = 0.3f;
 const GLfloat CAR_SPEED_MEDIUM = 0.2f;
@@ -627,13 +628,48 @@ GLfloat vertices[] =
         0, 0, 0, 0, 0, 0, 0, 0, 
         0, 0, 0, 0, 0, 0, 0, 0, 
 
-        // Rumput 1
+        // Tanah 1
         8.0f, -0.8f, -10.0f,  0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
         8.0f, -0.8f, 10.0f,  0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
         22.0f, -0.8f, -10.0f,  0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
         22.0f, -0.8f, -10.0f,  0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
         22.0f, -0.8f, 10.0f,  0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
         8.0f, -0.8f, 10.0f,  0.0f, 0.0f, 0.0f,  1.0f, 0.0f,   
+        // Tanah 2
+        500.0f, -0.85f, 500.0f,  0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+        500.0f, -0.85f, -500.0f,  0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+        -500.0f, -0.85f, 500.0f,  0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+        -500.0f, -0.85f, 500.0f,  0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+        -500.0f, -0.85f, -500.0f,  0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+        500.0f, -0.85f, -500.0f,  0.0f, 0.0f, 0.0f,  1.0f, 0.0f,  
+        // Jalanan placeholder 3
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        // Jalanan placeholder 4
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        // Jalanan placeholder 5
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        // Jalanan placeholder 6
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 
     };
 
         // ,  0.0f, 1.0f,
@@ -1151,7 +1187,7 @@ int main( )
             glBindTexture(GL_TEXTURE_2D, specularMap[6]);
             glBindTexture( GL_TEXTURE_2D, VAO );
             glUniform1i( glGetUniformLocation( lightShader.Program, "grass" ), 6 );
-            glDrawArrays( GL_TRIANGLES, 36 * 13, 6 );
+            glDrawArrays( GL_TRIANGLES, 36 * 13, 36 );
         //}
         
         
@@ -1340,28 +1376,40 @@ int main( )
     return EXIT_SUCCESS;
 }
 
+bool CheckPositionLowerSpeed(GLfloat move) {
+    return (middlePoint[0] + move < 22.0f) && (middlePoint[0] - move > 8.0f) && (middlePoint[2] + move < 10.0f) && (middlePoint[2] - move > -10.0f);
+}
+
+bool CheckPositionCanMove(GLfloat move) {
+    return (middlePoint[0] + move < 38.0f) && (middlePoint[0] - move > -8.0f) && (middlePoint[2] + move < 20.0f) && (middlePoint[2] - move > -20.0f);
+}
+
 // Moves/alters the camera positions based on user input
 void DoMovement( )
 {
     // Camera controls
     if(keys[GLFW_KEY_UP] )
     {
-        middlePoint[0+2] -= CAR_SPEED_FAST * cos(rad);
-        middlePoint[0] -= CAR_SPEED_FAST * sin(rad);
-        for (int i=0; i<carLastIndex; i+=8) {
-            vertices[i+2] -= CAR_SPEED_FAST * cos(rad);
-            vertices[i] -= CAR_SPEED_FAST * sin(rad);
+        if (CheckPositionCanMove(CAR_SPEED_FAST)) {
+            GLfloat move = CheckPositionLowerSpeed(CAR_SPEED_FAST) ? CAR_SPEED_SLOW : CAR_SPEED_FAST;
+            middlePoint[0+2] -= move * cos(rad);
+            middlePoint[0] -= move * sin(rad);
+            for (int i=0; i<carLastIndex; i+=8) {
+                vertices[i+2] -= move * cos(rad);
+                vertices[i] -= move * sin(rad);
+            }
+            glBufferData( GL_ARRAY_BUFFER, sizeof( vertices ), vertices, GL_STATIC_DRAW );
         }
-        glBufferData( GL_ARRAY_BUFFER, sizeof( vertices ), vertices, GL_STATIC_DRAW );
     }
     
     if(keys[GLFW_KEY_DOWN] )
     {
-        middlePoint[0+2] += CAR_SPEED_FAST * cos(rad);
-        middlePoint[0] += CAR_SPEED_FAST * sin(rad);
+        GLfloat move = CheckPositionLowerSpeed(CAR_SPEED_FAST) ? CAR_SPEED_SLOW : CAR_SPEED_FAST;
+        middlePoint[0+2] += move * cos(rad);
+        middlePoint[0] += move * sin(rad);
         for (int i=0; i<carLastIndex; i+=8) {
-            vertices[i+2] += CAR_SPEED_FAST * cos(rad);
-            vertices[i] += CAR_SPEED_FAST * sin(rad);
+            vertices[i+2] += move * cos(rad);
+            vertices[i] += move * sin(rad);
         }
         glBufferData( GL_ARRAY_BUFFER, sizeof( vertices ), vertices, GL_STATIC_DRAW );
     }
