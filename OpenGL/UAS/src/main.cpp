@@ -57,7 +57,7 @@ const GLfloat CAR_SPEED_MEDIUM = 0.2f;
 const GLfloat CAR_SPEED_SLOW = 0.1f;
 const int carLastIndex = 36 * 12 * 8; // 3456
 const int objectLastIndex = 36 * 15 * 8;
-GLfloat vertices[18000] =
+GLfloat vertices[21000] =
     {
         // [Badan mobil bawah]
         // sisi 1
@@ -742,10 +742,10 @@ int LastUsedParticle = 0;
 
 
 // UJANNNNNNNNNN
-float accum = -12.0f;
+float accum = -32.0f;
 float slowdown = 2.0;
 float velocity = 5.0;
-float zoom = 2.5;
+float zoom = -1.0f;
 bool starter = true;
 int loop;
 void initParticles(int i, bool starter);
@@ -770,7 +770,7 @@ typedef struct {
     // Gravity
     float gravity;
 }particles;
-const int MAX_RAIN_PARTICLES = 300;
+const int MAX_RAIN_PARTICLES = 600;
 // Paticle System
 particles par_sys[MAX_RAIN_PARTICLES]; 
 int idxRain = objectLastIndex;
@@ -1183,10 +1183,10 @@ int main( )
     // The VBO containing the 4 vertices of the particles.
     // Thanks to instancing, they will be shared by all particles.
     static const GLfloat smoke_vertices[] = { 
-         -0.5f, -0.5f, 0.0f,
-          0.5f, -0.5f, 0.0f,
-         -0.5f,  0.5f, 0.0f,
-          0.5f,  0.5f, 0.0f,
+         -0.2f, -0.2f, 0.0f,
+          0.2f, -0.2f, 0.0f,
+         -0.2f,  0.2f, 0.0f,
+          0.2f,  0.2f, 0.0f,
     };
     GLuint billboard_vertex_buffer;
     glGenBuffers(1, &billboard_vertex_buffer);
@@ -1219,7 +1219,7 @@ int main( )
         glfwPollEvents( );
         
         // Clear the colorbuffer
-        glClearColor( 0.2f, 0.3f, 0.3f, 1.0f );
+        glClearColor( 0.4f, 0.6f, 0.6f, 1.0f );
         glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
         
         // Draw
@@ -1390,13 +1390,13 @@ int main( )
         // Generate 10 new particule each millisecond,
         // but limit this to 16 ms (60 fps), or if you have 1 long frame (1sec),
         // newparticles will be huge and the next frame even longer.
-        int newparticles = (int)(deltaTime*10000.0);
-        if (newparticles > (int)(0.016f*10000.0))
-            newparticles = (int)(0.016f*10000.0);
+        int newparticles = (int)(deltaTime*7000.0);
+        if (newparticles > (int)(0.016f*7000.0))
+            newparticles = (int)(0.016f*7000.0);
         
         for(int i=0; i<newparticles; i++){
             int particleIndex = FindUnusedParticle();
-            ParticlesContainer[particleIndex].life = 2.0f; // This SmokeParticle will live n seconds.
+            ParticlesContainer[particleIndex].life = 0.8f; // This SmokeParticle will live n seconds.
             ParticlesContainer[particleIndex].pos = glm::vec3(middlePoint[0]+OFFSET_SMOKE*sin(rad),middlePoint[1],middlePoint[2]+OFFSET_SMOKE*cos(rad)); // spawn location
 
             float spread = 1.5f;
@@ -1720,11 +1720,11 @@ void ScrollCallback( GLFWwindow *window, double xOffset, double yOffset )
 void initParticles(int idx, bool starter) {
     par_sys[idx].alive = true;
     par_sys[idx].life = 1.0;
-    par_sys[idx].fade = float(rand()%100)/1000.0f+0.003f;
+    par_sys[idx].fade = float(rand()%100)/10000.0f+0.0003f;
                    
-    par_sys[idx].xpos = (float) (rand() % 21) - 10;
-    par_sys[idx].ypos = 8.0f;
-    par_sys[idx].zpos = (float) (rand() % 21) - 10;
+    par_sys[idx].xpos = (float) (rand() % 21*3) - 13;
+    par_sys[idx].ypos = 18.0f;
+    par_sys[idx].zpos = (float) (rand() % 21*3) - 10;
 
     if (!starter) {
         inc_x_rain[idx] =  par_sys[idx].xpos - init_x_rain[idx];
@@ -1788,8 +1788,8 @@ void drawRain(bool starter) {
             // Update values
             //Move
             // Adjust slowdown for speed!
-            par_sys[loop].ypos += par_sys[loop].vel / (slowdown*1000);
-            inc_y_rain[loop] += par_sys[loop].vel / (slowdown*1000);
+            par_sys[loop].ypos += par_sys[loop].vel / (slowdown*100);
+            inc_y_rain[loop] += par_sys[loop].vel / (slowdown*100);
             par_sys[loop].vel += par_sys[loop].gravity;
             // Decay
             par_sys[loop].life -= par_sys[loop].fade;
