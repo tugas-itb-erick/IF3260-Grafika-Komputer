@@ -56,7 +56,8 @@ const GLfloat CAR_SPEED_FAST = 0.3f;
 const GLfloat CAR_SPEED_MEDIUM = 0.2f;
 const GLfloat CAR_SPEED_SLOW = 0.1f;
 const int carLastIndex = 36 * 12 * 8; // 3456
-GLfloat vertices[] =
+const int objectLastIndex = 36 * 15 * 8;
+GLfloat vertices[18000] =
     {
         // [Badan mobil bawah]
         // sisi 1
@@ -672,33 +673,33 @@ GLfloat vertices[] =
         0, 0, 0, 0, 0, 0, 0, 0, 
 
         // Pembatas 1
-        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
-        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
-        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
-        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
-        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
-        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,   
+        -10.0f, -0.6f, 22.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
+        -10.0f, 0.6f, 22.0f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
+        -10.0f, -0.6f, -22.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        -10.0f, 0.6f, 22.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        -10.0f, 0.6f, -22.0f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
+        -10.0f, -0.6f, -22.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,   
         // Pembatas 2
-        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
-        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
-        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
-        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
-        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
-        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,   
+        40.0f, -0.6f, 22.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
+        40.0f, 0.6f, 22.0f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
+        40.0f, -0.6f, -22.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        40.0f, 0.6f, 22.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        40.0f, 0.6f, -22.0f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
+        40.0f, -0.6f, -22.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,     
         // Pembatas 3
-        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
-        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
-        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
-        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
-        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
-        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,   
+        -10.0f, -0.6f, 22.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
+        -10.0f, 0.6f, 22.0f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
+        40.0f, -0.6f, 22.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        -10.0f, 0.6f, 22.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        40.0f, 0.6f, 22.0f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
+        40.0f, -0.6f, 22.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,   
         // Pembatas 4
-        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
-        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
-        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
-        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
-        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
-        0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,   
+        -10.0f, -0.6f, -22.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
+        -10.0f, 0.6f, -22.0f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
+        40.0f, -0.6f, -22.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        -10.0f, 0.6f, -22.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+        40.0f, 0.6f, -22.0f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
+        40.0f, -0.6f, -22.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,  
         // Pembatas placeholder 1
         0, 0, 0, 0, 0, 0, 0, 0, 
         0, 0, 0, 0, 0, 0, 0, 0, 
@@ -735,15 +736,58 @@ struct SmokeParticle{
     }
 };
 
-const int MaxParticles = 100000;
-SmokeParticle ParticlesContainer[MaxParticles];
+const int MAX_SMOKE_PARTICLES = 100000;
+SmokeParticle ParticlesContainer[MAX_SMOKE_PARTICLES];
 int LastUsedParticle = 0;
+
+
+// UJANNNNNNNNNN
+float accum = -12.0f;
+float slowdown = 2.0;
+float velocity = 5.0;
+float zoom = 2.5;
+bool starter = true;
+int loop;
+void initParticles(int i, bool starter);
+void init(bool starter);
+void drawRain(bool starter);
+
+typedef struct {
+    // Life
+    bool alive; // is the particle alive?
+    float life; // particle lifespan
+    float fade; // decay
+    // color
+    float red; 
+    float green;
+    float blue;
+    // Position/direction
+    float xpos; 
+    float ypos; 
+    float zpos;
+    // Velocity/Direction, only goes down in y dir
+    float vel;
+    // Gravity
+    float gravity;
+}particles;
+const int MAX_RAIN_PARTICLES = 300;
+// Paticle System
+particles par_sys[MAX_RAIN_PARTICLES]; 
+int idxRain = objectLastIndex;
+GLfloat inc_x_rain[MAX_RAIN_PARTICLES] = { 0.0f };
+GLfloat inc_y_rain[MAX_RAIN_PARTICLES] = { 0.0f };
+GLfloat inc_z_rain[MAX_RAIN_PARTICLES] = { 0.0f };
+GLfloat init_x_rain[MAX_RAIN_PARTICLES] = { 0.0f };
+GLfloat init_z_rain[MAX_RAIN_PARTICLES] = { 0.0f };
+
+
+
 
 // Finds a SmokeParticle in ParticlesContainer which isn't used yet.
 // (i.e. life < 0);
 int FindUnusedParticle(){
 
-    for(int i=LastUsedParticle; i<MaxParticles; i++){
+    for(int i=LastUsedParticle; i<MAX_SMOKE_PARTICLES; i++){
         if (ParticlesContainer[i].life < 0){
             LastUsedParticle = i;
             return i;
@@ -761,7 +805,7 @@ int FindUnusedParticle(){
 }
 
 void SortParticles(){
-    std::sort(&ParticlesContainer[0], &ParticlesContainer[MaxParticles]);
+    std::sort(&ParticlesContainer[0], &ParticlesContainer[MAX_SMOKE_PARTICLES]);
 }
 
 // The MAIN function, from here we start our application and run our Game loop
@@ -775,7 +819,7 @@ int main( )
     glfwWindowHint( GLFW_RESIZABLE, GL_FALSE );
     glfwWindowHint( GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE );
     
-    GLFWwindow* window = glfwCreateWindow( WIDTH, HEIGHT, "Car Shader", nullptr, nullptr ); // Windowed
+    GLFWwindow* window = glfwCreateWindow( WIDTH, HEIGHT, "Final Car", nullptr, nullptr ); // Windowed
     
     if ( nullptr == window )
     {
@@ -784,6 +828,10 @@ int main( )
         
         return EXIT_FAILURE;
     }
+
+    init(starter);
+    drawRain(starter);
+    starter = false;
     
     glfwMakeContextCurrent( window );
     
@@ -1078,6 +1126,34 @@ int main( )
     SOIL_free_image_data( image );
 
     glBindTexture( GL_TEXTURE_2D, 7 );
+
+
+    // --== TEXTURE 6 == --
+    glGenTextures(1, &diffuseMap[8]);
+    glGenTextures(1, &specularMap[8]);
+    glGenTextures(1, &emissionMap[8]);
+
+    glBindTexture( GL_TEXTURE_2D, diffuseMap[8] );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+    image = SOIL_load_image( "res/images/metal.jpg", &width, &height, 0, SOIL_LOAD_RGB );
+    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
+    glGenerateMipmap( GL_TEXTURE_2D );
+    SOIL_free_image_data( image );
+
+    glBindTexture( GL_TEXTURE_2D, specularMap[8] );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+    image = SOIL_load_image( "res/images/metal.jpg", &width, &height, 0, SOIL_LOAD_RGB );
+    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
+    glGenerateMipmap( GL_TEXTURE_2D );
+    SOIL_free_image_data( image );
+
+    glBindTexture( GL_TEXTURE_2D, 8 );
     
     lightShader.Use();
     glUniform1i(glGetUniformLocation(lightShader.Program, "material.diffuse"),  0);
@@ -1094,10 +1170,10 @@ int main( )
     // fragment shader
     GLuint TextureID  = glGetUniformLocation(programID, "myTextureSampler");
 
-    static GLfloat* g_particule_position_size_data = new GLfloat[MaxParticles * 4];
-    static GLubyte* g_particule_color_data         = new GLubyte[MaxParticles * 4];
+    static GLfloat* g_particule_position_size_data = new GLfloat[MAX_SMOKE_PARTICLES * 4];
+    static GLubyte* g_particule_color_data         = new GLubyte[MAX_SMOKE_PARTICLES * 4];
 
-    for(int i=0; i<MaxParticles; i++){
+    for(int i=0; i<MAX_SMOKE_PARTICLES; i++){
         ParticlesContainer[i].life = -1.0f;
         ParticlesContainer[i].cameradistance = -1.0f;
     }
@@ -1122,14 +1198,14 @@ int main( )
     glGenBuffers(1, &particles_position_buffer);
     glBindBuffer(GL_ARRAY_BUFFER, particles_position_buffer);
     // Initialize with empty (NULL) buffer : it will be updated later, each frame.
-    glBufferData(GL_ARRAY_BUFFER, MaxParticles * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, MAX_SMOKE_PARTICLES * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
 
     // The VBO containing the colors of the particles
     GLuint particles_color_buffer;
     glGenBuffers(1, &particles_color_buffer);
     glBindBuffer(GL_ARRAY_BUFFER, particles_color_buffer);
     // Initialize with empty (NULL) buffer : it will be updated later, each frame.
-    glBufferData(GL_ARRAY_BUFFER, MaxParticles * 4 * sizeof(GLubyte), NULL, GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, MAX_SMOKE_PARTICLES * 4 * sizeof(GLubyte), NULL, GL_STREAM_DRAW);
 
     // Game loop
     while( !glfwWindowShouldClose( window ) )
@@ -1198,7 +1274,7 @@ int main( )
             model = glm::rotate(model, angle, glm::vec3( 1.0f, 0.3f, 0.5f ) );
             glUniformMatrix4fv( modelLoc, 1, GL_FALSE, glm::value_ptr( model ) );
             
-            // Bind Textures using texture units
+            // Textures using texture units
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, diffuseMap[0]);
             glActiveTexture(GL_TEXTURE1);
@@ -1268,7 +1344,48 @@ int main( )
             glDrawArrays( GL_TRIANGLES, 36 * 14, 36 );
         //}
         
-        
+        // UJANNNNNNN
+        float x1, y1, z1;
+        int start = 36*15;
+        drawRain(false);
+        for (loop = 0; loop < MAX_RAIN_PARTICLES; loop++) {
+            if (par_sys[loop].alive == true) {
+                x1 = par_sys[loop].xpos;
+                y1 = par_sys[loop].ypos;
+                z1 = par_sys[loop].zpos + zoom;
+
+                // Bind Textures using texture units
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, diffuseMap[5]);
+                glBindVertexArray(VAO);
+                glActiveTexture(GL_TEXTURE1);
+                glBindTexture(GL_TEXTURE_2D, specularMap[5]);
+                glBindTexture( GL_TEXTURE_2D, VAO );
+                glUniform3f(glGetUniformLocation(lightShader.Program, "inc_rain"), inc_x_rain[loop], inc_y_rain[loop], inc_z_rain[loop]);
+                glUniform1i(glGetUniformLocation(lightShader.Program, "is_rain"), 1);
+                glUniform1i( glGetUniformLocation( lightShader.Program, "metal" ), 5 );
+                glDrawArrays( GL_LINES, start, start + 2);
+                glBufferData( GL_ARRAY_BUFFER, sizeof( vertices ), vertices, GL_STATIC_DRAW );
+                start += 2;
+                
+                // Update values
+                //Move 
+                // Adjust slowdown for speed!
+                par_sys[loop].ypos += par_sys[loop].vel / (slowdown*1000);
+                inc_y_rain[loop] += par_sys[loop].vel / (slowdown*1000);
+                par_sys[loop].vel += par_sys[loop].gravity;
+                // Decay
+                par_sys[loop].life -= par_sys[loop].fade;
+                
+                if (par_sys[loop].ypos <= accum) {
+                    par_sys[loop].life = -1.0;
+                }
+                //Revive 
+                if (par_sys[loop].life < 0.0) {
+                    initParticles(loop, starter);
+                }
+            }
+        }
         
         // Generate 10 new particule each millisecond,
         // but limit this to 16 ms (60 fps), or if you have 1 long frame (1sec),
@@ -1300,7 +1417,7 @@ int main( )
 
         // Simulate all particles
         int ParticlesCount = 0;
-        for(int i=0; i<MaxParticles; i++){
+        for(int i=0; i<MAX_SMOKE_PARTICLES; i++){
 
             SmokeParticle& p = ParticlesContainer[i]; // shortcut
 
@@ -1344,11 +1461,11 @@ int main( )
         // but this is outside the scope of this tutorial.
         // http://www.opengl.org/wiki/Buffer_Object_Streaming
         glBindBuffer(GL_ARRAY_BUFFER, particles_position_buffer);
-        glBufferData(GL_ARRAY_BUFFER, MaxParticles * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details.
+        glBufferData(GL_ARRAY_BUFFER, MAX_SMOKE_PARTICLES * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details.
         glBufferSubData(GL_ARRAY_BUFFER, 0, ParticlesCount * sizeof(GLfloat) * 4, g_particule_position_size_data);
 
         glBindBuffer(GL_ARRAY_BUFFER, particles_color_buffer);
-        glBufferData(GL_ARRAY_BUFFER, MaxParticles * 4 * sizeof(GLubyte), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details.
+        glBufferData(GL_ARRAY_BUFFER, MAX_SMOKE_PARTICLES * 4 * sizeof(GLubyte), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details.
         glBufferSubData(GL_ARRAY_BUFFER, 0, ParticlesCount * sizeof(GLubyte) * 4, g_particule_color_data);
 
 
@@ -1597,4 +1714,94 @@ void MouseCallback( GLFWwindow *window, double xPos, double yPos )
 void ScrollCallback( GLFWwindow *window, double xOffset, double yOffset )
 {
     camera.ProcessMouseScroll( yOffset );
+}
+
+
+void initParticles(int idx, bool starter) {
+    par_sys[idx].alive = true;
+    par_sys[idx].life = 1.0;
+    par_sys[idx].fade = float(rand()%100)/1000.0f+0.003f;
+                   
+    par_sys[idx].xpos = (float) (rand() % 21) - 10;
+    par_sys[idx].ypos = 8.0f;
+    par_sys[idx].zpos = (float) (rand() % 21) - 10;
+
+    if (!starter) {
+        inc_x_rain[idx] =  par_sys[idx].xpos - init_x_rain[idx];
+        inc_z_rain[idx] = par_sys[idx].zpos - init_z_rain[idx];
+        inc_y_rain[idx] = 0.0f;
+    } else {
+        init_x_rain[loop] = par_sys[idx].xpos;
+        init_z_rain[loop] = par_sys[idx].zpos;
+    }
+    
+    par_sys[idx].red = 0.5;
+    par_sys[idx].green = 0.5;
+    par_sys[idx].blue = 1.0;
+                    
+    par_sys[idx].vel = velocity;
+    par_sys[idx].gravity = -0.8;//-0.8;
+}
+
+void init(bool starter) {
+    for (loop = 0; loop < MAX_RAIN_PARTICLES; loop++) {
+        initParticles(loop, starter);
+    }
+}
+
+void drawRain(bool starter) {
+    float x, y, z;
+
+    for (loop = 0; loop < MAX_RAIN_PARTICLES; loop++) {
+        if (par_sys[loop].alive == true) {          
+             x = par_sys[loop].xpos;
+             y = par_sys[loop].ypos;
+             z = par_sys[loop].zpos + zoom;
+
+             if (starter) {
+                init_x_rain[loop] = x;
+                init_z_rain[loop] = z;
+             }
+
+            vertices[idxRain++] = x;
+            vertices[idxRain++] = y;
+            vertices[idxRain++] = z;
+
+            vertices[idxRain++] = 1.0f;
+            vertices[idxRain++] = 1.0f;
+            vertices[idxRain++] = 1.0f;
+
+            vertices[idxRain++] = 1.0f;
+            vertices[idxRain++] = 0.0f;
+
+            vertices[idxRain++] = x;
+            vertices[idxRain++] = y + 0.5f;
+            vertices[idxRain++] = z;
+
+            vertices[idxRain++] = 1.0f;
+            vertices[idxRain++] = 1.0f;
+            vertices[idxRain++] = 1.0f;
+
+            vertices[idxRain++] = 0.0f;
+            vertices[idxRain++] = 0.0f;
+            
+            // Update values
+            //Move
+            // Adjust slowdown for speed!
+            par_sys[loop].ypos += par_sys[loop].vel / (slowdown*1000);
+            inc_y_rain[loop] += par_sys[loop].vel / (slowdown*1000);
+            par_sys[loop].vel += par_sys[loop].gravity;
+            // Decay
+            par_sys[loop].life -= par_sys[loop].fade;
+            
+            if (par_sys[loop].ypos <= accum) {
+                par_sys[loop].life = -1.0;
+            }
+            //Revive 
+            if (par_sys[loop].life < 0.0) {
+                initParticles(loop, starter);
+            }
+        }
+    }
+    idxRain = objectLastIndex;
 }
