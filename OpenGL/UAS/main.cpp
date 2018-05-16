@@ -678,21 +678,21 @@ GLfloat vertices[] =
         0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
         0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
         0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,   
-        // Pembatas 1
+        // Pembatas 2
         0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
         0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
         0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
         0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
         0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
         0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,   
-        // Pembatas 1
+        // Pembatas 3
         0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
         0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
         0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
         0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
         0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
         0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,   
-        // Pembatas 1
+        // Pembatas 4
         0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
         0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
         0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
@@ -722,24 +722,24 @@ GLfloat vertices[] =
         // ,  0.0f, 0.0f,
         // ,  0.0f, 1.0f,
 
-struct Particle{
+struct SmokeParticle{
     glm::vec3 pos, speed;
     unsigned char r,g,b,a; // Color
     float size, angle, weight;
-    float life; // Remaining life of the particle. if <0 : dead and unused.
+    float life; // Remaining life of the SmokeParticle. if <0 : dead and unused.
     float cameradistance; // *Squared* distance to the camera. if dead : -1.0f
 
-    bool operator<(const Particle& that) const {
+    bool operator<(const SmokeParticle& that) const {
         // Sort in reverse order : far particles drawn first.
         return this->cameradistance > that.cameradistance;
     }
 };
 
 const int MaxParticles = 100000;
-Particle ParticlesContainer[MaxParticles];
+SmokeParticle ParticlesContainer[MaxParticles];
 int LastUsedParticle = 0;
 
-// Finds a Particle in ParticlesContainer which isn't used yet.
+// Finds a SmokeParticle in ParticlesContainer which isn't used yet.
 // (i.e. life < 0);
 int FindUnusedParticle(){
 
@@ -1084,7 +1084,7 @@ int main( )
     glUniform1i(glGetUniformLocation(lightShader.Program, "material.specular"), 1);
 
     // Create and compile our GLSL program from the shaders
-    GLuint programID = LoadShaders( "Particle.vertexshader", "Particle.fragmentshader" );
+    GLuint programID = LoadShaders( "res/shaders/SmokeParticle.vs", "res/shaders/SmokeParticle.frag" );
 
     // Vertex shader
     GLuint CameraRight_worldspace_ID  = glGetUniformLocation(programID, "CameraRight_worldspace");
@@ -1279,7 +1279,7 @@ int main( )
         
         for(int i=0; i<newparticles; i++){
             int particleIndex = FindUnusedParticle();
-            ParticlesContainer[particleIndex].life = 2.0f; // This particle will live n seconds.
+            ParticlesContainer[particleIndex].life = 2.0f; // This SmokeParticle will live n seconds.
             ParticlesContainer[particleIndex].pos = glm::vec3(middlePoint[0]+OFFSET_SMOKE*sin(rad),middlePoint[1],middlePoint[2]+OFFSET_SMOKE*cos(rad)); // spawn location
 
             float spread = 1.5f;
@@ -1302,7 +1302,7 @@ int main( )
         int ParticlesCount = 0;
         for(int i=0; i<MaxParticles; i++){
 
-            Particle& p = ParticlesContainer[i]; // shortcut
+            SmokeParticle& p = ParticlesContainer[i]; // shortcut
 
             if(p.life > 0.0f){
 
