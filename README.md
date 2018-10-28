@@ -1,23 +1,7 @@
-# Repositori Tugas OpenGL Grafika Komputer
+# IF3260-Grafika-Komputer
+Repositori Tugas IF3260 Grafika Komputer
 
-IF3260 Grafika Komputer
+**Tugas:**
+1. [Framebuffer](https://github.com/tugas-itb-erick/IF3260-Grafika-Komputer/tree/master/Framebuffer)
+2. [OpenGL](https://github.com/tugas-itb-erick/IF3260-Grafika-Komputer/tree/master/OpenGL)
 
-### Setup
-
-liat dependencies
-
-### Anggota Kelompok:
-
-13515021 - Dewita Sonya Tarabunga
-
-13515057 - Erick Wijaya
-
-13515063 - Kezia Suhendra
-
-13515078 - Veren Iliana
-
-13515087 - Audry Nyonata
-
-13515111 - Catherine Almira
-
-13515144 - William
