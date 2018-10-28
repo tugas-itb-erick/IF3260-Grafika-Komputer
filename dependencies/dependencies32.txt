@@ -1,0 +1,8 @@
+Additional Include Directories
+C:\OpenGL\glm;C:\OpenGL\glfw\include;C:\OpenGL\glew\include;C:\OpenGL\freeglut\include;%(AdditionalIncludeDirectories)
+
+Additional Library Directories
+C:\OpenGL\glfw\lib-vc2015;C:\OpenGL\glew\lib\Release\Win32;C:\OpenGL\freeglut\lib;%(AdditionalLibraryDirectories)
+
+Additional Dependencies
+opengl32.lib;freeglut.lib;glfw3.lib;glew32s.lib;%(AdditionalDependencies)
